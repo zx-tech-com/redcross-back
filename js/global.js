@@ -7,7 +7,7 @@ const project = "/RedCross/";
 
 
 const SUCCESS = "success";
-
+var BASE_URL = "";
 
 function urlFactory(url){
 	if(!url){//url为空
@@ -20,4 +20,21 @@ function urlFactory(url){
 		"token=" + "eyJhbGciOiJIUzI1NiJ9.eyJjdXN0b21lcklkIjo1LCJleHBpcmVzIjoxNTQ4MTc3MjQzNTM2fQ.KQudA_KWnSvYX2oZK9L3ftNwi02rBNT8p3U6Uu0IT7A";
 	}
 	
+}
+
+$(function(){
+	if(!BASE_URL){
+		$.ajax({
+			url : urlFactory("common/fileBasePath"),
+			success : function(data){
+				if(data.status == SUCCESS){
+					BASE_URL = data.data;
+				}
+			}
+		})
+	}
+})
+
+function getBaseAccessUrl(){
+	return BASE_URL;
 }
