@@ -142,8 +142,7 @@
 						"render": function(data, type, row, meta) {// "编辑视频","video-add.html"
 							var editTitle = "'编辑视频'";
 							var editUrl = "'video-add.html'";
-							var delUrl = "'video-del.html'";
-							return '<a style="text-decoration:none" class="ml-5" onClick="edit('+ row.id + ',' + title +',' + url + ')" href="javascript:;" title="编辑"><i class="Hui-iconfont">&#xe6df;</i></a> <a style="text-decoration:none" class="ml-5" onClick="del('+ row.id + ',' + delUrl + ')" href="javascript:;" title="删除"><i class="Hui-iconfont">&#xe6e2;</i></a>';
+							return '<a style="text-decoration:none" class="ml-5" onClick="edit('+ row.id + ',' + editTitle +',' + editUrl + ')" href="javascript:;" title="编辑"><i class="Hui-iconfont">&#xe6df;</i></a> <a style="text-decoration:none" class="ml-5" onClick="del('+ row.id + ',this)" href="javascript:;" title="删除"><i class="Hui-iconfont">&#xe6e2;</i></a>';
 						}
 					}
 				] 
@@ -157,6 +156,27 @@
 					content: url
 				});
 				layer.full(index);
+			}
+			
+			function del(id,obj){
+				layer.confirm('确认要删除吗？',function(index){
+					$.ajax({
+						type: 'POST',
+						url: urlFactory("video/adminDeleteVideo?videoId="+id),
+						dataType: 'json',
+						success: function(data){
+							if(data.status === SUCCESS){
+								$(obj).parents("tr").remove();
+								layer.msg('已删除!',{icon:1,time:1000});
+							}else{
+								layer.msg('删除失败!',{icon:2,time:1000});
+							}
+						},
+						error:function(data) {
+							layer.msg('删除失败!',{icon:2,time:1000});
+						},
+					});		
+				});
 			}
 		</script>
 	</body>
