@@ -14,7 +14,7 @@
 <link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.css" />
 <link rel="stylesheet" type="text/css" href="static/h-ui.admin/skin/default/skin.css" id="skin" />
 <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/style.css" />
-<title>新增科目</title>
+<title>修改科目</title>
 </head>
 <body>
 <article class="page-container">
@@ -89,11 +89,33 @@
 <script type="text/javascript" src="lib/ueditor/1.4.3/lang/zh-cn/zh-cn.js"></script>
 <script type="text/javascript">
 $(function(){
+	alert("123");
+	var url = location.search;
+	var id = url.split("=")[1];
+	alert(id);
+	$.ajax({
+		url:http:"http://localhost:9090/RedCross/course/getCourseSubject?subjectId="+id/*urlFactory("course/getCourseSubject?subjectId="+id)*/,
+		dataType: 'json',
+		type:'get',
+		success: function(data){
+			alert("ly");
+		 var courseSubject = eval(data.data);
+		 $.each(courseSubject, function (index, item) {
+		 	var period = courseSubject[index].period;
+            var sname = courseSubject[index].sname;
+            var price = courseSubject[index].price;
+            var description = courseSubject[index].description;
+            alert(sname);
+		 })
+		}
+	});
+	
 	$('.skin-minimal input').iCheck({
 		checkboxClass: 'icheckbox-blue',
 		radioClass: 'iradio-blue',
 		increaseArea: '20%'
 	})
+	
 });
 	
 	function uploadImgThumbnail() {

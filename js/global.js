@@ -17,8 +17,8 @@ function urlFactory(url){
 
 	}else{
 		var s = url.indexOf('?') == -1 ? '?' : '&';
-		return protocol + domain + ":" + port + project + url + s +
-		"token=" + "eyJhbGciOiJIUzI1NiJ9.eyJjdXN0b21lcklkIjo1LCJleHBpcmVzIjoxNTQ4MTQ4MjI3Njc1fQ.P18OMnw3D0Gplab1O5UurrMx3QJ1Z0gPf3_k4JPnoZk";
+		return protocol + domain + ":" + port + project + url /*+ s +
+		"token=" + "eyJhbGciOiJIUzI1NiJ9.eyJjdXN0b21lcklkIjo1LCJleHBpcmVzIjoxNTQ4MTQ4MjI3Njc1fQ.P18OMnw3D0Gplab1O5UurrMx3QJ1Z0gPf3_k4JPnoZk";*/
 	}
 	
 }
