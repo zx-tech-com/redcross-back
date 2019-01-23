@@ -23,6 +23,14 @@
 <body>
 <article class="page-container">
 	<form class="form form-horizontal" id="form-video-add">
+		
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>ID：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="" placeholder="" id="id" name="id">
+			</div>
+		</div>
+		
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>视频名称：</label>
 			<div class="formControls col-xs-8 col-sm-9">
@@ -44,7 +52,7 @@
 					<!--用来存放文件信息-->
 					<div id="thelist" class="uploader-list"></div>
 					<div class="btns">
-						<div id="picker">选择视频</div>
+						<div id="picker">重新选择视频</div>
 					</div>
 				</div>
 			</div>
@@ -85,11 +93,15 @@
 
 <script type="text/javascript">
 	
+	
+	
 	function prepareFormParams(){
 		var vname = $("#vname").val();
 		var price = $("#price").val();
 		var description = $("#description").val();
+		var id = $("#id").val();
 		return {
+			id : id,
 			vname : vname,
 			price : price,
 			description : description
@@ -119,7 +131,7 @@
 		
 		var uploader = WebUploader.create({
 			swf: '../lib/webuploader/0.1.5/Uploader.swf',
-			server: urlFactory("video/adminSaveVideo"),
+			server: urlFactory("video/adminUpdateVideo"),
 			pick: '#picker',
 			fileNumLimit: 1,
 			resize: false,
@@ -157,11 +169,12 @@
 		
 		uploader.on( 'uploadSuccess', function( file ) {
 			$( '#'+file.id ).find('p.state').text('已上传');
-			layer.alert('上传成功！');
+			layer.msg('修改成功!',{icon:1,time:1000});
 		});
 
 		uploader.on( 'uploadError', function( file ) {
 			$( '#'+file.id ).find('p.state').text('上传出错');
+			layer.msg('修改失败!',{icon:2,time:1000});
 		});
 
 		uploader.on( 'uploadComplete', function( file ) {
@@ -175,16 +188,20 @@
 		
 		$btn.on( 'click', function(event) {
 
-			var flag = $('#form-video-add').valid() && uploader.getFiles().length > 0;
-			console.log(uploader.getFiles());
+			var flag = $('#form-video-add').valid();
+			if(!flag)
+				return false;
+			var hasVideo = uploader.getFiles().length > 0;
+
 			if ( state === 'uploading' ) {
 				uploader.stop();
-			} else if(flag){//验证通过
+			}
+			if(hasVideo){//需要上传文件
 				//添加附加参数
 				uploader.options.formData = prepareFormParams();
 				uploader.upload();
-			}else{//验证失败
-				console.log('验证失败')
+			}else{//不需要上传文件 手动发送ajax请求
+				udpateWithAjax();
 			}
 			return false;
 		});
@@ -206,9 +223,25 @@
 		
 	})
 	
-	 function closeUploader() {        
-        // 移除所有缩略图并将上传文件移出上传序列
-       
+	//Ajax请求发送更新操作
+	function udpateWithAjax() {        
+        var formData = prepareFormParams();//populateObjectPropertyIntoFormData(prepareFormParams());
+
+		$.ajax({
+			url : urlFactory("video/adminUpdateVideo"),
+			data : formData,
+			type : "POST",
+			success: function(data) {
+				if(data.status == SUCCESS){
+					layer.msg('修改成功!',{icon:1,time:1000});
+				}else{
+					layer.msg('修改失败!',{icon:2,time:1000});
+				}
+			},
+			error:function(data) {
+				layer.msg('修改失败!',{icon:2,time:1000});
+			},
+		});
     }
 </script>
 </body>
