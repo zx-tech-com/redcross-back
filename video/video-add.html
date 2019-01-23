@@ -157,6 +157,7 @@
 		
 		uploader.on( 'uploadSuccess', function( file ) {
 			$( '#'+file.id ).find('p.state').text('已上传');
+			layer.alert('上传成功！');
 		});
 
 		uploader.on( 'uploadError', function( file ) {

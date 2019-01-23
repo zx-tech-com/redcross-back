@@ -10,14 +10,17 @@ const SUCCESS = "success";
 var BASE_URL = "";
 
 function urlFactory(url){
+	
+	var token = "eyJhbGciOiJIUzI1NiJ9.eyJjdXN0b21lcklkIjo1LCJleHBpcmVzIjoxNTQ4MjM1NzM4MjczfQ.E8PEB6xilnON3-vwKOp9f4aaKlVn08i_N4ISyl45WW0";
+	
 	if(!url){//url为空
 		return protocol + domain + ":" + port + project.substring(0,project.length-1) +
-		"?token=" + "eyJhbGciOiJIUzI1NiJ9.eyJjdXN0b21lcklkIjo1LCJleHBpcmVzIjoxNTQ4MTc3MjQzNTM2fQ.KQudA_KWnSvYX2oZK9L3ftNwi02rBNT8p3U6Uu0IT7A";
+		"?token=" + token;
 
 	}else{
 		var s = url.indexOf('?') == -1 ? '?' : '&';
 		return protocol + domain + ":" + port + project + url + s +
-		"token=" + "eyJhbGciOiJIUzI1NiJ9.eyJjdXN0b21lcklkIjo1LCJleHBpcmVzIjoxNTQ4MTc3MjQzNTM2fQ.KQudA_KWnSvYX2oZK9L3ftNwi02rBNT8p3U6Uu0IT7A";
+		"token=" + token;
 	}
 	
 }
@@ -37,4 +40,17 @@ $(function(){
 
 function getBaseAccessUrl(){
 	return BASE_URL;
+}
+
+function populateObjectPropertyIntoFormData(obj,formData){
+	if(!formData)
+		formData = new FormData();
+	if(!obj)
+		return formData;
+	for(var key in obj){
+		if(obj.hasOwnProperty(key) === true){
+			formData.append(key,obj[key]);
+		}
+	}
+	return formData;
 }
