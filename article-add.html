@@ -121,8 +121,9 @@ $(function(){
 		var sname=$("#sname").val();
 		var period=$("#period").val();
 		var price=$("#price").val();
-		var thumbnail = document.getElementById("thumbnailUrl").files[0];
+		var thumbnail= document.getElementById("thumbnailUrl").files[0];
 		alert(thumbnail);
+		alert(thumbnail.name);
 		var formFile = new FormData();
 		
 		/*if (typeof (thumbnail) == "undefined" || thumbnail.size <= 0) {
@@ -150,15 +151,16 @@ $(function(){
        formFile.append('period',period);
        formFile.append('price',price);
        formFile.append('description',description);
-       formFile.append('imgUrl',thumbnail);
-       formFile.append('ccieUrl',certificate);
+       formFile.append('imgUrl',thumbnail,thumbnail.name);
+       formFile.append('ccieUrl',certificate,certificate.name);
 		$.ajax({
 			url: "http://localhost:9090/RedCross/course/adminAddCourseSubject",
             data:formFile, /*{"sname":sname,"period":period,"price":price,"description":description,"imgUrl":thumbnailFile,"ccieUrl":certificate},*/
             type: "Post",
             dataType: "json",
-            cache: false,//上传文件无需缓存
+            //cache: false,//上传文件无需缓存
             contentType: false, //必须
+            processData: false,
             success: function(data){
             	if(data.status=="success"){
             		alert("添加成功");
@@ -169,10 +171,6 @@ $(function(){
             }
 			
 		})
-		
-
-		
-		
 	}
 	
 	//表单验证

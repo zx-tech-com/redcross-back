@@ -1,9 +1,9 @@
 const protocol="http://"
 const domain="192.168.1.101";
 //const domain="192.168.1.177";
-// const domain="39.98.204.123";
+//const domain="39.98.204.123";
 const port = "9090";
-// const port = "8080";
+//const port = "8080";
 const project = "/RedCross/";
 
 
@@ -17,8 +17,8 @@ function urlFactory(url){
 
 	}else{
 		var s = url.indexOf('?') == -1 ? '?' : '&';
-		return protocol + domain + ":" + port + project + url + s +
-		"token=" + "eyJhbGciOiJIUzI1NiJ9.eyJjdXN0b21lcklkIjo1LCJleHBpcmVzIjoxNTQ4MTc3MjQzNTM2fQ.KQudA_KWnSvYX2oZK9L3ftNwi02rBNT8p3U6Uu0IT7A";
+		return protocol + domain + ":" + port + project + url /*+ s +
+		"token=" + "eyJhbGciOiJIUzI1NiJ9.eyJjdXN0b21lcklkIjo1LCJleHBpcmVzIjoxNTQ4MTc3MjQzNTM2fQ.KQudA_KWnSvYX2oZK9L3ftNwi02rBNT8p3U6Uu0IT7A"*/;
 	}
 	
 }

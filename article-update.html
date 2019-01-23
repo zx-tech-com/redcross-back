@@ -41,7 +41,7 @@
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-2">课程描述：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<textarea name="description" cols="" rows="" class="textarea"  placeholder="请输入科目的描述信息" datatype="*10-100" dragonfly="true" nullmsg="备注不能为空！" ></textarea>
+				<textarea name="description" id="description" cols="" rows="" class="textarea"  placeholder="请输入科目的描述信息" datatype="*10-100" dragonfly="true" nullmsg="备注不能为空！" ></textarea>
 				<p class="textarea-numberbar"><em class="textarea-length">0</em>/200</p>
 			</div>
 		</div>
@@ -64,8 +64,7 @@
 		</div>
 		<div class="row cl">
 			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
-				<button onClick="courseSubject_save_submit();" class="btn btn-primary radius" type="button"><i class="Hui-iconfont">&#xe632;</i> 保存并提交审核</button>
-				<button onClick="article_save();" class="btn btn-secondary radius" type="button"><i class="Hui-iconfont">&#xe632;</i> 保存草稿</button>
+				<button onClick="courseSubject_update_submit();" class="btn btn-primary radius" type="button"><i class="Hui-iconfont">&#xe632;</i> 保存并提交审核</button>
 				<button onClick="removeIframe();" class="btn btn-default radius" type="button">&nbsp;&nbsp;取消&nbsp;&nbsp;</button>
 			</div>
 		</div>
@@ -88,25 +87,24 @@
 <script type="text/javascript" src="lib/ueditor/1.4.3/ueditor.all.min.js"> </script> 
 <script type="text/javascript" src="lib/ueditor/1.4.3/lang/zh-cn/zh-cn.js"></script>
 <script type="text/javascript">
-$(function(){
-	alert("123");
 	var url = location.search;
 	var id = url.split("=")[1];
 	alert(id);
+$(function(){
 	$.ajax({
-		url:http:"http://localhost:9090/RedCross/course/getCourseSubject?subjectId="+id/*urlFactory("course/getCourseSubject?subjectId="+id)*/,
+		url:"http://localhost:9090/RedCross/course/getCourseSubject?subjectId="+id/*urlFactory("course/getCourseSubject?subjectId="+id)*/,
 		dataType: 'json',
 		type:'get',
 		success: function(data){
-			alert("ly");
 		 var courseSubject = eval(data.data);
-		 $.each(courseSubject, function (index, item) {
-		 	var period = courseSubject[index].period;
-            var sname = courseSubject[index].sname;
-            var price = courseSubject[index].price;
-            var description = courseSubject[index].description;
-            alert(sname);
-		 })
+		 var period = courseSubject.period;
+         var sname = courseSubject.sname;
+         var price = courseSubject.price;
+         var description = courseSubject.description;
+        $("#sname").val(sname);
+        $("#period").val(period);
+        $("#price").val(price);
+        $("#description").val(description);
 		}
 	});
 	
@@ -117,6 +115,44 @@ $(function(){
 	})
 	
 });
+
+	function courseSubject_update_submit(){
+		alert(id);
+		var description=$("*[name='description']").val();
+		var sname=$("#sname").val();
+		var period=$("#period").val();
+		var price=$("#price").val();
+		var thumbnail= document.getElementById("thumbnailUrl").files[0];
+		var certificate = document.getElementById("certificateUrl").files[0];
+		alert(thumbnail);
+		alert(thumbnail.name);
+		var formFile = new FormData();
+		formFile.append('id',id);
+		formFile.append('sname',sname);
+       formFile.append('period',period);
+       formFile.append('price',price);
+       formFile.append('description',description);
+       formFile.append('imgUrl',thumbnail,thumbnail.name);
+       formFile.append('ccieUrl',certificate,certificate.name);
+		$.ajax({
+			url:"http://localhost:9090/RedCross/course/adminUpdateCourseSubject"/*urlFactory("course/adminUpdateCourseSubject")*/,
+            data:formFile, /*{"sname":sname,"period":period,"price":price,"description":description,"imgUrl":thumbnailFile,"ccieUrl":certificate},*/
+            type: "Post",
+            dataType: "json",
+            cache: false,//上传文件无需缓存
+            contentType: false, //必须
+            processData: false,
+            success: function(data){
+            	if(data.status=="success"){
+            		alert("修改成功");
+            	}
+            	if(data.status=="failure"){
+            		alert("修改失败");
+            	}
+            }
+			
+		})		
+	}
 	
 	function uploadImgThumbnail() {
 		var thumbnailPersonsFile = document.getElementById("thumbnailUrl");
