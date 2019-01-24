@@ -5,13 +5,15 @@ const port = "9090";
 // const port = "8080";
 const project = "/RedCross/";
 
+//默认查找前1000条数据
+const defaultPageSize = 1000;
 
 const SUCCESS = "success";
 var BASE_URL = "";
 
 function urlFactory(url){
 	
-	var token = "eyJhbGciOiJIUzI1NiJ9.eyJjdXN0b21lcklkIjo1LCJleHBpcmVzIjoxNTQ4MjM1NzM4MjczfQ.E8PEB6xilnON3-vwKOp9f4aaKlVn08i_N4ISyl45WW0";
+	var token = "eyJhbGciOiJIUzI1NiJ9.eyJjdXN0b21lcklkIjo1LCJleHBpcmVzIjoxNTQ4MzIxNDYyNzkwfQ.pHvC4h4r1gdIRhnvR3-t3i-Glavxp70Nw2F7VZADi-M";
 	
 	if(!url){//url为空
 		return protocol + domain + ":" + port + project.substring(0,project.length-1) +
@@ -53,4 +55,17 @@ function populateObjectPropertyIntoFormData(obj,formData){
 		}
 	}
 	return formData;
+}
+
+function explainStatus (status){
+	
+	var statusArr = ['待支付','已完成','已取消'];
+	try{
+		var res = statusArr[status-1];
+	}catch(e){
+		res = "";
+	}
+	
+	return res?res : "";
+	
 }
