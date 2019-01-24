@@ -9,11 +9,11 @@
 <meta http-equiv="Cache-Control" content="no-siteapp" />
 <link rel="Bookmark" href="/favicon.ico" >
 <link rel="Shortcut Icon" href="/favicon.ico" />
-<link rel="stylesheet" type="text/css" href="static/h-ui/css/H-ui.min.css" />
-<link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/H-ui.admin.css" />
-<link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.css" />
-<link rel="stylesheet" type="text/css" href="static/h-ui.admin/skin/default/skin.css" id="skin" />
-<link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/style.css" />
+<link rel="stylesheet" type="text/css" href="../static/h-ui/css/H-ui.min.css" />
+<link rel="stylesheet" type="text/css" href="../static/h-ui.admin/css/H-ui.admin.css" />
+<link rel="stylesheet" type="text/css" href="../lib/Hui-iconfont/1.0.8/iconfont.css" />
+<link rel="stylesheet" type="text/css" href="../static/h-ui.admin/skin/default/skin.css" id="skin" />
+<link rel="stylesheet" type="text/css" href="../static/h-ui.admin/css/style.css" />
 <title>修改科目</title>
 </head>
 <body>
@@ -64,7 +64,7 @@
 		</div>
 		<div class="row cl">
 			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
-				<button onClick="courseSubject_update_submit();" class="btn btn-primary radius" type="button"><i class="Hui-iconfont">&#xe632;</i> 保存并提交审核</button>
+				<button onClick="courseSubject_update_submit();" class="btn btn-primary radius" type="button"><i class="Hui-iconfont">&#xe632;</i> 提交</button>
 				<button onClick="removeIframe();" class="btn btn-default radius" type="button">&nbsp;&nbsp;取消&nbsp;&nbsp;</button>
 			</div>
 		</div>
@@ -72,27 +72,28 @@
 </article>
 
 <!--_footer 作为公共模版分离出去-->
-<script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script> 
-<script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
-<script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script> 
-<script type="text/javascript" src="static/h-ui.admin/js/H-ui.admin.js"></script> <!--/_footer /作为公共模版分离出去-->
+<script type="text/javascript" src="../lib/jquery/1.9.1/jquery.min.js"></script> 
+<script type="text/javascript" src="../lib/layer/2.4/layer.js"></script>
+<script type="text/javascript" src="../static/h-ui/js/H-ui.min.js"></script> 
+<script type="text/javascript" src="../static/h-ui.admin/js/H-ui.admin.js"></script> <!--/_footer /作为公共模版分离出去-->
 
 <!--请在下方写此页面业务相关的脚本-->
-<script type="text/javascript" src="lib/My97DatePicker/4.8/WdatePicker.js"></script>
-<script type="text/javascript" src="lib/jquery.validation/1.14.0/jquery.validate.js"></script> 
-<script type="text/javascript" src="lib/jquery.validation/1.14.0/validate-methods.js"></script> 
-<script type="text/javascript" src="lib/jquery.validation/1.14.0/messages_zh.js"></script>
-<script type="text/javascript" src="lib/webuploader/0.1.5/webuploader.min.js"></script> 
-<script type="text/javascript" src="lib/ueditor/1.4.3/ueditor.config.js"></script> 
-<script type="text/javascript" src="lib/ueditor/1.4.3/ueditor.all.min.js"> </script> 
-<script type="text/javascript" src="lib/ueditor/1.4.3/lang/zh-cn/zh-cn.js"></script>
+<script type="text/javascript" src="../lib/My97DatePicker/4.8/WdatePicker.js"></script>
+<script type="text/javascript" src="../lib/jquery.validation/1.14.0/jquery.validate.js"></script> 
+<script type="text/javascript" src="../lib/jquery.validation/1.14.0/validate-methods.js"></script> 
+<script type="text/javascript" src="../lib/jquery.validation/1.14.0/messages_zh.js"></script>
+<script type="text/javascript" src="../lib/webuploader/0.1.5/webuploader.min.js"></script> 
+<script type="text/javascript" src="../lib/ueditor/1.4.3/ueditor.config.js"></script> 
+<script type="text/javascript" src="../lib/ueditor/1.4.3/ueditor.all.min.js"> </script> 
+<script type="text/javascript" src="../lib/ueditor/1.4.3/lang/zh-cn/zh-cn.js"></script>
+<script type="text/javascript" src="../js/global.js"></script>
 <script type="text/javascript">
 	var url = location.search;
-	var id = url.split("=")[1];
-	alert(id);
+	var subjectId = url.split("=")[1];
 $(function(){
+	alert(subjectId);
 	$.ajax({
-		url:"http://localhost:9090/RedCross/course/getCourseSubject?subjectId="+id/*urlFactory("course/getCourseSubject?subjectId="+id)*/,
+		url:urlFactory("course/getCourseSubject?subjectId="+subjectId),
 		dataType: 'json',
 		type:'get',
 		success: function(data){
@@ -117,7 +118,6 @@ $(function(){
 });
 
 	function courseSubject_update_submit(){
-		alert(id);
 		var description=$("*[name='description']").val();
 		var sname=$("#sname").val();
 		var period=$("#period").val();
@@ -127,7 +127,7 @@ $(function(){
 		alert(thumbnail);
 		alert(thumbnail.name);
 		var formFile = new FormData();
-		formFile.append('id',id);
+		formFile.append('id',subjectId);
 		formFile.append('sname',sname);
        formFile.append('period',period);
        formFile.append('price',price);
@@ -135,8 +135,8 @@ $(function(){
        formFile.append('imgUrl',thumbnail,thumbnail.name);
        formFile.append('ccieUrl',certificate,certificate.name);
 		$.ajax({
-			url:"http://localhost:9090/RedCross/course/adminUpdateCourseSubject"/*urlFactory("course/adminUpdateCourseSubject")*/,
-            data:formFile, /*{"sname":sname,"period":period,"price":price,"description":description,"imgUrl":thumbnailFile,"ccieUrl":certificate},*/
+			url:urlFactory("course/adminUpdateCourseSubject"),
+            data:formFile, 
             type: "Post",
             dataType: "json",
             cache: false,//上传文件无需缓存
@@ -144,12 +144,15 @@ $(function(){
             processData: false,
             success: function(data){
             	if(data.status=="success"){
-            		alert("修改成功");
+            		layer.msg('修改成功!',{icon:1,time:1000});
             	}
             	if(data.status=="failure"){
-            		alert("修改失败");
+            		layer.msg('修改失败!',{icon:2,time:1000});
             	}
-            }
+            },
+            error:function(data) {
+				layer.msg('修改失败!',{icon:2,time:1000});
+			},
 			
 		})		
 	}

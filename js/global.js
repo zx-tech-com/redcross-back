@@ -1,5 +1,5 @@
 const protocol="http://"
-const domain="192.168.1.101";
+const domain="192.168.1.100";
 //const domain="192.168.1.177";
 //const domain="39.98.204.123";
 const port = "9090";
@@ -12,7 +12,7 @@ var BASE_URL = "";
 
 function urlFactory(url){
 	
-	var token = "eyJhbGciOiJIUzI1NiJ9.eyJjdXN0b21lcklkIjo1LCJleHBpcmVzIjoxNTQ4MjM1NzM4MjczfQ.E8PEB6xilnON3-vwKOp9f4aaKlVn08i_N4ISyl45WW0";
+	var token = "eyJhbGciOiJIUzI1NiJ9.eyJjdXN0b21lcklkIjoxLCJleHBpcmVzIjoxNTQ4MzIyODQ5MzUyfQ.55uxCnflBImMl1SagQ8AxQkuij6dxmET8unP78skc0g";
 	
 	if(!url){//url为空
 		return protocol + domain + ":" + port + project.substring(0,project.length-1) +
