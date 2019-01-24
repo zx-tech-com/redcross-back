@@ -24,7 +24,7 @@
 <article class="page-container">
 	<form class="form form-horizontal" id="form-video-add">
 		
-		<div class="row cl">
+		<div class="row cl" style="display: none;">
 			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>ID：</label>
 			<div class="formControls col-xs-8 col-sm-9">
 				<input type="text" class="input-text" value="" placeholder="" id="id" name="id">
@@ -69,7 +69,7 @@
 			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
 				<button id="submitBtn"  class="btn btn-primary radius"><i class="Hui-iconfont">&#xe632;</i> 提交</button>
 				<button onClick="removeIframe();" class="btn btn-default radius" type="button">&nbsp;&nbsp;取消&nbsp;&nbsp;</button>
-				<button id="resetBtn" class="btn btn-default radius" type="reset">&nbsp;&nbsp;重置&nbsp;&nbsp;</button>
+				<button id="resetBtn" class="btn btn-default radius" >&nbsp;&nbsp;重置&nbsp;&nbsp;</button>
 			</div>
 		</div>
 	</form>
@@ -117,7 +117,8 @@
 					required : true
 				},
 				price : {
-					required : true
+					required : true,
+					isFloatGtZero : $("#price").val()
 				}
 			},
 			onkeyup:false
@@ -208,6 +209,12 @@
 		
 		$resetBtn = $("#resetBtn");
 		$resetBtn.on( 'click', function(event) {
+			//重置其他字段
+			$(document).find('#vname').val('');
+			$(document).find('#price').val('');
+			$(document).find('#description').val('');
+			
+			//重置文件上传
 			for (var i = 0; i < uploader.getFiles().length; i++) {
 				// 将图片从上传序列移除
 				uploader.removeFile(uploader.getFiles()[i]);

@@ -6,13 +6,17 @@ const port = "9090";
 //const port = "8080";
 const project = "/RedCross/";
 
+//默认查找前1000条数据
+const defaultPageSize = 1000;
 
 const SUCCESS = "success";
 var BASE_URL = "";
 
 function urlFactory(url){
 	
+
 	var token = "eyJhbGciOiJIUzI1NiJ9.eyJjdXN0b21lcklkIjoxLCJleHBpcmVzIjoxNTQ4MzIyODQ5MzUyfQ.55uxCnflBImMl1SagQ8AxQkuij6dxmET8unP78skc0g";
+
 	
 	if(!url){//url为空
 		return protocol + domain + ":" + port + project.substring(0,project.length-1) +
@@ -54,4 +58,17 @@ function populateObjectPropertyIntoFormData(obj,formData){
 		}
 	}
 	return formData;
+}
+
+function explainStatus (status){
+	
+	var statusArr = ['待支付','已完成','已取消'];
+	try{
+		var res = statusArr[status-1];
+	}catch(e){
+		res = "";
+	}
+	
+	return res?res : "";
+	
 }
