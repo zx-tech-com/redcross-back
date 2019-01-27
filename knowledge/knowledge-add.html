@@ -20,15 +20,15 @@
 <article class="page-container">
 	<form class="form form-horizontal" id="form-article-add">
 		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>科目名称：</label>
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>急救常识类型：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="" placeholder="" id="kname" name="kname">
+				<input type="text" class="input-text" value="" placeholder="例如:常见急症" id="kname" name="kname">
 			</div>
 		</div>
 		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-2">课程描述：</label>
+			<label class="form-label col-xs-4 col-sm-2">类型描述：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<textarea name="description" id="description" cols="" rows="" class="textarea"  placeholder="请输入科目的描述信息" datatype="*10-100" dragonfly="true" nullmsg="备注不能为空！" ></textarea>
+				<textarea name="description" id="description" cols="" rows="" class="textarea"  placeholder="请输入描述信息" datatype="*10-100" dragonfly="true" nullmsg="备注不能为空！" ></textarea>
 				<p class="textarea-numberbar"><em class="textarea-length">0</em>/200</p>
 			</div>
 		</div>
@@ -69,9 +69,12 @@ $(function(){
 });
 	
 	function knowledgeType_save_submit(){
-		alert("123");
 		var description=$("*[name='description']").val();
 		var kname=$("#kname").val();
+		if(kname.trim().length==0){
+			layer.msg('急救常识类型不能为空',{icon:2,time:1500});
+            return;
+		}
 		$.ajax({
 			url: urlFactory("knowledge/adminSaveKnowledgeType"),
             data:{"kname":kname,"description":description}, 
@@ -79,10 +82,10 @@ $(function(){
             dataType: "json",
             success: function(data){
             	if(data.status=="success"){
-            		alert("添加成功");
+            		layer.msg('添加成功',{icon:1,time:1500});
             	}
             	if(data.status=="failure"){
-            		alert("添加失败");
+            		layer.msg('添加失败',{icon:2,time:1500});
             	}
             }
 			

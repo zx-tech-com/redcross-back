@@ -15,10 +15,11 @@
 <link rel="stylesheet" type="text/css" href="../lib/Hui-iconfont/1.0.8/iconfont.css" />
 <link rel="stylesheet" type="text/css" href="../static/h-ui.admin/skin/default/skin.css" id="skin" />
 <link rel="stylesheet" type="text/css" href="../static/h-ui.admin/css/style.css" />
-<!--[if IE 6]>
-<script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
-<script>DD_belatedPNG.fix('*');</script>
-<![endif]-->
+<style>
+.table-sort>tbody>tr>td{
+		text-align:center;
+	}
+</style>
 <title>科目列表</title>
 </head>
 <body>
@@ -34,11 +35,11 @@
 		</span> 
 	</div>
 	<div class="mt-20">
-		<table class="table table-border table-bordered table-bg table-hover table-sort table-responsive">
+		<table class="table table-border table-bordered table-bg table-hover table-sort table-responsive ">
 			<thead>
 				<tr class="text-c">
 					<th width="25"><input type="checkbox" name="" value=""></th>
-					<th width="80">ID</th>
+					<th width="80">序号</th>
 					<th width="80">科目名称</th>
 					<th width="120">科目图片</th>
 					<th width="80">课程时长</th>					
@@ -65,19 +66,77 @@
 <script type="text/javascript" src="../lib/laypage/1.2/laypage.js"></script>
 <script type="text/javascript" src="../js/global.js"></script>
 <script type="text/javascript">
+	function datadel(){
+				if ($("input[name='vdchek']:checked")[0] == null) {
+					layer.msg('请勾选需要删除的科目!', {
+						icon: 1,
+						time: 1000
+					});
+					return;
+				}
+				layer.confirm('确认要删除这些科目吗?', {
+					icon: 3,
+					title: '提示'
+				}, function(index) {
+					var ids = new Array;
+					$("input[name='vdchek']:checked").each(function() {
+						ids.push($(this).val());
+						/* n = $(this).parents("tr").index() + 1; // 获取checkbox所在行的顺序
+						$("table#dataTable").find("tr:eq(" + n + ")").remove(); */
+					});
+					console.log(ids);
+					$.ajax({
+						url : urlFactory("course/adminDeleteCourseSubject"),
+						data : {
+							ids : ids
+						},
+						traditional : true,
+						type : 'POST',
+						success : function(data){
+							console.log(data);
+							//重新加载table
+						}
+					})
+					layer.close(layer.index);
+				});
+			}
 
- 	$('.table-sort').dataTable({ 
+
+ 	$('.table-sort').dataTable({
+ 		
  		"aaSorting": [[ 1, "desc" ]],//默认第几个排序
 		"bStateSave": true,//状态保存
 		"pading":false,
+		"aoColumnDefs": [
+			{"orderable":false,"aTargets":[0,2,3,6,7,8,9]}// 不参与排序的列
+		],
+		
+		
+		"fnDrawCallback": function(){
+			var api = this.api();
+			var startIndex= api.context[0]._iDisplayStart;//获取到本页开始的条数
+			api.column(1).nodes().each(function(cell, i) {
+			cell.innerHTML = startIndex + i + 1;
+				　　}); 
+				},
  		"ajax":{
  			url:urlFactory("course/adminListCourseSubject"),
+ 			type: "POST",
+			data: function() {
+				var params = {
+				pageSize: defaultPageSize,
+				query: $("#vnameSearch").val()
+				};
+					return params;
+				}
  		},
  		 "columns": [
- 		    {"data":"virtual",
- 		    "defaultContent": '<input type="checkbox" value="" name="">'
- 		    },
- 		  	{"data":"id"},
+ 		   {"data": "id", //设置checkbox单选框,默认为false
+			"render": function(data) {
+			return '<input type="checkbox" value="' + data + '" name="vdchek">';
+			}
+			},
+ 		  	{"data":null},
  		  	{"data":"sname"},
  		  	{"data":"thumbnailUrl",
  		  	"render" : function(data){
@@ -108,7 +167,7 @@
  		  ],  
 });
 
-/*科目-添加*/
+/*科目-删除*/
 function course_del(id,obj){
 	layer.confirm('确认要删除吗？',function(index){
 		$.ajax({
@@ -134,91 +193,6 @@ function courseSubjectUpdate(id,editTitle,editUrl){
 }
 function getCourse(id){
 	document.location.href = "courseVideo-list.html?id=" + id
-}
-
-
-
-
-/*资讯-添加*/
-function article_add(title,url,w,h){
-	var index = layer.open({
-		type: 2,
-		title: title,
-		content: url
-	});
-	layer.full(index);
-}
-/*资讯-编辑*/
-function article_edit(title,url,id,w,h){
-	var index = layer.open({
-		type: 2,
-		title: title,
-		content: url
-	});
-	layer.full(index);
-}
-/*科目-删除*/
-function article_del(obj,id){
-	layer.confirm('确认要删除吗？',function(index){
-		$.ajax({
-			type: 'POST',
-			url: '',
-			dataType: 'json',
-			success: function(data){
-				$(obj).parents("tr").remove();
-				layer.msg('已删除!',{icon:1,time:1000});
-			},
-			error:function(data) {
-				console.log(data.msg);
-			},
-		});		
-	});
-}
-
-/*资讯-审核*/
-function article_shenhe(obj,id){
-	layer.confirm('审核文章？', {
-		btn: ['通过','不通过','取消'], 
-		shade: false,
-		closeBtn: 0
-	},
-	function(){
-		$(obj).parents("tr").find(".td-manage").prepend('<a class="c-primary" onClick="article_start(this,id)" href="javascript:;" title="申请上线">申请上线</a>');
-		$(obj).parents("tr").find(".td-status").html('<span class="label label-success radius">已发布</span>');
-		$(obj).remove();
-		layer.msg('已发布', {icon:6,time:1000});
-	},
-	function(){
-		$(obj).parents("tr").find(".td-manage").prepend('<a class="c-primary" onClick="article_shenqing(this,id)" href="javascript:;" title="申请上线">申请上线</a>');
-		$(obj).parents("tr").find(".td-status").html('<span class="label label-danger radius">未通过</span>');
-		$(obj).remove();
-    	layer.msg('未通过', {icon:5,time:1000});
-	});	
-}
-/*资讯-下架*/
-function article_stop(obj,id){
-	layer.confirm('确认要下架吗？',function(index){
-		$(obj).parents("tr").find(".td-manage").prepend('<a style="text-decoration:none" onClick="article_start(this,id)" href="javascript:;" title="发布"><i class="Hui-iconfont">&#xe603;</i></a>');
-		$(obj).parents("tr").find(".td-status").html('<span class="label label-defaunt radius">已下架</span>');
-		$(obj).remove();
-		layer.msg('已下架!',{icon: 5,time:1000});
-	});
-}
-
-/*资讯-发布*/
-function article_start(obj,id){
-	layer.confirm('确认要发布吗？',function(index){
-		$(obj).parents("tr").find(".td-manage").prepend('<a style="text-decoration:none" onClick="article_stop(this,id)" href="javascript:;" title="下架"><i class="Hui-iconfont">&#xe6de;</i></a>');
-		$(obj).parents("tr").find(".td-status").html('<span class="label label-success radius">已发布</span>');
-		$(obj).remove();
-		layer.msg('已发布!',{icon: 6,time:1000});
-	});
-}
-/*资讯-申请上线*/
-function article_shenqing(obj,id){
-	$(obj).parents("tr").find(".td-status").html('<span class="label label-default radius">待审核</span>');
-	$(obj).parents("tr").find(".td-manage").html("");
-	layer.msg('已提交申请，耐心等待审核!', {icon: 1,time:2000});
 }
 </script> 
 </body>

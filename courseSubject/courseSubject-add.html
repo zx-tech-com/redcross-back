@@ -14,34 +14,35 @@
 <link rel="stylesheet" type="text/css" href="../lib/Hui-iconfont/1.0.8/iconfont.css" />
 <link rel="stylesheet" type="text/css" href="../static/h-ui.admin/skin/default/skin.css" id="skin" />
 <link rel="stylesheet" type="text/css" href="../static/h-ui.admin/css/style.css" />
+<script type="text/javascript" src="../js/global.js"></script>
 <title>新增科目</title>
 </head>
 <body>
 <article class="page-container">
-	<form class="form form-horizontal" id="form-article-add">
+	<form class="form form-horizontal" id="form-courseSubject-add">
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>科目名称：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="" placeholder="" id="sname" name="sname">
+				<input type="text" class="input-text" value="" placeholder="例如:普及培训" id="sname" name="sname">
 			</div>
 		</div>
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-2">课程时长：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="" placeholder="" id="period" name="period">
+				<input type="text" class="input-text" value="" placeholder="例如:2-3课时;15课时" id="period" name="period" >
 			</div>
 		</div>
 		
 		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-2">价格：</label>
+			<label class="form-label col-xs-4 col-sm-2">费用：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="" placeholder="" id="price" name="price">
+				<input type="text" class="input-text" value="" placeholder="例如:20.34" id="price" name="price">
 			</div>
 		</div>
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-2">课程描述：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<textarea name="description" cols="" rows="" class="textarea"  placeholder="请输入科目的描述信息" datatype="*10-100" dragonfly="true" nullmsg="备注不能为空！" ></textarea>
+				<textarea name="description" id="description" cols="" rows="" class="textarea"  placeholder="请输入科目的描述信息" datatype="*10-100" dragonfly="true" nullmsg="备注不能为空！" ></textarea>
 				<p class="textarea-numberbar"><em class="textarea-length">0</em>/200</p>
 			</div>
 		</div>
@@ -54,6 +55,7 @@
 				</div>
 			</div>
 		</div>
+		
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-2">证书照片：</label>
 			<div class="formControls col-xs-8 col-sm-9">
@@ -62,10 +64,10 @@
 				</div>
 			</div>
 		</div>
+		
 		<div class="row cl">
 			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
-				<button onClick="courseSubject_save_submit();" class="btn btn-primary radius" type="button"><i class="Hui-iconfont">&#xe632;</i> 保存并提交审核</button>
-				<button onClick="article_save();" class="btn btn-secondary radius" type="button"><i class="Hui-iconfont">&#xe632;</i> 保存草稿</button>
+				<button onClick="courseSubject_save_submit();" class="btn btn-primary radius" type="button"><i class="Hui-iconfont">&#xe632;</i> 提交</button>
 				<button onClick="removeIframe();" class="btn btn-default radius" type="button">&nbsp;&nbsp;取消&nbsp;&nbsp;</button>
 			</div>
 		</div>
@@ -96,6 +98,8 @@ $(function(){
 	})
 });
 	
+		
+	
 	function uploadImgThumbnail() {
 		var thumbnailPersonsFile = document.getElementById("thumbnailUrl");
 		var thumbnailName=thumbnailPersonsFile.value;
@@ -116,37 +120,49 @@ $(function(){
     	} 
 	}
 	
+	
+	
 	function courseSubject_save_submit(){
 		var description=$("*[name='description']").val();
 		var sname=$("#sname").val();
+		if(sname.trim().length==0){
+			layer.msg('科目姓名不能为空',{icon:2,time:1500});
+            return;
+		}
 		var period=$("#period").val();
 		var price=$("#price").val();
-		var thumbnail= document.getElementById("thumbnailUrl").files[0];
-		alert(thumbnail);
-		alert(thumbnail.name);
-		var formFile = new FormData();
+		if(period.trim().length==0){
+			layer.msg('课程时长不能为空',{icon:2,time:1500});
+            return;
+		}
+		if(price.trim().length==0){
+			layer.msg('科目费用不能为空',{icon:2,time:1500});
+            return;
+		}
 		
-		/*if (typeof (thumbnail) == "undefined" || thumbnail.size <= 0) {
-            alert("请选择科目图片"); 
+		var thumbnail= document.getElementById("thumbnailUrl").files[0];
+		var formFile = new FormData();
+		if (typeof(thumbnail) == "undefined") {
+            layer.msg('请选择科目图片!',{icon:2,time:1500});
             return;
         }
-		if(thumbnail.size > 1)
-			alert(thumbnail.size);
-            alert("只能选择选择一张科目图片");
-            return;
-        }
-		*/
+		if(document.getElementById("thumbnailUrl").files.length>=2){
+			layer.msg('只能选择一张科目图片!',{icon:2,time:1500});
+            return;	
+		}
+		
 		var certificate = document.getElementById("certificateUrl").files[0];
 		
 
-		/*if (typeof (certificate) == "undefined" || certificate.size <= 0) {
-            alert("请选择科目证书图片");
+		if (typeof (certificate) == "undefined") {
+            layer.msg('请选择证书图片!',{icon:2,time:1500});
             return;
         }
-		if(certificate.size > 1){
-            alert("只能选择一张科目证书图片");
-            return;
-        }*/
+		if(document.getElementById("certificateUrl").files.length>=2){
+			layer.msg('只能选择一张证书图片!',{icon:2,time:1500});
+            return;	
+		}
+		
        formFile.append('sname',sname);
        formFile.append('period',period);
        formFile.append('price',price);
@@ -154,7 +170,7 @@ $(function(){
        formFile.append('imgUrl',thumbnail,thumbnail.name);
        formFile.append('ccieUrl',certificate,certificate.name);
 		$.ajax({
-			url: urlFactory("knowledge/adminSaveKnowledgeType),
+			url: urlFactory("course/adminAddCourseSubject"),
             data:formFile, /*{"sname":sname,"period":period,"price":price,"description":description,"imgUrl":thumbnailFile,"ccieUrl":certificate},*/
             type: "Post",
             dataType: "json",
@@ -163,67 +179,15 @@ $(function(){
             processData: false,
             success: function(data){
             	if(data.status=="success"){
-            		alert("添加成功");
+            		layer.msg('添加成功!',{icon:1,time:1000});
             	}
             	if(data.status=="failure"){
-            		alert("添加失败");
+            		layer.msg('添加失败!',{icon:2,time:1000});
             	}
             }
 			
 		})
 	}
-	
-	//表单验证
-	$("#form-article-add").validate({
-		rules:{
-			articletitle:{
-				required:true,
-			},
-			articletitle2:{
-				required:true,
-			},
-			articlecolumn:{
-				required:true,
-			},
-			articletype:{
-				required:true,
-			},
-			articlesort:{
-				required:true,
-			},
-			keywords:{
-				required:true,
-			},
-			abstract:{
-				required:true,
-			},
-			author:{
-				required:true,
-			},
-			sources:{
-				required:true,
-			},
-			allowcomments:{
-				required:true,
-			},
-			commentdatemin:{
-				required:true,
-			},
-			commentdatemax:{
-				required:true,
-			},
-
-		},
-		onkeyup:false,
-		focusCleanup:true,
-		success:"valid",
-		submitHandler:function(form){
-			//$(form).ajaxSubmit();
-			var index = parent.layer.getFrameIndex(window.name);
-			//parent.$('.btn-refresh').click();
-			parent.layer.close(index);
-		}
-	});	
 </script>
 <!--/请在上方写此页面业务相关的脚本-->
 </body>

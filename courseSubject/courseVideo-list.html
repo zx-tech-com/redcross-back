@@ -75,7 +75,7 @@
 						<thead>
 							<tr class="text-c">
 								<th width="25"><input type="checkbox" name="" value=""></th>
-								<th width="80">ID</th>
+								<th width="80">序号</th>
 								<th width="120">课程名称</th>
 								<th width="120">第几集</th>
 								<th width="240">视频</th>
@@ -115,15 +115,32 @@
 				], //默认第几个排序
 				"bStateSave": true, //状态保存
 				"pading": false,
+			"fnDrawCallback": function(){
+			var api = this.api();
+			var startIndex= api.context[0]._iDisplayStart;//获取到本页开始的条数
+			api.column(1).nodes().each(function(cell, i) {
+			cell.innerHTML = startIndex + i + 1;
+				　　}); 
+				},
 				"ajax": {
 					url: urlFactory("course/adminListCourse?subjectId="+id),
+					type: "POST",
+					data: function() {
+					var params = {
+					pageSize: defaultPageSize,
+					query: $("#vnameSearch").val()
+				};
+					return params;
+				}
 				} ,
-				"columns": [{
-						"data": "virtual", //设置checkbox单选框,默认为false
-						"defaultContent": '<input type="checkbox" value="" name="">'
+				"columns": [ 
+					{"data": "id", //设置checkbox单选框,默认为false
+						"render": function(data) {
+						return '<input type="checkbox" value="' + data + '" name="vdchek">';
+						},
 					},
 					{
-						"data": "id"
+						"data": null
 					},
 					{
 						"data": "cname"

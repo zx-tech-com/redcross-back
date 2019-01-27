@@ -77,6 +77,7 @@
 								<th><input type="checkbox" name="" value=""></th>
 								<th width="50px">序号</th>
 								<th>视频名称</th>
+								<th>视频图片</th>
 								<th >视频描述</th>
 								<th >视频</th>
 								<th >价格</th>
@@ -126,15 +127,13 @@
 				　　　　cell.innerHTML = startIndex + i + 1;
 				　　}); 
 				},
-		
-
 				"ajax": {
 					url: urlFactory("video/adminListVideo"),
 					type: "POST",
 					data: function() {
 						var params = {
-							pageSize: defaultPageSize,
-							query: $("#vnameSearch").val()
+						pageSize: defaultPageSize,
+						query: $("#vnameSearch").val()
 						};
 						return params;
 					}
@@ -150,6 +149,13 @@
 					},
 					{
 						"data": "vname"
+					},
+					{
+						"data": "thumbnailUrl",
+						"render" : function(data){
+ 		  				console.log(data);
+ 		  				return '<img src="../'+data+'" width="320" height="240" />';
+					}
 					},
 					{
 						"data": "description"

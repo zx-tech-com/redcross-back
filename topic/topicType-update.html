@@ -14,7 +14,7 @@
 <link rel="stylesheet" type="text/css" href="../lib/Hui-iconfont/1.0.8/iconfont.css" />
 <link rel="stylesheet" type="text/css" href="../static/h-ui.admin/skin/default/skin.css" id="skin" />
 <link rel="stylesheet" type="text/css" href="../static/h-ui.admin/css/style.css" />
-<title>修改科目</title>
+<title>修改类型</title>
 </head>
 <body>
 <article class="page-container">
@@ -23,23 +23,32 @@
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-2">ID：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="" placeholder="" id="id" name="id">
+				<input type="hidden" class="input-text" value="" placeholder="ID" id="id" name="id">
 			</div>
 		</div>
 		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>科目名称：</label>
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>类型名称：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="" placeholder="" id="kname" name="kname">
+				<input type="text" class="input-text" value="" placeholder="" id="tname" name="tname">
 			</div>
 		</div>
 		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-2">课程描述：</label>
+			<label class="form-label col-xs-4 col-sm-2">类型描述：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<textarea name="description" id="description" cols="" rows="" class="textarea"  placeholder="请输入科目的描述信息" datatype="*10-100" dragonfly="true" nullmsg="备注不能为空！" ></textarea>
+				<textarea name="description" id="description" cols="" rows="" class="textarea"  placeholder="请输入话题描述信息" datatype="*10-100" dragonfly="true" nullmsg="备注不能为空！" ></textarea>
 				<p class="textarea-numberbar"><em class="textarea-length">0</em>/200</p>
 			</div>
 		</div>
 		
+		
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">修改照片：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<div class="uploader-thum-container">
+					<input class="upload-file-img" type="file" name="thumbnailUrl" id="thumbnailUrl" multiple="multiple" accept="image/*"  />
+				</div>
+			</div>
+		</div>
 		
 		<div class="row cl">
 			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
@@ -67,28 +76,37 @@
 <script type="text/javascript" src="../lib/ueditor/1.4.3/lang/zh-cn/zh-cn.js"></script>
 <script type="text/javascript" src="../js/global.js"></script>
 <script type="text/javascript">
-	var url = location.search;
-	var subjectId = url.split("=")[1];
-function prepareFormParams(){
-		var kname = $("#kname").val();
-		var description = $("#description").val();
-		var id = $("#id").val();
-		return {
-			id : id,
-			kname : kname,
-			description : description
-		}		
-	}
 	
 	function udpateWithAjax() {  
-        var formData = prepareFormParams();//populateObjectPropertyIntoFormData(prepareFormParams());
+		var id=$("#id").val();
+        var description=$("*[name='description']").val();
+		var tname=$("#tname").val();
+		var thumbnail= document.getElementById("thumbnailUrl").files[0];
+		var formFile = new FormData();
+		if(tname.trim().length==0){
+			layer.msg('话题类型不能为空',{icon:2,time:1500});
+            return;
+		}
+		if (typeof(thumbnail) == "undefined") {
+            layer.msg('请选择话题图片!',{icon:2,time:1500});
+            return;
+        }
+		if(document.getElementById("thumbnailUrl").files.length>=2){
+			layer.msg('只能选择一张话题图片!',{icon:2,time:1500});
+            return;	
+		}
+		formFile.append('id',id);
+		formFile.append('tname',tname);
+       formFile.append('description',description);
+       formFile.append('imgUrl',thumbnail,thumbnail.name);
 
 		$.ajax({
-			url : urlFactory("knowledge/adminUpdateKnowledgeType"),
-			data : formData,
+			url : urlFactory("social/adminUpdateTopicType"),
+			data : formFile,
 			type : "POST",
+			contentType: false, //必须
+            processData: false,
 			success: function(data) {
-				
 				if(data.status =="success"){
 					layer.msg('修改成功!',{icon:1,time:1000});
 				}else{

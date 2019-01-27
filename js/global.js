@@ -15,8 +15,8 @@ var BASE_URL = "";
 function urlFactory(url){
 	
 
-	var token = "eyJhbGciOiJIUzI1NiJ9.eyJjdXN0b21lcklkIjoxLCJleHBpcmVzIjoxNTQ4MzIyODQ5MzUyfQ.55uxCnflBImMl1SagQ8AxQkuij6dxmET8unP78skc0g";
-
+	var token = "eyJhbGciOiJIUzI1NiJ9.eyJjdXN0b21lcklkIjoxLCJleHBpcmVzIjoxNTQ4NDMyMDI1NzA1fQ.zFDb0R0VdNORNKWGo5JYTkw8nSx-AhMDsgSF4wNXcXM";
+    //var  token="eyJhbGciOiJIUzI1NiJ9.eyJjdXN0b21lcklkIjoxLCJleHBpcmVzIjoxNTQ4MzQyMjYyNjk4fQ.OLDi20bMG0GxnVkmZvCnbM3EwfYGD5BvgbnS0qhlXb0";
 	
 	if(!url){//url为空
 		return protocol + domain + ":" + port + project.substring(0,project.length-1) +

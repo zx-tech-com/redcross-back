@@ -22,20 +22,20 @@
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>科目名称：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="" placeholder="" id="sname" name="sname">
+				<input type="text" class="input-text" value="" placeholder="例如:普及培训" id="sname" name="sname">
 			</div>
 		</div>
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-2">课程时长：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="" placeholder="" id="period" name="period">
+				<input type="text" class="input-text" value="" placeholder="例如:2-3课时;15课时" id="period" name="period" >
 			</div>
 		</div>
 		
 		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-2">价格：</label>
+			<label class="form-label col-xs-4 col-sm-2">费用：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="" placeholder="" id="price" name="price">
+				<input type="text" class="input-text" value="" placeholder="例如:20.34" id="price" name="price">
 			</div>
 		</div>
 		<div class="row cl">
@@ -54,6 +54,7 @@
 				</div>
 			</div>
 		</div>
+		
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-2">证书照片：</label>
 			<div class="formControls col-xs-8 col-sm-9">
@@ -62,6 +63,7 @@
 				</div>
 			</div>
 		</div>
+		
 		<div class="row cl">
 			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
 				<button onClick="courseSubject_update_submit();" class="btn btn-primary radius" type="button"><i class="Hui-iconfont">&#xe632;</i> 提交</button>
@@ -91,7 +93,6 @@
 	var url = location.search;
 	var subjectId = url.split("=")[1];
 $(function(){
-	alert(subjectId);
 	$.ajax({
 		url:urlFactory("course/getCourseSubject?subjectId="+subjectId),
 		dataType: 'json',
@@ -120,12 +121,43 @@ $(function(){
 	function courseSubject_update_submit(){
 		var description=$("*[name='description']").val();
 		var sname=$("#sname").val();
+		if(sname.trim().length==0){
+			layer.msg('科目姓名不能为空',{icon:2,time:1500});
+            return;
+		}
 		var period=$("#period").val();
 		var price=$("#price").val();
+		if(period.trim().length==0){
+			layer.msg('课程时长不能为空',{icon:2,time:1500});
+            return;
+		}
+		if(price.trim().length==0){
+			layer.msg('科目费用不能为空',{icon:2,time:1500});
+            return;
+		}
+		
 		var thumbnail= document.getElementById("thumbnailUrl").files[0];
+		var formFile = new FormData();
+		if (typeof(thumbnail) == "undefined") {
+            layer.msg('请选择科目图片!',{icon:2,time:1500});
+            return;
+        }
+		if(document.getElementById("thumbnailUrl").files.length>=2){
+			layer.msg('只能选择一张科目图片!',{icon:2,time:1500});
+            return;	
+		}
+		
 		var certificate = document.getElementById("certificateUrl").files[0];
-		alert(thumbnail);
-		alert(thumbnail.name);
+		
+
+		if (typeof (certificate) == "undefined") {
+            layer.msg('请选择证书图片!',{icon:2,time:1500});
+            return;
+        }
+		if(document.getElementById("certificateUrl").files.length>=2){
+			layer.msg('只能选择一张证书图片!',{icon:2,time:1500});
+            return;	
+		}
 		var formFile = new FormData();
 		formFile.append('id',subjectId);
 		formFile.append('sname',sname);
@@ -175,118 +207,7 @@ $(function(){
            alert("上传图片格式不正确，请重新上传");
            return;
     	} 
-	}
-	
-	function courseSubject_save_submit(){
-		var description=$("*[name='description']").val();
-		var sname=$("#sname").val();
-		var period=$("#period").val();
-		var price=$("#price").val();
-		var thumbnail = document.getElementById("thumbnailUrl").files[0];
-		alert(thumbnail);
-		var formFile = new FormData();
-		
-		/*if (typeof (thumbnail) == "undefined" || thumbnail.size <= 0) {
-            alert("请选择科目图片"); 
-            return;
-        }
-		if(thumbnail.size > 1)
-			alert(thumbnail.size);
-            alert("只能选择选择一张科目图片");
-            return;
-        }
-		*/
-		var certificate = document.getElementById("certificateUrl").files[0];
-		
-
-		/*if (typeof (certificate) == "undefined" || certificate.size <= 0) {
-            alert("请选择科目证书图片");
-            return;
-        }
-		if(certificate.size > 1){
-            alert("只能选择一张科目证书图片");
-            return;
-        }*/
-       formFile.append('sname',sname);
-       formFile.append('period',period);
-       formFile.append('price',price);
-       formFile.append('description',description);
-       formFile.append('imgUrl',thumbnail);
-       formFile.append('ccieUrl',certificate);
-		$.ajax({
-			url: "http://localhost:9090/RedCross/course/adminAddCourseSubject",
-            data:formFile, /*{"sname":sname,"period":period,"price":price,"description":description,"imgUrl":thumbnailFile,"ccieUrl":certificate},*/
-            type: "Post",
-            dataType: "json",
-            cache: false,//上传文件无需缓存
-            contentType: false, //必须
-            success: function(data){
-            	if(data.status=="success"){
-            		alert("添加成功");
-            	}
-            	if(data.status=="failure"){
-            		alert("添加失败");
-            	}
-            }
-			
-		})
-		
-
-		
-		
-	}
-	
-	//表单验证
-	$("#form-article-add").validate({
-		rules:{
-			articletitle:{
-				required:true,
-			},
-			articletitle2:{
-				required:true,
-			},
-			articlecolumn:{
-				required:true,
-			},
-			articletype:{
-				required:true,
-			},
-			articlesort:{
-				required:true,
-			},
-			keywords:{
-				required:true,
-			},
-			abstract:{
-				required:true,
-			},
-			author:{
-				required:true,
-			},
-			sources:{
-				required:true,
-			},
-			allowcomments:{
-				required:true,
-			},
-			commentdatemin:{
-				required:true,
-			},
-			commentdatemax:{
-				required:true,
-			},
-
-		},
-		onkeyup:false,
-		focusCleanup:true,
-		success:"valid",
-		submitHandler:function(form){
-			//$(form).ajaxSubmit();
-			var index = parent.layer.getFrameIndex(window.name);
-			//parent.$('.btn-refresh').click();
-			parent.layer.close(index);
-		}
-	});	
+	}	
 </script>
 <!--/请在上方写此页面业务相关的脚本-->
 </body>
