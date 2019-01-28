@@ -140,15 +140,17 @@
  		  	{"data":"sname"},
  		  	{"data":"thumbnailUrl",
  		  	"render" : function(data){
- 		  		console.log(data);
- 		  		return '<img src="../'+data+'" width="320" height="240" />';
+ 		  		data = getBaseAccessUrl() + data;
+ 		  		return '<img src="'+data+'" width="320" height="240" />';
  		  	}
  		  	},
  		  	{"data":"period"},		  	
  		  	{"data":"price"},
  		  	{"data":"certificateUrl",
  		  	"render" : function(data){
- 		  		return '<img src="../'+data+'" width="320" height="240" />';
+ 		  		data = getBaseAccessUrl() + data;
+ 		  		console.log(data);
+ 		  		return '<img src="'+data+'" width="320" height="240" />';
  		  	}
  		  	},
  		  	{"data":"description"},
@@ -188,6 +190,44 @@ function course_del(id,obj){
 				});
 	});
 }
+
+function datadel(){
+				if ($("input[name='vdchek']:checked")[0] == null) {
+					layer.msg('请勾选需要删除的视频!', {
+						icon: 1,
+						time: 1000
+					});
+					return;
+				}
+				layer.confirm('确认要删除这些视频吗?', {
+					icon: 3,
+					title: '提示'
+				}, function(index) {
+					var ids = new Array;
+					$("input[name='vdchek']:checked").each(function() {
+						ids.push($(this).val());
+						/* n = $(this).parents("tr").index() + 1; // 获取checkbox所在行的顺序
+						$("table#dataTable").find("tr:eq(" + n + ")").remove(); */
+					});
+					console.log(ids);
+					$.ajax({
+						url : urlFactory("course/adminDeleteBatchCourseSubject"),
+						data : {
+							ids : ids
+						},
+						traditional : true,
+						type : 'POST',
+						success : function(data){
+							console.log(data);
+							//重新加载table
+						}
+					})
+					layer.close(layer.index);
+				});
+			}
+
+
+
 function courseSubjectUpdate(id,editTitle,editUrl){
 	document.location.href = "courseSubject-update.html?id=" + id
 }

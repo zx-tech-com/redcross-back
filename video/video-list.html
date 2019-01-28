@@ -153,8 +153,8 @@
 					{
 						"data": "thumbnailUrl",
 						"render" : function(data){
- 		  				console.log(data);
- 		  				return '<img src="../'+data+'" width="320" height="240" />';
+ 		  				data = getBaseAccessUrl() + data;
+ 		  				return '<img src="'+data+'" width="320" height="240" />';
 					}
 					},
 					{

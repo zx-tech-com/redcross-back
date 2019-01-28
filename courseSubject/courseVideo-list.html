@@ -52,8 +52,8 @@
 					-
 					<input type="text" onfocus="WdatePicker({ minDate:'#F{$dp.$D(\'logmin\')}',maxDate:'%y-%M-%d' })" id="logmax"
 					 class="input-text Wdate" style="width:120px;"> -->
-					<input type="text" name="" id="" placeholder=" 请输入课程名称" style="width:250px" class="input-text">
-					<button name="" id="" class="btn btn-success" onclick="searchVideoByName"><i class="Hui-iconfont">&#xe665;</i> 搜课程</button>
+					<input type="text" name="" id="nameSearch" placeholder=" 请输入课程名称" style="width:250px" class="input-text">
+					<button name="" id="searchRecord" class="btn btn-success" ><i class="Hui-iconfont">&#xe665;</i> 搜课程</button>
 				</div>
 
 				<div class="cl pd-5 bg-1 bk-gray mt-20">
@@ -106,8 +106,47 @@
 
 
 		<script type="text/javascript">
+			
+			function datadel(){
+				if ($("input[name='vdchek']:checked")[0] == null) {
+					layer.msg('请勾选需要删除的课程!', {
+						icon: 1,
+						time: 1000
+					});
+					return;
+				}
+				layer.confirm('确认要删除这些课程吗?', {
+					icon: 3,
+					title: '提示'
+				}, function(index) {
+					var ids = new Array;
+					$("input[name='vdchek']:checked").each(function() {
+						ids.push($(this).val());
+						/* n = $(this).parents("tr").index() + 1; // 获取checkbox所在行的顺序
+						$("table#dataTable").find("tr:eq(" + n + ")").remove(); */
+					});
+					console.log(ids);
+					$.ajax({
+						url : urlFactory("course/adminDeleteBatchCourseVideo"),
+						data : {
+							ids : ids
+						},
+						traditional : true,
+						type : 'POST',
+						success : function(data){
+							console.log(data);
+							//重新加载table
+						}
+					})
+					layer.close(layer.index);
+				});
+			}
+			
+			
+			
+			
 			var url = location.search;
-	        var id = url.split("=")[1];
+	        var subjectId = url.split("=")[1];
 			$('.table-sort').dataTable({
 				
 				"aaSorting": [
@@ -123,12 +162,12 @@
 				　　}); 
 				},
 				"ajax": {
-					url: urlFactory("course/adminListCourse?subjectId="+id),
+					url: urlFactory("course/adminListCourse"),
 					type: "POST",
 					data: function() {
 					var params = {
-					pageSize: defaultPageSize,
-					query: $("#vnameSearch").val()
+					id:subjectId,
+					cname: $("#nameSearch").val()
 				};
 					return params;
 				}
@@ -151,7 +190,8 @@
 					{
 						"data": "videoUrl",
 						"render" : function(data){
-							return '<video width="320" height="240" controls="controls"><source src="../' + data + '"/><object data="../' + data + '" width="320" height="240"><embed src="../' + data + '" width="320" height="240" /></object></video>';
+							data = getBaseAccessUrl() + data;
+							return '<video width="320" height="240" controls="controls"><source src="' + data + '"/><object data="../' + data + '" width="320" height="240"><embed src="../' + data + '" width="320" height="240" /></object></video>';
 						}
 					},
 					{
@@ -216,6 +256,12 @@
 					});		
 				});
 			}
+			$(function(){
+				$("#searchRecord").on("click",function(){
+				var table = $('.table-sort').DataTable();  
+				table.ajax.reload();  
+				})
+			})
 		</script>
 	</body>
 </html>

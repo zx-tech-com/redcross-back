@@ -27,8 +27,7 @@
 <div class="page-container">
 	<div class="cl pd-5 bg-1 bk-gray mt-20"> 	
 		<span class="l">
-			<button onclick="removeIframe()" class="btn btn-primary radius">关闭选项卡</button>
-			<a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> 
+			<button onclick="removeIframe()" class="btn btn-primary radius">关闭选项卡</button>			
 			<a class="btn btn-primary radius" data-title="添加类型" data-href="topic/topicType-add.html" onclick="Hui_admin_tab(this)" href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> 添加发帖类型</a>
 		</span> 
 		<span class="r">共有数据：<strong>54</strong>条
@@ -38,7 +37,7 @@
 		<table class="table table-border table-bordered table-bg table-hover table-sort table-responsive">
 			<thead>
 				<tr class="text-c">
-					<th width="25"><input type="checkbox" name="" value=""></th>
+					<th width="25" style="display: none;">ID</th>
 					<th width="80">序号</th>
 					<th width="80">帖子类型</th>
 					<th width="80">图片</th>
@@ -62,11 +61,15 @@
 <script type="text/javascript" src="../lib/laypage/1.2/laypage.js"></script>
 <script type="text/javascript" src="../js/global.js"></script>
 <script type="text/javascript">
-
+$(function(){	
  	$('.table-sort').dataTable({ 
  		"aaSorting": [[ 1, "desc" ]],//默认第几个排序
 		"bStateSave": true,//状态保存
 		"pading":false,
+		"aoColumnDefs": [
+	     //{"bvisible": false, "aTargets": [0]},//控制列的隐藏显示
+	     {"orderable":false,"aTargets":[0]}// 不参与排序的列
+	   ],
 		"fnDrawCallback": function(){
 			var api = this.api();
 			var startIndex= api.context[0]._iDisplayStart;//获取到本页开始的条数
@@ -76,25 +79,27 @@
 			},
  		"ajax":{
  			url:urlFactory("social/findTopicType"),
- 			data: function() {
-				var params = {
-				pageSize: defaultPageSize,
-				query: $("#vnameSearch").val()
-				};
-					return params;
-				}
  		},
+ 		 "initComplete": function(settings, json) {
+                var data = json.data;
+                if (data.length>0){
+                var name = data[0].name;
+                if (name==""||name==undefined){
+                        $(".hiddenCol").css("display","none");
+                    }
+                    }else{
+                     $(".hiddenCol").css("display","none");
+                    }
+                },
+ 		
  		 "columns": [
- 		    {"data": "id", //设置checkbox单选框,默认为false
-			"render": function(data) {
-			return '<input type="checkbox" value="' + data + '" name="vdchek">';
-			}
-			},
+ 		    {orderable: false,sClass:"hiddenCol",data: "id"},
  		  	{"data":null},
  		  	{"data":"tname"},
  		  	{"data":"thumbnailUrl",
  		  	"render" : function(data){
- 		  		return '<img src="../'+data+'" width="240" height="240" />';
+ 		  		data = getBaseAccessUrl() + data;
+ 		  		return '<img src="'+data+'" width="240" height="240" />';
  		  		}
  		    },
  		  	{"data":"description"},
@@ -107,7 +112,16 @@
 				}
 			}
  		  ],  
+	});
 });
+
+
+
+
+
+
+
+
 function edit(row,title,url){
 				var videoObject = JSON.parse(decodeURIComponent(row));
 				var index = layer.open({
