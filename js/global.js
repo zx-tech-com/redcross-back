@@ -1,7 +1,7 @@
 const protocol="http://"
 
-const domain="192.168.1.100";
-//const domain="192.168.1.177";
+// const domain="192.168.1.100";
+const domain="192.168.1.177";
 //const domain="39.98.204.123";
 const port = "9090";
 // const port = "8080";
@@ -19,7 +19,7 @@ function urlFactory(url){
 	
 
 
-	var token = "eyJhbGciOiJIUzI1NiJ9.eyJjdXN0b21lcklkIjoxLCJleHBpcmVzIjoxNTQ4NjY5MDY4MDAzfQ.ygrewXfbjTWdPts3-94hSv6asgBIT-oHxqYOrMtBN0Y";
+	var token = "eyJhbGciOiJIUzI1NiJ9.eyJjdXN0b21lcklkIjo1LCJleHBpcmVzIjoxNTQ4Njk4MzAwNTkwfQ.sapDu9d2xvOmc9x38KNpRd6AgzHEp3beDluArUNNfns";
     //var  token="eyJhbGciOiJIUzI1NiJ9.eyJjdXN0b21lcklkIjoxLCJleHBpcmVzIjoxNTQ4NTk4MzkzMjc2fQ.IRuo0Tvrt6dAANwDy3mCUsQZBmZoQv8HUYUSubum5MM";
 
 	
