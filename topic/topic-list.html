@@ -42,6 +42,22 @@
 			</thead>
 		</table>
 	</div>
+	
+	 <div id="pages">
+
+
+
+            <button id="getUpPage" class="btn btn-primary radius">上一页</button>
+
+
+
+            <button id="getNextPage" class="btn btn-primary radius">下一页</button>
+
+    </div>
+	
+	
+	
+	
 </div>
 <!--_footer 作为公共模版分离出去-->
 <script type="text/javascript" src="../lib/jquery/1.9.1/jquery.min.js"></script> 
@@ -55,10 +71,12 @@
 <script type="text/javascript" src="../lib/laypage/1.2/laypage.js"></script>
 <script type="text/javascript" src="../js/global.js"></script>
 <script type="text/javascript">
+	var currentPage=1;
 	$('.table-sort').dataTable({ 
  		"aaSorting": [[ 1, "desc" ]],//默认第几个排序
 		"bStateSave": true,//状态保存
 		"pading":false,
+		"paging": false, // 禁止分页
 		"fnDrawCallback": function(){
 			var api = this.api();
 			var startIndex= api.context[0]._iDisplayStart;//获取到本页开始的条数
@@ -68,18 +86,36 @@
 			},
 		"ajax":{
  			url:urlFactory("/social/findAllTopic"),
+ 			type: "POST",
+			data: function() {
+				alert(currentPage);
+				var params = {
+					pageNo:currentPage
+				};
+					return params;
+			}
 		},
-		"initComplete": function(settings, json) {
+		/*"initComplete": function(settings, json) {
+			console.log(settings, json);
                 var data = json.data;
                 if (data.length>0){
+                	console.log(data[0]);
+                	console.log(data[0].name);
                 var name = data[0].name;
                 if (name==""||name==undefined){
                         $(".hiddenCol").css("display","none");
                     }
                     }else{
-                     $(".hiddenCol").css("display","none");
+                     	$(".hiddenCol").css("display","none");
                     }
-                },
+                },*/
+		 "drawCallback":function(s){
+		 	console.log(s);
+           datat.column(7).nodes().each(function(cell,i){
+           			console.log(cell,i);
+               });
+         },  
+
 		"columns": [
 			{orderable: false,sClass:"hiddenCol",data: "id"},
 			{"data":null},
@@ -96,6 +132,7 @@
  		  		}
  		  	}
  		 ], 
+ 		 
 });	
 
 /*帖子评论-删除*/
@@ -123,8 +160,24 @@ function topic_del(id,obj){
 
 function getComent(id){
 	document.location.href = "topicComent-list.html?id=" + id
-}	
-	
+}
+
+$(function(){
+		$("#getUpPage").on("click",function(){
+		var table = $('.table-sort').DataTable(); 
+		currentPage=currentPage-1;
+		table.ajax.reload();  
+		})
+})
+$(function(){
+		$("#getNextPage").on("click",function(){
+		var table = $('.table-sort').DataTable();
+		currentPage=currentPage+1;
+		table.ajax.reload();  
+		})
+})
+
+
 </script> 
 </body>
 </html>
