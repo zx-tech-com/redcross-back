@@ -15,6 +15,11 @@
 .table-sort>tbody>tr>td{
 	text-align:center;
 }
+#pages{
+		float:right;
+		padding-top: 15px;
+		padding-right: 20px;
+	}
 </style>
 <title>帖子列表</title>
 </head>
@@ -32,7 +37,7 @@
 		<table class="table table-border table-bordered table-bg table-hover table-sort table-responsive">
 			<thead>
 				<tr class="text-c">
-					<th width="50" style="display: none;">ID</th>
+
 					<th width="50">序号</th>
 					<th width="50">评论人</th>
 					<th width="200">评论内容</th>
@@ -42,6 +47,10 @@
 			</thead>
 		</table>
 	</div>
+	<div id="pages">
+            <button id="getUpPage" class="btn btn-primary radius"></button>
+            <button id="getNextPage" class="btn btn-primary radius"></button>
+    </div>
 </div>
 <!--_footer 作为公共模版分离出去-->
 <script type="text/javascript" src="../lib/jquery/1.9.1/jquery.min.js"></script> 
@@ -57,40 +66,61 @@
 <script type="text/javascript">
 	var url = location.search;
 	var Id = url.split("=")[1];
-	
+	var currentPage=1;
+	var totalCount=0;
 $(function () {	
-
 	var table=$('.table-sort').dataTable({ 
-		language: lang, //提示信息
  		"aaSorting": [[ 1, "desc" ]],//默认第几个排序
 		"bStateSave": true,//状态保存
-		
-		"serverSide": true, //启用服务器端分页
+		"pading":false,
+		"paging": false, // 禁止分页
 		"fnDrawCallback": function(){
-			alert(Id);
 			var api = this.api();
 			var startIndex= api.context[0]._iDisplayStart;//获取到本页开始的条数
-			api.column(1).nodes().each(function(cell, i) {
+			api.column(0).nodes().each(function(cell, i) {
 			cell.innerHTML = startIndex + i + 1;
 				　　}); 
-			},
+		},
 		"ajax":{
  			url:urlFactory("/social/findOnceTopicComent?topicId="+Id),
+			type: "POST",
+			data: function() {
+				 if(currentPage==1){
+					$("#getUpPage").text('首页');
+				}
+				if(currentPage!=1){
+					$("#getUpPage").text('上一页');
+				}
+				if(currentPage==totalCount){
+					$("#getNextPage").text('最后一页');
+				}
+				if(currentPage!=totalCount){
+					$("#getNextPage").text('下一页');
+				}
+				var params = {
+					pageNo:currentPage
+					
+				};
+					return params;
+			}
 		},
-		
 		"initComplete": function(settings, json) {
-                var data = json.data;
-                if (data.length>0){
-                var name = data[0].name;
-                if (name==""||name==undefined){
-                        $(".hiddenCol").css("display","none");
-                    }
-                    }else{
-                     $(".hiddenCol").css("display","none");
-                    }
-                },
+              totalCount=json.totalCount;
+              if(currentPage==1){
+					$("#getUpPage").text('首页');
+				}
+				if(currentPage!=1){
+					$("#getUpPage").text('上一页');
+				}
+				if(currentPage==totalCount){
+					$("#getNextPage").text('最后一页');
+				}
+				if(currentPage!=totalCount){
+					$("#getNextPage").text('下一页');
+				} 
+        },
+		
 		"columns": [
-			{orderable: false,sClass:"hiddenCol",data: "id"},
 			{"data":null},
  		    {"data":"customer.nickname"},
  			{"data":"content"},
@@ -132,29 +162,26 @@ function topicComent_del(id,obj){
 function getLowerComent(id){
 	document.location.href = "topicLowerComent-list.html?id=" + id
 }
-
-
-$('#example').dataTable({
-				alert("123");
-                "bLengthChange": true, //开关，是否显示每页显示多少条数据的下拉框
-                "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "所有"]],//设置每页显示数据条数的下拉选项
-                'iDisplayLength': 1, //每页初始显示5条记录
-                'bFilter': false,  //是否使用内置的过滤功能（是否去掉搜索框）
-                "bInfo": true, //开关，是否显示表格的一些信息(当前显示XX-XX条数据，共XX条)
-                "bPaginate": true, //开关，是否显示分页器
-                "bSort": false, //是否可排序 
-                "oLanguage":{  //语言转换
-                    "sInfo": "显示第 _START_ 至 _END_ 项结果，共_TOTAL_ 项",
-                    "sLengthMenu": "每页显示 _MENU_ 项结果",
-                    "oPaginate": {
-                        "sFirst": "首页",
-                        "sPrevious": "前一页",
-                        "sNext": "后一页",
-                        "sLast": "尾页"
-                        }
-                }
-            });
-	
+$(function(){
+		$("#getUpPage").on("click",function(){
+		if(currentPage==1){
+			return;
+		}
+		var table = $('.table-sort').DataTable(); 
+		currentPage=currentPage-1;
+		table.ajax.reload();  
+		})
+})	
+$(function(){
+		$("#getNextPage").on("click",function(){
+		if(currentPage==totalCount){
+			return;
+		}	
+		var table = $('.table-sort').DataTable();
+		currentPage=currentPage+1;
+			table.ajax.reload();  
+		})
+})	
 </script> 
 </body>
 </html>
