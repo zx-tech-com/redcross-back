@@ -30,7 +30,7 @@
 		<center>
 			<h2 id="title"></h2>
 		</center>
-		
+		<div id="time"></div>
 		<div id="content" ></div>
 
 </div>
@@ -62,8 +62,11 @@
 					id: id
 				},
 				success: function(data) {
+					var str = "<span style='background : #fff;color : #999;'>红十字应急救护</span>&nbsp&nbsp&nbsp&nbsp&nbsp"
+								+ "<span style='background : #fff; color : #666;'>" + data.data.publishTime + "</span>";
 					if (data.status == SUCCESS) {
 						$("#content").html(data.data.content)
+						$("#time").html(str);
 						$("#title").html(data.data.title);
 					} else {
 						layer.msg('页面数据初始化异常', {
@@ -95,7 +98,6 @@
 			id = kid;
 		else
 			layer.msg('未检测到id,请重试',{icon:2,time:1000});
-		console.log(id);
 	}
 </script>
 </body>
