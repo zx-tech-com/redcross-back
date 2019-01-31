@@ -1,5 +1,6 @@
 const protocol="http://"
 
+
 const domain="192.168.1.100";
 //const domain="192.168.1.177";
 //const domain="39.98.204.123";
@@ -19,8 +20,10 @@ function urlFactory(url){
 	
 
 
+
 	var token = "eyJhbGciOiJIUzI1NiJ9.eyJjdXN0b21lcklkIjoxLCJleHBpcmVzIjoxNTQ4OTMwNTM0NDIyfQ.OEecUjNNSTwBJubIygxw9XoyBp-7B21o63w6gs5CQ34";
     //var  token="eyJhbGciOiJIUzI1NiJ9.eyJjdXN0b21lcklkIjoxLCJleHBpcmVzIjoxNTQ4ODQxNzM1OTU0fQ.isyxUw3ZHymGh7pGUllSeGn4BwQL9ns9b_2SUUXBox0";
+
 
 	
 	if(!url){//url为空
