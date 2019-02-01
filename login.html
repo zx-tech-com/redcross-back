@@ -22,7 +22,7 @@
 <meta name="keywords" content="H-ui.admin v3.1,H-ui网站后台模版,后台模版下载,后台管理系统模版,HTML后台模版下载">
 <meta name="description" content="H-ui.admin v3.1，是一款由国人开发的轻量级扁平化网站后台模板，完全免费开源的网站后台管理系统模版，适合中小型CMS后台系统。">
 </head>
-<body>
+<body onload="myFuncion();">
 <input type="hidden" id="TenantId" name="TenantId" value="" />
 <div class="header"></div>
 <div class="loginWraper">
@@ -31,13 +31,13 @@
       <div class="row cl">
         <label class="form-label col-xs-3"><i class="Hui-iconfont">&#xe60d;</i></label>
         <div class="formControls col-xs-8">
-          <input id="" name="" type="text" placeholder="账户" class="input-text size-L">
+          <input id="username" name="" type="text" placeholder="账户" class="input-text size-L">
         </div>
       </div>
       <div class="row cl">
         <label class="form-label col-xs-3"><i class="Hui-iconfont">&#xe60e;</i></label>
         <div class="formControls col-xs-8">
-          <input id="" name="" type="password" placeholder="密码" class="input-text size-L">
+          <input id="password" name="" type="password" placeholder="密码" class="input-text size-L">
         </div>
       </div>
       <div class="row cl">
@@ -54,8 +54,8 @@
       </div>
       <div class="row cl">
         <div class="formControls col-xs-8 col-xs-offset-3">
-          <input name="" type="submit" class="btn btn-success radius size-L" value="&nbsp;登&nbsp;&nbsp;&nbsp;&nbsp;录&nbsp;">
-          <input name="" type="reset" class="btn btn-default radius size-L" value="&nbsp;取&nbsp;&nbsp;&nbsp;&nbsp;消&nbsp;">
+          <button name="" type="button" onclick="toIndexHtml()" id="toLogin" class="btn btn-success radius size-L" value="">&nbsp;登&nbsp;&nbsp;&nbsp;&nbsp;录&nbsp;</button>
+          <button name="" type="reset" class="btn btn-default radius size-L" value="&nbsp;取&nbsp;&nbsp;&nbsp;&nbsp;消&nbsp;">&nbsp;取&nbsp;&nbsp;&nbsp;&nbsp;消&nbsp;</button>
         </div>
       </div>
     </form>
@@ -64,16 +64,50 @@
 <div class="footer">Copyright 你的公司名称 by H-ui.admin v3.1</div>
 <script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script> 
 <script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script>
-<!--此乃百度统计代码，请自行删除-->
-<script>
-var _hmt = _hmt || [];
-(function() {
-  var hm = document.createElement("script");
-  hm.src = "https://hm.baidu.com/hm.js?080836300300be57b7f34f4b3e97d911";
-  var s = document.getElementsByTagName("script")[0]; 
-  s.parentNode.insertBefore(hm, s);
-})();
+<script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
+<script type="text/javascript" src="lib/laypage/1.2/laypage.js"></script>
+<script type="text/javascript" src="js/global.js"></script>
+<script language="javascript">
+$(function(){ 
+	if (window != top) 
+ top.location.href = location.href; 
+}); 
+	
+function toIndexHtml(){
+	 	var usernames=$("#username").val();
+	 	var password=$("#password").val();
+	 	$.ajax({
+	 		type:"post",
+	 		url:urlFactory("back/login"),
+	 		dataType:'json',
+	 		data:{
+	 			username:usernames,
+	 			passwd  :password
+	 		},
+	 		success :function(data){
+	 			console.log(data)
+			if(data.status=="success"){
+	 				var id=0;
+	 			if(usernames=="admin"){
+	 				id=1;
+	 			}
+	 			document.location.href ="index.html?id="+id;
+	 		}
+			if(data.status=="failure"){
+          layer.msg('用户名或密码错误!',{icon:2,time:2000});
+      }
+	 	}
+	 			
+	 		
+	 	});
+	
+	
+	
+	
+}
+	
+	
+	
 </script>
-<!--/此乃百度统计代码，请自行删除
 </body>
 </html>

@@ -17,7 +17,10 @@
 			.table-sort>tbody>tr>td{
 							text-align:center;
 			}
-
+			#pages{
+				float:right;
+				padding-right: 20px;
+			}
 		</style>
 
 		<title>付费视频列表</title>
@@ -87,7 +90,10 @@
 					</table>
 				</div>
 			</div>
-
+			<div id="pages">
+            	<button id="getUpPage" class="btn btn-primary radius"></button>
+            	<button id="getNextPage" class="btn btn-primary radius"></button>
+  			 </div>
 		</div>
 		<script type="text/javascript" src="../lib/jquery/1.9.1/jquery.min.js"></script>
 		<script type="text/javascript" src="../lib/layer/2.4/layer.js"></script>
@@ -107,13 +113,16 @@
 
 
 		<script type="text/javascript">
+			var currentPage=1;
+			var totalCount=0;
 			$('.table-sort').dataTable({
 				"aaSorting": [
 					[1, "desc"]
 				], //默认第几个排序
 				"bStateSave": true, //状态保存
 				// "paging": false,
-				"pading": false,
+				"pading":false,
+				"paging": false, // 禁止分页
 				"aoColumnDefs": [
 					{"orderable":false,"aTargets":[0,2,3,4]}// 不参与排序的列
 				],
@@ -131,13 +140,40 @@
 					url: urlFactory("video/adminListVideo"),
 					type: "POST",
 					data: function() {
+						 if(currentPage==1){
+							$("#getUpPage").text('首页');
+						}
+						if(currentPage!=1){
+						$("#getUpPage").text('上一页');
+						}
+						if(currentPage==totalCount){
+						$("#getNextPage").text('最后一页');
+						}
+						if(currentPage!=totalCount){
+						$("#getNextPage").text('下一页');
+						}
 						var params = {
-						pageSize: defaultPageSize,
+						pageNo:currentPage,
 						query: $("#vnameSearch").val()
 						};
 						return params;
 					}
 				},
+				"initComplete": function(settings, json) {
+              totalCount=json.totalCount;
+              if(currentPage==1){
+					$("#getUpPage").text('首页');
+				}
+				if(currentPage!=1){
+					$("#getUpPage").text('上一页');
+				}
+				if(currentPage==totalCount){
+					$("#getNextPage").text('最后一页');
+				}
+				if(currentPage!=totalCount){
+					$("#getNextPage").text('下一页');
+				}
+		        },
 				"columns": [{
 						"data": "id", //设置checkbox单选框,默认为false
 						"render": function(data) {
@@ -275,6 +311,26 @@
 					table.ajax.reload();  
 				})
 			})
+			$(function(){
+		$("#getUpPage").on("click",function(){
+		if(currentPage==1){
+			return;
+		}
+		var table = $('.table-sort').DataTable(); 
+		currentPage=currentPage-1;
+		table.ajax.reload();  
+		})
+})
+		$(function(){
+			$("#getNextPage").on("click",function(){
+			if(currentPage==totalCount){
+				return;
+		}	
+		var table = $('.table-sort').DataTable();
+		currentPage=currentPage+1;
+			table.ajax.reload();  
+		})
+		})
 		</script>
 	</body>
 </html>

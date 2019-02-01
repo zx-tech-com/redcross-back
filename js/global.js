@@ -1,10 +1,19 @@
 const protocol="http://"
 
+<<<<<<< HEAD
 // const domain="192.168.1.100";
 const domain="192.168.1.177";
 // const domain="39.98.204.123";
 const port = "9090";
 // const port = "8080";
+=======
+
+const domain="192.168.1.101";
+//const domain="192.168.1.177";
+//const domain="39.98.204.123";
+const port = "9090";
+//const port = "8080";
+>>>>>>> 8320a6ce831f21315fcb89be18bca3dc3fd522dc
 const project = "/RedCross/";
 
 //默认查找前1000条数据
@@ -80,4 +89,9 @@ function explainStatus (status){
 	
 	return res?res : "";
 	
+}
+
+
+function gotoLogin(){
+	document.location.href = "login.html";
 }

@@ -15,24 +15,27 @@
 .table-sort>tbody>tr>td{
 	text-align:center;
 }
+#pages{
+	float:right;
+	padding-top: 15px;
+	padding-right: 20px;
+	}
 </style>
-<title>帖子列表</title>
+<title>回复列表</title>
 </head>
 <body>
-<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 课程管理 <span class="c-gray en">&gt;</span> 科目列表 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 发帖管理 <span class="c-gray en">&gt;</span> 评论列表 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="page-container">
 	<div class="cl pd-5 bg-1 bk-gray mt-20"> 	
 		<span class="l">
 			<button onclick="removeIframe()" class="btn btn-primary radius">关闭选项卡</button>
-		</span> 
-		<span class="r">共有数据：<strong>54</strong>条
 		</span> 
 	</div>
 	<div class="mt-20">
 		<table class="table table-border table-bordered table-bg table-hover table-sort table-responsive">
 			<thead>
 				<tr class="text-c">
-					<th width="50" style="display: none;">ID</th>
+
 					<th width="50">序号</th>
 					<th width="50">回复人姓名</th>
 					<th width="200">回复内容</th>
@@ -43,6 +46,11 @@
 			</thead>
 		</table>
 	</div>
+	<div id="pages">
+            <button id="getUpPage" class="btn btn-primary radius"></button>
+            <button id="getNextPage" class="btn btn-primary radius"></button>
+
+   </div>
 </div>
 <!--_footer 作为公共模版分离出去-->
 <script type="text/javascript" src="../lib/jquery/1.9.1/jquery.min.js"></script> 
@@ -58,34 +66,61 @@
 <script type="text/javascript">
 	var url = location.search;
 	var Id = url.split("=")[1];
+	var currentPage=1;
+	var totalCount=0;
 	$('.table-sort').dataTable({ 
  		"aaSorting": [[ 1, "desc" ]],//默认第几个排序
 		"bStateSave": true,//状态保存
 		"pading":false,
+		"paging": false, // 禁止分页
 		"fnDrawCallback": function(){
-			alert(Id);
 			var api = this.api();
 			var startIndex= api.context[0]._iDisplayStart;//获取到本页开始的条数
-			api.column(1).nodes().each(function(cell, i) {
+			api.column(0).nodes().each(function(cell, i) {
 			cell.innerHTML = startIndex + i + 1;
 				　　}); 
 			},
 		"ajax":{
  			url:urlFactory("social/findLowerComent?topicComentId="+Id),
+			type: "POST",
+			data: function() {
+				 if(currentPage==1){
+					$("#getUpPage").text('首页');
+				}
+				if(currentPage!=1){
+					$("#getUpPage").text('上一页');
+				}
+				if(currentPage==totalCount){
+					$("#getNextPage").text('最后一页');
+				}
+				if(currentPage!=totalCount){
+					$("#getNextPage").text('下一页');
+				}
+				var params = {
+					pageNo:currentPage
+					
+				};
+					return params;
+			}
 		},
 		"initComplete": function(settings, json) {
-                var data = json.data;
-                if (data.length>0){
-                var name = data[0].name;
-                if (name==""||name==undefined){
-                        $(".hiddenCol").css("display","none");
-                    }
-                    }else{
-                     $(".hiddenCol").css("display","none");
-                    }
-                },
+              totalCount=json.totalCount;
+              if(currentPage==1){
+					$("#getUpPage").text('首页');
+				}
+				if(currentPage!=1){
+					$("#getUpPage").text('上一页');
+				}
+				if(currentPage==totalCount){
+					$("#getNextPage").text('最后一页');
+				}
+				if(currentPage!=totalCount){
+					$("#getNextPage").text('下一页');
+				}
+              
+              
+        },
 		"columns": [
-			{orderable: false,sClass:"hiddenCol",data: "activeComentId"},
 			{"data":null},
  		    {"data":"activeCustomerNickname"},
  			{"data":"activeComentContent"},
@@ -100,7 +135,6 @@
 });	
 /*帖子评论-删除*/
 function topicComent_del(id,obj){
-	alert(id);
 	layer.confirm('确认要删除吗？',function(index){
 		$.ajax({
 				type: 'POST',
@@ -120,7 +154,26 @@ function topicComent_del(id,obj){
 				});
 	});
 }
-	
+$(function(){
+		$("#getUpPage").on("click",function(){
+		if(currentPage==1){
+			return;
+		}
+		var table = $('.table-sort').DataTable(); 
+		currentPage=currentPage-1;
+		table.ajax.reload();  
+		})
+})
+$(function(){
+		$("#getNextPage").on("click",function(){
+		if(currentPage==totalCount){
+			return;
+		}	
+		var table = $('.table-sort').DataTable();
+		currentPage=currentPage+1;
+			table.ajax.reload();  
+		})
+})	
 </script> 
 </body>
 </html>
