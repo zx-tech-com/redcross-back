@@ -1,4 +1,4 @@
-﻿<!DOCTYPE HTML>
+<!DOCTYPE HTML>
 <html>
 <head>
 <meta charset="utf-8">
@@ -82,6 +82,9 @@
 			},
 		"ajax":{
  			url:urlFactory("social/findLowerComent?topicComentId="+Id),
+			xhrFields: {
+				withCredentials: true,
+			},
 			type: "POST",
 			data: function() {
 				 if(currentPage==1){
@@ -139,6 +142,9 @@ function topicComent_del(id,obj){
 		$.ajax({
 				type: 'POST',
 				url: urlFactory("social/adminDeleteTopicComent?topicComentId="+id),
+				xhrFields: {
+					withCredentials: true,
+				},
 				dataType: 'json',
 				success: function(data){
 				if(data.status === SUCCESS){

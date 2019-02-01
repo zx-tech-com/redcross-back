@@ -1,4 +1,4 @@
-﻿<!DOCTYPE HTML>
+<!DOCTYPE HTML>
 <html>
 <head>
 <meta charset="utf-8">
@@ -85,6 +85,9 @@
 					console.log(ids);
 					$.ajax({
 						url : urlFactory("course/adminDeleteCourseSubject"),
+						xhrFields: {
+							withCredentials: true,
+						},
 						data : {
 							ids : ids
 						},
@@ -120,6 +123,9 @@
  		"ajax":{
  			url:urlFactory("course/adminListCourseSubject"),
  			type: "POST",
+			xhrFields: {
+				withCredentials: true,
+			},
 			data: function() {
 				var params = {
 				pageSize: defaultPageSize,
@@ -174,6 +180,9 @@ function course_del(id,obj){
 				type: 'POST',
 				url: urlFactory("course/adminDeleteCourseSubject?courseSubjectId="+id),
 				dataType: 'json',
+				xhrFields: {
+					withCredentials: true,
+				},
 				success: function(data){
 				if(data.status === SUCCESS){
 				$(obj).parents("tr").remove();
@@ -210,6 +219,9 @@ function datadel(){
 					console.log(ids);
 					$.ajax({
 						url : urlFactory("course/adminDeleteBatchCourseSubject"),
+						xhrFields: {
+							withCredentials: true,
+						},
 						data : {
 							ids : ids
 						},

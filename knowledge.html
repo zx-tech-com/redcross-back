@@ -58,6 +58,9 @@
 		if(!!id){
 			$.ajax({
 				url: urlFactory("knowledge/getKnowledge"),
+				xhrFields: {
+					withCredentials: true,
+				},
 				data: {
 					id: id
 				},

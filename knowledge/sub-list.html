@@ -103,6 +103,9 @@
 			$(function(){//初始化下拉框
 				$.ajax({
 					url : urlFactory("knowledge/adminListKnowledgeType"),
+					xhrFields: {
+						withCredentials: true,
+					},
 					success: function(data){
 						if(data.status === SUCCESS){
 							var knowledgeTypes = data.data;
@@ -144,6 +147,9 @@
 					"ajax": {
 						url: urlFactory("knowledge/adminListKnowledge"),
 						type: "POST",
+						xhrFields: {
+							withCredentials: true,
+						},
 						data: function() {
 							var params = {
 								pageSize : defaultPageSize
@@ -217,6 +223,9 @@
 					$.ajax({
 						type: 'POST',
 						url: urlFactory("knowledge/adminDeleteKnowledge?knowledgeId=" + id),
+						xhrFields: {
+							withCredentials: true,
+						},
 						dataType: 'json',
 						success: function(data) {
 							if (data.status === SUCCESS) {

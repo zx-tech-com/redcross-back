@@ -163,6 +163,9 @@ $(function(){
 $(function(){
 	$.ajax({
 		url : urlFactory("knowledge/adminListKnowledgeType"),
+		xhrFields: {
+			withCredentials: true,
+		},
 		success : function(data){
 			if(data.status == SUCCESS){
 				for(var ktype of data.data){

@@ -1,4 +1,4 @@
-﻿<!DOCTYPE HTML>
+<!DOCTYPE HTML>
 <html>
 <head>
 <meta charset="utf-8">
@@ -74,6 +74,9 @@ $(function(){
 			},
  		"ajax":{
  			url:urlFactory("back/findAllAdmin"),
+			xhrFields: {
+				withCredentials: true,
+			},
  		},
  		
  		 "columns": [
@@ -118,6 +121,9 @@ function del(id,obj){
 		$.ajax({
 				type: 'POST',
 				url: urlFactory("back/deleteAdmin?id="+id),
+				xhrFields: {
+					withCredentials: true,
+				},
 				dataType: 'json',
 				success: function(data){
 				if(data.status === SUCCESS){

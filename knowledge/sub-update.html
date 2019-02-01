@@ -143,6 +143,9 @@
 				var formData = prepareFormParams();
 				$.ajax({
 					url: urlFactory("knowledge/adminUpdateKnowledge"),
+					xhrFields: {
+						withCredentials: true,
+					},
 					data: JSON.stringify(formData),
 					contentType : "application/json",
 					type: "POST",
@@ -175,6 +178,9 @@
 				//初始化下拉框
 				$.ajax({
 					url: urlFactory("knowledge/adminListKnowledgeType"),
+					xhrFields: {
+						withCredentials: true,
+					},
 					async: false, //这里同步加载,阻塞页面数据
 					success: function(data) {
 						if (data.status == SUCCESS) {
@@ -200,6 +206,9 @@
 				//初始化页面数据
 				$.ajax({
 					url: urlFactory("knowledge/getKnowledge"),
+					xhrFields: {
+						withCredentials: true,
+					},
 					data: {
 						id: $("#hiddenarea").val()
 					},

@@ -90,6 +90,9 @@ $(function(){
  			url:urlFactory("examorder/listExamOrder"),
  			type: "POST",
 			contentType : 'application/json; charset=utf-8',
+			xhrFields: {
+				withCredentials: true,
+			},
 			data: function() {
 			var params = {
 				status : $("#payStatus").val(),

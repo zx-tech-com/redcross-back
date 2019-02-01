@@ -102,6 +102,9 @@
 
 		$.ajax({
 			url : urlFactory("social/adminUpdateTopicType"),
+			xhrFields: {
+				withCredentials: true,
+			},
 			data : formFile,
 			type : "POST",
 			contentType: false, //必须
