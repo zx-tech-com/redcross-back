@@ -16,14 +16,14 @@
 		<link rel="stylesheet" type="text/css" href="../static/h-ui.admin/skin/default/skin.css" id="skin" />
 
 
-		<title>后台登录 - H-ui.admin v3.1</title>
+		<title>新增管理员</title>
 	</head>
 	<body>
 		<input type="hidden" id="TenantId" name="TenantId" value="" />
 		<div class=""></div>
 		<div class="">
 			<div id="loginform" class="loginBox">
-				<form class="form form-horizontal" id="user-form">
+				<form class="form form-horizontal" id="user-form" onsubmit="return false;">
 					<div class="row cl">
 						<label class="form-label col-xs-3"><i class="Hui-iconfont">&#xe60d;</i></label>
 						<div class="formControls col-xs-8">
@@ -46,8 +46,8 @@
 					
 					<div class="row cl">
 						<div class="formControls col-xs-8 col-xs-offset-3">
-							<input  id="submitBtn" type="submit" class="btn btn-success radius size-L" value="&nbsp;登&nbsp;&nbsp;&nbsp;&nbsp;录&nbsp;">
-							<input  type="reset" class="btn btn-default radius size-L" value="&nbsp;取&nbsp;&nbsp;&nbsp;&nbsp;消&nbsp;">
+							<input  id="submitBtn" type="submit" class="btn btn-success radius size-L" value="&nbsp;提&nbsp;&nbsp;交&nbsp;">
+							<input  type="reset" class="btn btn-default radius size-L" value="&nbsp;取&nbsp;&nbsp;消&nbsp;">
 						</div>
 					</div>
 				</form>
@@ -63,6 +63,8 @@
 		<script type="text/javascript" src="../lib/jquery.validation/1.14.0/messages_zh.js"></script>
 		<script type="text/javascript" src="../lib/jquery.validation/1.14.0/validate-methods.js"></script> 
 		<script type="text/javascript" src="../lib/webuploader/0.1.5/webuploader.js"></script>
+		<!--自定义全局变量-->
+		<script type="text/javascript" src="../js/global.js"></script>
 		
 		<script type="text/javascript">
 			$(function(){
@@ -70,17 +72,44 @@
 					rules:{
 						username:{
 							required:true,
+							userNameAvaliable : [urlFactory("back/checkUsernameAvaliable")]
 						},
 						passwd:{
 							required:true,
+						},
+						"passwd-cfm":{
+							required : true,
+							isEqual : "#passwd"
 						}
 					},
 					onkeyup:false,
-					focusCleanup:true
+					focusCleanup:true,
+					messages:{
+						username:{
+							required:"用户名必填",
+						}
+					},
 				});
 				
 				$("#submitBtn").on("click",function(){
-					
+					var flag = $("#user-form").valid();
+					if(flag){
+						$.ajax({
+							url : urlFactory("back/newAdmin"),
+							type : "POST",
+							data : {
+								username : $("#username").val(),
+								passwd : $("#passwd-cfm").val()
+							},
+							success : function(body){
+								if(body.status === SUCCESS)
+									layer.msg('新增成功!',{icon:1,time:1000});
+								else
+									layer.msg('新增失败!',{icon:2,time:1000});
+									
+							}
+						})
+					}
 				})
 			})
 			
