@@ -85,6 +85,7 @@
 					console.log(ids);
 					$.ajax({
 						url : urlFactory("course/adminDeleteCourseSubject"),
+						xhrFields: {withCredentials: true},
 						data : {
 							ids : ids
 						},
@@ -120,6 +121,7 @@
  		"ajax":{
  			url:urlFactory("course/adminListCourseSubject"),
  			type: "POST",
+			xhrFields: {withCredentials: true},
 			data: function() {
 				var params = {
 				pageSize: defaultPageSize,
@@ -173,6 +175,7 @@ function course_del(id,obj){
 		$.ajax({
 				type: 'POST',
 				url: urlFactory("course/adminDeleteCourseSubject?courseSubjectId="+id),
+				xhrFields: {withCredentials: true},
 				dataType: 'json',
 				success: function(data){
 				if(data.status === SUCCESS){
@@ -210,6 +213,7 @@ function datadel(){
 					console.log(ids);
 					$.ajax({
 						url : urlFactory("course/adminDeleteBatchCourseSubject"),
+						xhrFields: {withCredentials: true},
 						data : {
 							ids : ids
 						},
@@ -230,8 +234,7 @@ function courseSubjectUpdate(id,editTitle,editUrl){
 	document.location.href = "courseSubject-update.html?id=" + id
 }
 function getCourse(id){
-	window.location.href = "../login.html";
-//	document.location.href = "courseVideo-list.html?id=" + id
+	document.location.href = "courseVideo-list.html?id=" + id
 }
 </script> 
 </body>

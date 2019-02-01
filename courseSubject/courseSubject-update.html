@@ -95,6 +95,7 @@
 $(function(){
 	$.ajax({
 		url:urlFactory("course/getCourseSubject?subjectId="+subjectId),
+		xhrFields: {withCredentials: true},
 		dataType: 'json',
 		type:'get',
 		success: function(data){
@@ -168,7 +169,8 @@ $(function(){
        formFile.append('ccieUrl',certificate,certificate.name);
 		$.ajax({
 			url:urlFactory("course/adminUpdateCourseSubject"),
-            data:formFile, 
+           xhrFields: {withCredentials: true},
+           data:formFile,
             type: "Post",
             dataType: "json",
             cache: false,//上传文件无需缓存

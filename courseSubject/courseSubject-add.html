@@ -172,6 +172,7 @@ $(function(){
 		$.ajax({
 			url: urlFactory("course/adminAddCourseSubject"),
             data:formFile, /*{"sname":sname,"period":period,"price":price,"description":description,"imgUrl":thumbnailFile,"ccieUrl":certificate},*/
+            xhrFields: {withCredentials: true},
             type: "Post",
             dataType: "json",
             //cache: false,//上传文件无需缓存

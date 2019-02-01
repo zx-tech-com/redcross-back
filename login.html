@@ -18,7 +18,7 @@
 <script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
 <script>DD_belatedPNG.fix('*');</script>
 <![endif]-->
-<title>后台登录 - H-ui.admin v3.1</title>
+<title>后台登录 - 红十字应急救护培训  v3.1</title>
 <meta name="keywords" content="H-ui.admin v3.1,H-ui网站后台模版,后台模版下载,后台管理系统模版,HTML后台模版下载">
 <meta name="description" content="H-ui.admin v3.1，是一款由国人开发的轻量级扁平化网站后台模板，完全免费开源的网站后台管理系统模版，适合中小型CMS后台系统。">
 </head>
@@ -42,16 +42,9 @@
       </div>
       <div class="row cl">
         <div class="formControls col-xs-8 col-xs-offset-3">
-          <input class="input-text size-L" type="text" placeholder="验证码" onblur="if(this.value==''){this.value='验证码:'}" onclick="if(this.value=='验证码:'){this.value='';}" value="验证码:" style="width:150px;">
-          <img src=""> <a id="kanbuq" href="javascript:;">看不清，换一张</a> </div>
+         
       </div>
-      <div class="row cl">
-        <div class="formControls col-xs-8 col-xs-offset-3">
-          <label for="online">
-            <input type="checkbox" name="online" id="online" value="">
-            使我保持登录状态</label>
-        </div>
-      </div>
+    
       <div class="row cl">
         <div class="formControls col-xs-8 col-xs-offset-3">
           <button name="" type="button" onclick="toIndexHtml()" id="toLogin" class="btn btn-success radius size-L" value="">&nbsp;登&nbsp;&nbsp;&nbsp;&nbsp;录&nbsp;</button>
@@ -61,7 +54,7 @@
     </form>
   </div>
 </div>
-<div class="footer">Copyright 你的公司名称 by H-ui.admin v3.1</div>
+<div class="footer">红十字应急救护培训</div>
 <script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script> 
 <script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script>
 <script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
@@ -70,7 +63,7 @@
 <script language="javascript">
 $(function(){ 
 	if (window != top) 
- top.location.href = location.href; 
+  top.location.href = location.href; 
 }); 
 	
 function toIndexHtml(){
@@ -80,6 +73,7 @@ function toIndexHtml(){
 	 		type:"post",
 	 		url:urlFactory("back/login"),
 	 		dataType:'json',
+	 		xhrFields: {withCredentials: true},
 	 		data:{
 	 			username:usernames,
 	 			passwd  :password
@@ -87,11 +81,8 @@ function toIndexHtml(){
 	 		success :function(data){
 	 			console.log(data)
 			if(data.status=="success"){
-	 				var id=0;
-	 			if(usernames=="admin"){
-	 				id=1;
-	 			}
-	 			document.location.href ="index.html?id="+id;
+	 			sessionStorage.setItem("isAdmin",""+ usernames=="admin");
+	 			document.location.href ="index.html";
 	 		}
 			if(data.status=="failure"){
           layer.msg('用户名或密码错误!',{icon:2,time:2000});
