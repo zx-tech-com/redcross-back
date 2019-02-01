@@ -20,10 +20,10 @@
 	text-align:center;
 }
 </style>
-<title>科目列表</title>
+<title>报名人员列表</title>
 </head>
 <body>
-<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 课程管理 <span class="c-gray en">&gt;</span> 科目列表 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 考试报名列表 <span class="c-gray en"></span><a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="page-container">
 	<div class="text-c">
 					<button onclick="removeIframe()" class="btn btn-primary radius">关闭选项卡</button>
@@ -122,13 +122,13 @@ $(function(){
  		  	{"data":"status",
  		  	"render": function(data, type, row, meta) {
  		  		if(data==1){
- 		  			return '<p  class="btn btn-primary radius">购买中</p>';
+ 		  			return '<p>报名中</p>';
  		  		}
  		  		if(data==2){
- 		  			return '<p  class="btn btn-primary radius">已购买</p>';
+ 		  			return '<p>报名成功</p>';
  		  		}
  		  		if(data==3){
- 		  			return '<p  class="btn btn-primary radius">已取消</p>';
+ 		  			return '<p>已取消</p>';
  		  		}
  		  	
  		  	}

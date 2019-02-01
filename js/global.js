@@ -1,7 +1,7 @@
 const protocol="http://"
 
 
-const domain="192.168.1.100";
+const domain="192.168.1.101";
 //const domain="192.168.1.177";
 //const domain="39.98.204.123";
 const port = "9090";
@@ -21,7 +21,7 @@ function urlFactory(url){
 
 
 
-	var token = "eyJhbGciOiJIUzI1NiJ9.eyJjdXN0b21lcklkIjoxLCJleHBpcmVzIjoxNTQ4OTMwNTM0NDIyfQ.OEecUjNNSTwBJubIygxw9XoyBp-7B21o63w6gs5CQ34";
+	var token = "eyJhbGciOiJIUzI1NiJ9.eyJjdXN0b21lcklkIjoxLCJleHBpcmVzIjoxNTQ5MDEyNTc1NDEyfQ.jtiLQftryhTfgiwCT5gYoXnmOTpx20787hs3-Oni7dw";
     //var  token="eyJhbGciOiJIUzI1NiJ9.eyJjdXN0b21lcklkIjoxLCJleHBpcmVzIjoxNTQ4ODQxNzM1OTU0fQ.isyxUw3ZHymGh7pGUllSeGn4BwQL9ns9b_2SUUXBox0";
 
 
@@ -83,4 +83,9 @@ function explainStatus (status){
 	
 	return res?res : "";
 	
+}
+
+
+function gotoLogin(){
+	document.location.href = "login.html";
 }
