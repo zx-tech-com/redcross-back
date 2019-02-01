@@ -4,10 +4,10 @@ const protocol="http://"
 
 // const domain="192.168.1.101";
 // const domain="192.168.1.177";
-const domain = "localhost"
-//const domain="39.98.204.123";
-const port = "9090";
-//const port = "8080";
+
+const domain="39.98.204.123";
+// const port = "9090";
+const port = "80";
 const project = "/RedCross/";
 
 //默认查找前1000条数据
@@ -21,6 +21,7 @@ const BACK_END_USER_ID = 18;
 function urlFactory(url){
 	
 
+	return protocol + domain + ":" + port + project + url;
 
 	var token = "eyJhbGciOiJIUzI1NiJ9.eyJjdXN0b21lcklkIjo1LCJleHBpcmVzIjoxNTQ5MDE2MDM3NTIxfQ.YwbedsPqea1Ufwgc7OGxow1JpYQq7fUHFCOVys2WlmA";
     //var  token="eyJhbGciOiJIUzI1NiJ9.eyJjdXN0b21lcklkIjoxLCJleHBpcmVzIjoxNTQ4NTk4MzkzMjc2fQ.IRuo0Tvrt6dAANwDy3mCUsQZBmZoQv8HUYUSubum5MM";
