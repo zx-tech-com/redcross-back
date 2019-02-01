@@ -1,4 +1,4 @@
-﻿<!DOCTYPE HTML>
+<!DOCTYPE HTML>
 <html>
 <head>
 <meta charset="utf-8">
@@ -73,6 +73,9 @@
 				},
  		"ajax":{
  			url:urlFactory("knowledge/adminListKnowledgeType"),
+			xhrFields: {
+				withCredentials: true,
+			},
  			type: "POST",
 			data: function() {
 				var params = {
@@ -130,6 +133,9 @@ function del(id,obj){
 		$.ajax({
 				type: 'POST',
 				url: urlFactory("knowledge/adminDeleteKnowledgeType?knowledgeTypeId="+id),
+				xhrFields: {
+					withCredentials: true,
+				},
 				dataType: 'json',
 				success: function(data){
 				if(data.status === SUCCESS){

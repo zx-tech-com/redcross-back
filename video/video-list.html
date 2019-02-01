@@ -113,6 +113,7 @@
 
 
 		<script type="text/javascript">
+						
 			var currentPage=1;
 			var totalCount=0;
 			$('.table-sort').dataTable({
@@ -138,6 +139,9 @@
 				},
 				"ajax": {
 					url: urlFactory("video/adminListVideo"),
+					xhrFields: {
+						withCredentials: true,
+					},
 					type: "POST",
 					data: function() {
 						 if(currentPage==1){
@@ -245,6 +249,9 @@
 					$.ajax({
 						type: 'POST',
 						url: urlFactory("video/adminDeleteVideo?videoId=" + id),
+						xhrFields: {
+							withCredentials: true,
+						},
 						dataType: 'json',
 						success: function(data) {
 							if (data.status === SUCCESS) {
@@ -291,6 +298,9 @@
 					console.log(ids);
 					$.ajax({
 						url : urlFactory("video/adminDeleteBatchVideo"),
+						xhrFields: {
+							withCredentials: true,
+						},
 						data : {
 							ids : ids
 						},

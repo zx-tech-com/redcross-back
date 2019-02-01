@@ -89,6 +89,9 @@ $('.table-sort').dataTable({
 	],
 	"ajax": {
 			url: urlFactory("course/listCourseSubject"), 
+			xhrFields: {
+				withCredentials: true,
+			},
    },
 	"columns": [
 			{ "data": "period" },

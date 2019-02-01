@@ -1,8 +1,10 @@
 const protocol="http://"
 
 
-const domain="192.168.1.101";
-//const domain="192.168.1.177";
+
+// const domain="192.168.1.101";
+// const domain="192.168.1.177";
+const domain = "localhost"
 //const domain="39.98.204.123";
 const port = "9090";
 //const port = "8080";
@@ -20,10 +22,8 @@ function urlFactory(url){
 	
 
 
-
-	var token = "eyJhbGciOiJIUzI1NiJ9.eyJjdXN0b21lcklkIjoxLCJleHBpcmVzIjoxNTQ5MDEyNTc1NDEyfQ.jtiLQftryhTfgiwCT5gYoXnmOTpx20787hs3-Oni7dw";
-    //var  token="eyJhbGciOiJIUzI1NiJ9.eyJjdXN0b21lcklkIjoxLCJleHBpcmVzIjoxNTQ4ODQxNzM1OTU0fQ.isyxUw3ZHymGh7pGUllSeGn4BwQL9ns9b_2SUUXBox0";
-
+	var token = "eyJhbGciOiJIUzI1NiJ9.eyJjdXN0b21lcklkIjo1LCJleHBpcmVzIjoxNTQ5MDE2MDM3NTIxfQ.YwbedsPqea1Ufwgc7OGxow1JpYQq7fUHFCOVys2WlmA";
+    //var  token="eyJhbGciOiJIUzI1NiJ9.eyJjdXN0b21lcklkIjoxLCJleHBpcmVzIjoxNTQ4NTk4MzkzMjc2fQ.IRuo0Tvrt6dAANwDy3mCUsQZBmZoQv8HUYUSubum5MM";
 
 	
 	if(!url){//url为空
@@ -42,6 +42,9 @@ $(function(){
 	if(!getBaseAccessUrl()){
 		$.ajax({
 			url : urlFactory("common/fileBasePath"),
+			xhrFields: {
+				withCredentials: true,
+			},
 			success : function(data){
 				if(data.status == SUCCESS){
 					BASE_URL = data.data;
