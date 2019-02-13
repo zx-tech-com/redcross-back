@@ -3,7 +3,7 @@ const protocol="http://"
 
 
 // const domain="192.168.1.101";
-// const domain="192.168.1.177";
+// const domain="localhost";
 
 const domain="39.98.204.123";
 // const port = "9090";
@@ -93,3 +93,4 @@ function explainStatus (status){
 function gotoLogin(){
 	document.location.href = "login.html";
 }
+
