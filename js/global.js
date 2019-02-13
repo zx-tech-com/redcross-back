@@ -37,7 +37,6 @@ function urlFactory(url){
 	}
 	
 }
-
 $(function(){
 	if(!getBaseAccessUrl()){
 		$.ajax({
