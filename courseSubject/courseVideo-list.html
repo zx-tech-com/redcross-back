@@ -69,16 +69,16 @@
 				</div>
 
 				<div class="mt-20">
-					<table class="table table-border table-bordered table-bg table-hover table-sort table-responsive">
+					<table width="100%" class="table table-border table-bordered table-bg table-hover table-sort table-responsive">
 						<thead>
 							<tr class="text-c">
 								<th width="25"><input type="checkbox" name="" value=""></th>
-								<th width="80">序号</th>
+								<th width="60">序号</th>
 								<th width="120">课程名称</th>
-								<th width="120">第几集</th>
+								<th width="60">第几集</th>
 								<th width="240">视频</th>
 								<th width="120">描述</th>
-								<th width="120">操作</th>
+								<th width="60">操作</th>
 							</tr>
 						</thead>
 					</table>
@@ -195,7 +195,7 @@
 						"data": "videoUrl",
 						"render" : function(data){
 							data = getBaseAccessUrl() + data;
-							return '<video width="320" height="240" controls="controls"><source src="' + data + '"/><object data="../' + data + '" width="320" height="240"><embed src="../' + data + '" width="320" height="240" /></object></video>';
+							return '<video width="200px" height="160px" controls="controls"><source src="' + data + '"/><object data="../' + data + '" width="200px" height="160px"><embed src="../' + data + '" width="200px" height="160px" /></object></video>';
 						}
 					},
 					{

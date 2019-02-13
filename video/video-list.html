@@ -74,7 +74,7 @@
 				</div>
 
 				<div class="mt-20">
-					<table class="table table-border table-bordered table-bg table-hover table-sort table-responsive">
+					<table width="100%" class="table table-border table-bordered table-bg table-hover table-sort table-responsive">
 						<thead>
 							<tr class="text-c">
 								<th><input type="checkbox" name="" value=""></th>
@@ -194,8 +194,8 @@
 						"data": "thumbnailUrl",
 						"render" : function(data){
  		  				data = getBaseAccessUrl() + data;
- 		  				return '<img src="'+data+'" width="320" height="240" />';
-					}
+ 		  				return '<img src="'+data+'" width="150px" height="120px" />';
+						}
 					},
 					{
 						"data": "description"
@@ -204,8 +204,8 @@
 						"data": "videoUrl",
 						"render": function(data) {
 							data = getBaseAccessUrl() + data;
-							return '<video width="320" height="240" controls="controls"><source src="' + data + '"/><object data="' +
-								data + '" width="320" height="240"><embed src="' + data + '" width="320" height="240" /></object></video>';
+							return '<video width="200px" height="160px" controls="controls"><source src="' + data + '"/><object data="' +
+								data + '" width="200px" height="160px"><embed src="' + data + '" width="200px" height="160px" /></object></video>';
 						}
 					},
 					{
