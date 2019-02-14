@@ -52,7 +52,6 @@
 						<div class="uploader-thum-container">
 							<input class="upload-file-img" type="file" name="thumbnailUrl" id="thumbnailUrl" multiple="multiple" accept="image/*"
 							 onchange="uploadImgThumbnail()" />
-
 						</div>
 					</div>
 				</div>
@@ -108,10 +107,16 @@
 						var sname = courseSubject.sname;
 						var price = courseSubject.price;
 						var description = courseSubject.description;
+						
+						
 						$("#sname").val(sname);
 						$("#period").val(period);
 						$("#price").val(price);
 						$("#description").val(description);
+						/*var thumbnailUrl = courseSubject.thumbnailUrl;
+						var certificateUrl = courseSubject.certificateUrl;
+						$("#thumbnailUrl").val(thumbnailUrl);
+						$("#certificateUrl").val(certificateUrl);*/
 					}
 				});
 
