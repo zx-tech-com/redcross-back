@@ -93,4 +93,3 @@ function explainStatus (status){
 function gotoLogin(){
 	document.location.href = "login.html";
 }
-

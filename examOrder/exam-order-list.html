@@ -1,157 +1,226 @@
 <!DOCTYPE HTML>
 <html>
-<head>
-<meta charset="utf-8">
-<meta name="renderer" content="webkit|ie-comp|ie-stand">
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
-<!--[if lt IE 9]>
+	<head>
+		<meta charset="utf-8">
+		<meta name="renderer" content="webkit|ie-comp|ie-stand">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+		<meta http-equiv="Cache-Control" content="no-siteapp" />
+		<!--[if lt IE 9]>
 <script type="text/javascript" src="lib/html5shiv.js"></script>
 <script type="text/javascript" src="lib/respond.min.js"></script>
 <![endif]-->
-<link rel="stylesheet" type="text/css" href="../static/h-ui/css/H-ui.min.css" />
-<link rel="stylesheet" type="text/css" href="../static/h-ui.admin/css/H-ui.admin.css" />
-<link rel="stylesheet" type="text/css" href="../lib/Hui-iconfont/1.0.8/iconfont.css" />
-<link rel="stylesheet" type="text/css" href="../static/h-ui.admin/skin/default/skin.css" id="skin" />
-<link rel="stylesheet" type="text/css" href="../static/h-ui.admin/css/style.css" />
-<style>
-.table-sort>tbody>tr>td{
+		<link rel="stylesheet" type="text/css" href="../static/h-ui/css/H-ui.min.css" />
+		<link rel="stylesheet" type="text/css" href="../static/h-ui.admin/css/H-ui.admin.css" />
+		<link rel="stylesheet" type="text/css" href="../lib/Hui-iconfont/1.0.8/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="../static/h-ui.admin/skin/default/skin.css" id="skin" />
+		<link rel="stylesheet" type="text/css" href="../static/h-ui.admin/css/style.css" />
+		
+		<!-- begin -->
+		<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.5.2/css/buttons.dataTables.min.css" />
+		<!-- end -->
+		
+		<style>
+			.table-sort>tbody>tr>td{
 	text-align:center;
 }
 </style>
-<title>报名人员列表</title>
-</head>
-<body>
-<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 考试报名列表 <span class="c-gray en"></span><a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
-<div class="page-container">
-	<div class="text-c">
-					<button onclick="removeIframe()" class="btn btn-primary radius">关闭选项卡</button>
-					 <span class="select-box inline">
-						<select name="" class="select" id="payStatus">
-							<option value="0">全部</option>
-							<option value="1">待支付</option>
-							<option value="2">已完成</option>
-							<option value="3">已取消</option>
-						</select>
-					</span> 日期范围：
-					<input type="text" onfocus="WdatePicker({ maxDate:'#F{$dp.$D(\'logmax\')||\'%y-%M-%d\'}' })" id="logmin" class="input-text Wdate"
-					 style="width:120px;">
-					-
-					<input type="text" onfocus="WdatePicker({ minDate:'#F{$dp.$D(\'logmin\')}',maxDate:'%y-%M-%d' })" id="logmax"
-					 class="input-text Wdate" style="width:120px;">
-					<input type="text" name="nameSearch" id="nameSearch" placeholder=" 请输入报考人姓名" style="width:250px" class="input-text">
-					<button name="" id="searchRecord" class="btn btn-success" ><i class="Hui-iconfont">&#xe665;</i> 搜记录</button>
-				</div>
-	<div class="mt-20">
-		<table width="100%" class="table table-border table-bordered table-bg table-hover table-sort table-responsive">
-			<thead>
-				<tr class="text-c">
-					<th width="25">序号</th>
-					<th width="80">姓名</th>
-					<th width="80">报考科目</th>
-					<th width="120">邮寄地址</th>
-					<th width="120">订单号</th>					
-					<th width="80">订单时间</th>
-					<th width="80">报名方法</th>
-					<th width="80">报名状态</th>
-					<th width="120">备注</th>
-				</tr>
-				
-			</thead>
-		</table>
-	</div>
-</div>
-<!--_footer 作为公共模版分离出去-->
-<script type="text/javascript" src="../lib/jquery/1.9.1/jquery.min.js"></script> 
-<script type="text/javascript" src="../lib/layer/2.4/layer.js"></script>
-<script type="text/javascript" src="../static/h-ui/js/H-ui.min.js"></script> 
-<script type="text/javascript" src="../static/h-ui.admin/js/H-ui.admin.js"></script> <!--/_footer 作为公共模版分离出去-->
+		<title>报名人员列表</title>
+	</head>
+	<body>
+		<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 考试报名列表 <span
+			 class="c-gray en"></span><a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);"
+			 title="刷新"><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+		<div class="page-container">
+			<div class="text-c">
+				<button onclick="removeIframe()" class="btn btn-primary radius">关闭选项卡</button>
+				<span class="select-box inline">
+					<select name="" class="select" id="payStatus">
+						<option value="0">全部</option>
+						<option value="1">待支付</option>
+						<option value="2">已完成</option>
+						<option value="3">已取消</option>
+					</select>
+				</span> 日期范围：
+				<input type="text" onfocus="WdatePicker({ maxDate:'#F{$dp.$D(\'logmax\')||\'%y-%M-%d\'}' })" id="logmin" class="input-text Wdate"
+				 style="width:120px;">
+				-
+				<input type="text" onfocus="WdatePicker({ minDate:'#F{$dp.$D(\'logmin\')}',maxDate:'%y-%M-%d' })" id="logmax" class="input-text Wdate"
+				 style="width:120px;">
+				<input type="text" name="nameSearch" id="nameSearch" placeholder=" 请输入报考人姓名" style="width:250px" class="input-text">
+				<button name="" id="searchRecord" class="btn btn-success"><i class="Hui-iconfont">&#xe665;</i> 搜记录</button>
+			</div>
+			<div class="mt-20">
+				<table width="100%" class="table table-border table-bordered table-bg table-hover table-sort table-responsive">
+					<thead>
+						<tr class="text-c">
+							<th width="25">序号</th>
+							<th width="80">姓名</th>
+							<th width="80">报考科目</th>
+							<th width="120">邮寄地址</th>
+							<th width="120">订单号</th>
+							<th width="80">订单时间</th>
+							<th width="80">报名方法</th>
+							<th width="80">报名状态</th>
+							<th width="120">备注</th>
+						</tr>
 
-<!--请在下方写此页面业务相关的脚本-->
-<script type="text/javascript" src="../lib/My97DatePicker/4.8/WdatePicker.js"></script> 
-<script type="text/javascript" src="../lib/datatables/1.10.0/jquery.dataTables.min.js"></script> 
-<script type="text/javascript" src="../lib/laypage/1.2/laypage.js"></script>
-<script type="text/javascript" src="../js/global.js"></script>
-<script type="text/javascript">
-$(function(){
- 	var gTable=$('.table-sort').dataTable({ 
- 		"aaSorting": [[ 1, "desc" ]],//默认第几个排序
-		"bStateSave": true,//状态保存
-		"pading":false,
-		"fnDrawCallback": function(){
-					　　var api = this.api();
-					　　var startIndex= api.context[0]._iDisplayStart;//获取到本页开始的条数
-					　　api.column(0).nodes().each(function(cell, i) {
-					　　　　cell.innerHTML = startIndex + i + 1;
-					　　}); 
+					</thead>
+				</table>
+			</div>
+		</div>
+		<!--_footer 作为公共模版分离出去-->
+		<script type="text/javascript" src="../lib/jquery/1.9.1/jquery.min.js"></script>
+		<script type="text/javascript" src="../lib/layer/2.4/layer.js"></script>
+		<script type="text/javascript" src="../static/h-ui/js/H-ui.min.js"></script>
+		<script type="text/javascript" src="../static/h-ui.admin/js/H-ui.admin.js"></script>
+		<!--/_footer 作为公共模版分离出去-->
+
+		<!--请在下方写此页面业务相关的脚本-->
+		<script type="text/javascript" src="../lib/My97DatePicker/4.8/WdatePicker.js"></script>
+		<script type="text/javascript" src="../lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
+		<script type="text/javascript" src="../lib/laypage/1.2/laypage.js"></script>
+		<script type="text/javascript" src="../js/global.js"></script>
+		
+		<!-- begin -->
+		<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
+		<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.flash.min.js"></script>
+		<script type="text/javascript" language="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+		<script type="text/javascript" language="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+		<script type="text/javascript" language="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+		<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
+		<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js"></script>
+		<!-- end -->
+		
+		
+		<script type="text/javascript">
+			$(function() {
+				var gTable = $('.table-sort').dataTable({
+					
+					// begin 
+					dom: 'Bfrtip',
+					buttons: [
+						{
+							extend : 'excel',
+							text: '导出到Excel', 
+							title: '考试报名列表', //导出的excel标题
+							className: 'btn btn-primary', //按钮的class样式
+							exportOptions: { 
+								//columns:[0,1,2,3],//指定导出哪几个列
+								format: { //用于导出将使用的单元格格式化函数的容器对象 format有三个子标签，header，body和foot
+									body: function(data, row, column, node) { //body区域的function，可以操作需要导出excel的数据格式
+										if (column == 0) {
+											return row + 1;
+										}else if([6,7].indexOf(column) > -1){//报名方法（6）,报名状态（7）需要特殊处理
+											return $(data).text();
+										}else {
+											return data;
+										}
+									},
+								}
+							},
+							customize: function ( xlsx ) {
+								var sheet = xlsx.xl.worksheets['sheet1.xml'];
+								$('row:eq(1) c', sheet).attr( 's', '51' );//居中
+							}
+						}
+					],
+					//end 
+					
+					
+					"aaSorting": [
+						[1, "desc"]
+					], //默认第几个排序
+					"bStateSave": true, //状态保存
+					"pading": false,
+					"fnDrawCallback": function() {
+						var api = this.api();
+						var startIndex = api.context[0]._iDisplayStart; //获取到本页开始的条数
+						api.column(0).nodes().each(function(cell, i) {
+							cell.innerHTML = startIndex + i + 1;
+						});
 					},
- 		"ajax":{
- 			url:urlFactory("examorder/listExamOrder"),
- 			type: "POST",
-			contentType : 'application/json; charset=utf-8',
-			xhrFields: {
-				withCredentials: true,
-			},
-			data: function() {
-			var params = {
-				status : $("#payStatus").val(),
-				submitTimeMin : $("#logmin").val(),
-				submitTime : $("#logmax").val(),
-				realName : $("#nameSearch").val()
-				};
-				return JSON.stringify(params);
-				}
- 		},
- 		 "columns": [
- 		    {
-			"data": null,
-			width : '40px'
-			},
- 		  	{"data":"realName"},
- 		  	{"data":"sname"},
- 		  	{"data":"detailAddress"},
- 		  	{"data":"orderNumber"},		  	
- 		  	{"data":"submitTime"},
- 		  	{"data":"method",
- 		  	"render": function(data, type, row, meta) {
-					if(data==1){
-						return '<p class="btn btn-primary radius">线上</p>';
-					}else{
-						return '<p class="btn btn-primary radius">线下</p>';
-					}	
-				}
- 		  	},
- 		  	{"data":"status",
- 		  	"render": function(data, type, row, meta) {
- 		  		if(data==1){
- 		  			return '<p>报名中</p>';
- 		  		}
- 		  		if(data==2){
- 		  			return '<p>报名成功</p>';
- 		  		}
- 		  		if(data==3){
- 		  			return '<p>已取消</p>';
- 		  		}
- 		  	
- 		  	}
- 		  	},
- 		  	{"data":"coment"}
- 		  ],  
-	});
-})
-function courseSubjectUpdate(id,editTitle,editUrl){
-	document.location.href = "courseSubject-update.html?id=" + id
-}
-function getCourse(id){
-	document.location.href = "courseVideo-list.html?id=" + id
-}
-$(function(){
-	$("#searchRecord").on("click",function(){
-		var table = $('.table-sort').DataTable();  
-		table.ajax.reload();  
-		})
-	})
-</script> 
-</body>
+					"ajax": {
+						url: urlFactory("examorder/listExamOrder"),
+						type: "POST",
+						contentType: 'application/json; charset=utf-8',
+						xhrFields: {
+							withCredentials: true,
+						},
+						data: function() {
+							var params = {
+								status: $("#payStatus").val(),
+								submitTimeMin: $("#logmin").val(),
+								submitTime: $("#logmax").val(),
+								realName: $("#nameSearch").val()
+							};
+							return JSON.stringify(params);
+						}
+					},
+					"columns": [{
+							"data": null,
+							width: '40px'
+						},
+						{
+							"data": "realName"
+						},
+						{
+							"data": "sname"
+						},
+						{
+							"data": "detailAddress"
+						},
+						{
+							"data": "orderNumber"
+						},
+						{
+							"data": "submitTime"
+						},
+						{
+							"data": "method",
+							"render": function(data, type, row, meta) {
+								if (data == 1) {
+									return '<p class="btn btn-primary radius">线上</p>';
+								} else {
+									return '<p class="btn btn-primary radius">线下</p>';
+								}
+							}
+						},
+						{
+							"data": "status",
+							"render": function(data, type, row, meta) {
+								if (data == 1) {
+									return '<p>报名中</p>';
+								}
+								if (data == 2) {
+									return '<p>报名成功</p>';
+								}
+								if (data == 3) {
+									return '<p>已取消</p>';
+								}
+
+							}
+						},
+						{
+							"data": "coment"
+						}
+					],
+				});
+			})
+
+			function courseSubjectUpdate(id, editTitle, editUrl) {
+				document.location.href = "courseSubject-update.html?id=" + id
+			}
+
+			function getCourse(id) {
+				document.location.href = "courseVideo-list.html?id=" + id
+			}
+			$(function() {
+				$("#searchRecord").on("click", function() {
+					var table = $('.table-sort').DataTable();
+					table.ajax.reload();
+				})
+			})
+		</script>
+	</body>
 </html>
