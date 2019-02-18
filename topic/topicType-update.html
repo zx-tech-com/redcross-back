@@ -45,8 +45,9 @@
 			<label class="form-label col-xs-4 col-sm-2">修改照片：</label>
 			<div class="formControls col-xs-8 col-sm-9">
 				<div class="uploader-thum-container">
-					<input class="upload-file-img" type="file" name="thumbnailUrl" id="thumbnailUrl" multiple="multiple" accept="image/*"  />
+					<input class="upload-file-img" type="file" name="thumbnailUrl" id="thumbnailUrl" multiple="multiple" accept="image/*" onchange="uploadImg(this)" />
 				</div>
+				<img id="img" style="height: 80px;width: 80px;"/>
 			</div>
 		</div>
 		
@@ -87,10 +88,7 @@
 			layer.msg('话题类型不能为空',{icon:2,time:1500});
             return;
 		}
-		if (typeof(thumbnail) == "undefined") {
-            layer.msg('请选择话题图片!',{icon:2,time:1500});
-            return;
-        }
+		
 		if(document.getElementById("thumbnailUrl").files.length>=2){
 			layer.msg('只能选择一张话题图片!',{icon:2,time:1500});
             return;	
@@ -98,7 +96,7 @@
 		formFile.append('id',id);
 		formFile.append('tname',tname);
        formFile.append('description',description);
-       formFile.append('imgUrl',thumbnail,thumbnail.name);
+       formFile.append('imgUrl',thumbnail);
 
 		$.ajax({
 			url : urlFactory("social/adminUpdateTopicType"),
@@ -121,6 +119,43 @@
 			},
 		});
     }
+	function uploadImg(obj) {
+				var file = obj.files[0];
+                
+                console.log(obj);console.log(file);
+                console.log("file.size = " + file.size);  //file.size 单位为byte
+
+                var reader = new FileReader();
+
+                //读取文件过程方法
+                reader.onloadstart = function (e) {
+                    console.log("开始读取....");
+                }
+                reader.onprogress = function (e) {
+                    console.log("正在读取中....");
+                }
+                reader.onabort = function (e) {
+                    console.log("中断读取....");
+                }
+                reader.onerror = function (e) {
+                    console.log("读取异常....");
+                }
+                reader.onload = function (e) {
+                    console.log("成功读取....");
+
+                var img = document.getElementById("img");
+                img.src = e.target.result;
+                    
+                   
+                $("#img").attr("style","display:block;");
+                $("#img").attr("style","height: 80px;");
+                $("#img").attr("style","width: 80px;");
+                }
+
+                reader.readAsDataURL(file)
+		
+		
+    	}
 </script>
 <!--/请在上方写此页面业务相关的脚本-->
 </body>

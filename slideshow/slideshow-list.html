@@ -20,18 +20,18 @@
 	text-align:center;
 }
 </style>
-		<title>帖子类型列表</title>
+		<title>轮播图详情列表</title>
 	</head>
 	<body>
-		<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 轮播图管理 <span class="c-gray en">&gt;</span>
+		<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 课程管理 <span class="c-gray en">&gt;</span>
 			科目列表 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);"
 			 title="刷新"><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 		<div class="page-container">
 			<div class="cl pd-5 bg-1 bk-gray mt-20">
 				<span class="l">
 					<button onclick="removeIframe()" class="btn btn-primary radius">关闭选项卡</button>
-					<a class="btn btn-primary radius" data-title="添加类型" data-href="topic/topicType-add.html" onclick="Hui_admin_tab(this)"
-					 href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> 添加发帖类型</a>
+					<a class="btn btn-primary radius" data-title="添加轮播图" data-href="slideshow/slideshow-add.html" onclick="Hui_admin_tab(this)"
+					 href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> 添加轮播图</a>
 				</span>
 			</div>
 			<div class="mt-20">
@@ -40,8 +40,7 @@
 						<tr class="text-c">
 							<th width="25" style="display: none;">ID</th>
 							<th width="80">序号</th>
-							<th width="80">帖子类型</th>
-							<th width="80">图标</th>
+							<th width="80">轮播图</th>
 							<th width="120">描述</th>
 							<th width="120">操作</th>
 						</tr>
@@ -85,7 +84,7 @@
 						});
 					},
 					"ajax": {
-						url: urlFactory("social/findTopicType"),
+						url: urlFactory("slideshow/listSlideShow"),
 						xhrFields: {
 							withCredentials: true,
 						},
@@ -111,10 +110,7 @@
 							"data": null
 						},
 						{
-							"data": "tname"
-						},
-						{
-							"data": "thumbnailUrl",
+							"data": "imgUrl",
 							"render": function(data) {
 								data = getBaseAccessUrl() + data;
 								return '<img src="' + data + '" width="70" height="70" />';
@@ -126,8 +122,8 @@
 						{
 							"data": "virtual",
 							"render": function(data, type, row, meta) {
-								var editTitle = "'编辑发帖类型'";
-								var editUrl = "'topicType-update.html'";
+								var editTitle = "'编辑轮播图'";
+								var editUrl = "'slideshow-update.html'";
 								var str = "'" + encodeURIComponent(JSON.stringify(row)) + "'";
 								return '<a style="text-decoration:none" class="ml-5" onClick="edit(' + str + ',' + editTitle + ',' +
 									editUrl +
@@ -139,6 +135,13 @@
 				});
 			});
 
+
+
+
+
+
+
+
 			function edit(row, title, url) {
 				var videoObject = JSON.parse(decodeURIComponent(row));
 				var index = layer.open({
@@ -149,9 +152,10 @@
 						var body = layer.getChildFrame('body', index);
 						var iframeWin = window[layero.find('iframe')[0]['name']]; //得到iframe页的窗口对象，执行iframe页的方法：iframeWin.method();
 						body.find('#id').val(videoObject.id);
-						body.find('#tname').val(videoObject.tname);
+						body.find('#url').val(videoObject.url);
 						body.find('#description').val(videoObject.description);
-						body.find('#img').attr("src",getBaseAccessUrl()+videoObject.thumbnailUrl);
+						console.log(videoObject.imgUrl);
+						body.find('#img').attr("src",getBaseAccessUrl()+videoObject.imgUrl);
 					}
 				});
 				layer.full(index);
@@ -161,7 +165,7 @@
 				layer.confirm('确认要删除吗？', function(index) {
 					$.ajax({
 						type: 'POST',
-						url: urlFactory("social/adminDeleteTopicType?topicTypeId=" + id),
+						url: urlFactory("slideshow/deleteSlideShow?id=" + id),
 						dataType: 'json',
 						success: function(data) {
 							if (data.status === SUCCESS) {

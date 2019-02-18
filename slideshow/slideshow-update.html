@@ -14,37 +14,46 @@
 <link rel="stylesheet" type="text/css" href="../lib/Hui-iconfont/1.0.8/iconfont.css" />
 <link rel="stylesheet" type="text/css" href="../static/h-ui.admin/skin/default/skin.css" id="skin" />
 <link rel="stylesheet" type="text/css" href="../static/h-ui.admin/css/style.css" />
-<title>新增发帖类型</title>
+<title>修改类型</title>
 </head>
 <body>
 <article class="page-container">
 	<form class="form form-horizontal" id="form-article-add">
+		
 		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>类型名称：</label>
+			<label class="form-label col-xs-4 col-sm-2"></label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="" placeholder="例如:急救话题" id="tname" name="tname">
+				<input type="hidden" class="input-text" value="" placeholder="ID" id="id" name="id">
 			</div>
 		</div>
 		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-2">类型描述：</label>
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>连接地址：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<textarea name="description" id="description" cols="" rows="" class="textarea"  placeholder="请输入话题描述信息" datatype="*10-100" dragonfly="true" nullmsg="备注不能为空！" ></textarea>
+				<input type="text" class="input-text" value="" placeholder="例如:https://www.baidu.com" id="url" name="url">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">轮播图描述：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<textarea name="description" id="description" cols="" rows="" class="textarea"  placeholder="请输入轮播图描述信息" datatype="*10-100" dragonfly="true" nullmsg="备注不能为空！" ></textarea>
 				<p class="textarea-numberbar"><em class="textarea-length">0</em>/200</p>
 			</div>
 		</div>
+		
+		
 		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-2">类型照片：</label>
+			<label class="form-label col-xs-4 col-sm-2">修改轮播照片：</label>
 			<div class="formControls col-xs-8 col-sm-9">
 				<div class="uploader-thum-container">
-					<input class="upload-file-img" type="file" name="thumbnailUrl" id="thumbnailUrl" multiple="multiple" accept="image/*" onchange="uploadImg(this)" />
+					<input class="upload-file-img" type="file" name="imgUrl" id="imgUrl" multiple="multiple" accept="image/*" onchange="uploadImg(this)" />
 				</div>
-				<img id="img" style="display: none;"/>
+				<img id="img" style="height: 80px;width: 80px;"/>
 			</div>
 		</div>
 		
 		<div class="row cl">
 			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
-				<button onClick="topicType_save_submit();" class="btn btn-primary radius" type="button"><i class="Hui-iconfont">&#xe632;</i> 提交</button>
+				<button onClick="udpateWithAjax();" class="btn btn-primary radius" type="button"><i class="Hui-iconfont">&#xe632;</i> 提交</button>
 				<button onClick="removeIframe();" class="btn btn-default radius" type="button">&nbsp;&nbsp;取消&nbsp;&nbsp;</button>
 			</div>
 		</div>
@@ -68,118 +77,51 @@
 <script type="text/javascript" src="../lib/ueditor/1.4.3/lang/zh-cn/zh-cn.js"></script>
 <script type="text/javascript" src="../js/global.js"></script>
 <script type="text/javascript">
-$(function(){
-	$('.skin-minimal input').iCheck({
-		checkboxClass: 'icheckbox-blue',
-		radioClass: 'iradio-blue',
-		increaseArea: '20%'
-	})
-});
 	
-	function topicType_save_submit(){
-		var description=$("*[name='description']").val();
-		var tname=$("#tname").val();
-		var thumbnail= document.getElementById("thumbnailUrl").files[0];
-		if(tname.trim().length==0){
-			layer.msg('话题类型不能为空',{icon:2,time:1500});
-            return;
+	function udpateWithAjax() {  
+		var id=$("#id").val();
+       var description=$("*[name='description']").val();
+		var url=$("#url").val();
+		var imgUrl= document.getElementById("imgUrl").files[0];
+		if(url.trim().length!=0){
+			var reg=/^([hH][tT]{2}[pP]:\/\/|[hH][tT]{2}[pP][sS]:\/\/)(([A-Za-z0-9-~]+)\.)+([A-Za-z0-9-~\/])+$/;
+ 			if(!reg.test(url)){
+ 				layer.msg('请输入正确的网站',{icon:2,time:1500});
+            	return;
+ 			}
 		}
-		if (typeof(thumbnail) == "undefined") {
-            layer.msg('请选择话题图片!',{icon:2,time:1500});
-            return;
-        }
-		if(document.getElementById("thumbnailUrl").files.length>=2){
-			layer.msg('只能选择一张话题图片!',{icon:2,time:1500});
+		
+		if(document.getElementById("imgUrl").files.length>=2){
+			layer.msg('只能选择一张轮播图片!',{icon:2,time:1500});
             return;	
 		}
-		
 		var formFile = new FormData();
-		formFile.append('tname',tname);
+		formFile.append('id',id);
+		formFile.append('url',url);
        formFile.append('description',description);
-       formFile.append('imgUrl',thumbnail,thumbnail.name);
-		$.ajax({
-			url: urlFactory("social/adminAddTopicType"),
-            data:formFile, 
-            type: "Post",
-            dataType: "json",
-            contentType: false, //必须
-            processData: false,
-            success: function(data){
-            	if(data.status=="success"){
-            		layer.msg('添加成功!',{icon:1,time:1000});
-            	}
-            	if(data.status=="failure"){
-            		layer.msg('添加失败!',{icon:2,time:1000});
-            	}
-            }
-			
-		})
-	}
-	
-	
-	function uploadImgThumbnail() {
-		var thumbnailPersonsFile = document.getElementById("thumbnailUrl");
-		var thumbnailName=thumbnailPersonsFile.value;
-		var thumbnailFileName=thumbnailName.substring(thumbnailName.lastIndexOf(".") + 1).toLowerCase();
-   		if (thumbnailFileName !== "png" && thumbnailFileName !== "jpg") {
-           alert("上传图片格式不正确，请重新上传");
-           return;
-    	} 
-		
-}
-	function uploadImgCertificate(){
-	}
-	//表单验证
-	$("#form-article-add").validate({
-		rules:{
-			articletitle:{
-				required:true,
-			},
-			articletitle2:{
-				required:true,
-			},
-			articlecolumn:{
-				required:true,
-			},
-			articletype:{
-				required:true,
-			},
-			articlesort:{
-				required:true,
-			},
-			keywords:{
-				required:true,
-			},
-			abstract:{
-				required:true,
-			},
-			author:{
-				required:true,
-			},
-			sources:{
-				required:true,
-			},
-			allowcomments:{
-				required:true,
-			},
-			commentdatemin:{
-				required:true,
-			},
-			commentdatemax:{
-				required:true,
-			},
+       formFile.append('img',imgUrl);
 
-		},
-		onkeyup:false,
-		focusCleanup:true,
-		success:"valid",
-		submitHandler:function(form){
-			//$(form).ajaxSubmit();
-			var index = parent.layer.getFrameIndex(window.name);
-			//parent.$('.btn-refresh').click();
-			parent.layer.close(index);
-		}
-	});	
+		$.ajax({
+			url : urlFactory("slideshow/updateSlideShow"),
+			xhrFields: {
+				withCredentials: true,
+			},
+			data : formFile,
+			type : "POST",
+			contentType: false, //必须
+            processData: false,
+			success: function(data) {
+				if(data.status =="success"){
+					layer.msg('修改成功!',{icon:1,time:1000});
+				}else{
+					layer.msg('修改失败!',{icon:2,time:1000});
+				}
+			},
+			error:function(data) {
+				layer.msg('修改失败!',{icon:2,time:1000});
+			},
+		});
+    }
 	function uploadImg(obj) {
 				var file = obj.files[0];
                 
@@ -216,7 +158,7 @@ $(function(){
                 reader.readAsDataURL(file)
 		
 		
-    	} 
+    	}
 </script>
 <!--/请在上方写此页面业务相关的脚本-->
 </body>

@@ -20,23 +20,23 @@
 <article class="page-container">
 	<form class="form form-horizontal" id="form-article-add">
 		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>类型名称：</label>
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>链接地址：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="" placeholder="例如:急救话题" id="tname" name="tname">
+				<input type="text" class="input-text" value="" placeholder="例如:https://www.baidu.com" id="url" name="tname">
 			</div>
 		</div>
 		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-2">类型描述：</label>
+			<label class="form-label col-xs-4 col-sm-2">描述：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<textarea name="description" id="description" cols="" rows="" class="textarea"  placeholder="请输入话题描述信息" datatype="*10-100" dragonfly="true" nullmsg="备注不能为空！" ></textarea>
+				<textarea name="description" id="description" cols="" rows="" class="textarea"  placeholder="请输入轮播图描述信息" datatype="*10-100" dragonfly="true" nullmsg="备注不能为空！" ></textarea>
 				<p class="textarea-numberbar"><em class="textarea-length">0</em>/200</p>
 			</div>
 		</div>
 		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-2">类型照片：</label>
+			<label class="form-label col-xs-4 col-sm-2">照片：</label>
 			<div class="formControls col-xs-8 col-sm-9">
 				<div class="uploader-thum-container">
-					<input class="upload-file-img" type="file" name="thumbnailUrl" id="thumbnailUrl" multiple="multiple" accept="image/*" onchange="uploadImg(this)" />
+					<input class="upload-file-img" type="file" name="imgUrl" id="imgUrl" multiple="multiple" accept="image/*" onchange="uploadImg(this)" />
 				</div>
 				<img id="img" style="display: none;"/>
 			</div>
@@ -78,27 +78,30 @@ $(function(){
 	
 	function topicType_save_submit(){
 		var description=$("*[name='description']").val();
-		var tname=$("#tname").val();
-		var thumbnail= document.getElementById("thumbnailUrl").files[0];
-		if(tname.trim().length==0){
-			layer.msg('话题类型不能为空',{icon:2,time:1500});
-            return;
+		var url=$("#url").val();
+		var imgUrl= document.getElementById("imgUrl").files[0];
+		if(url.trim().length!=0){
+			var reg=/^([hH][tT]{2}[pP]:\/\/|[hH][tT]{2}[pP][sS]:\/\/)(([A-Za-z0-9-~]+)\.)+([A-Za-z0-9-~\/])+$/;
+ 			if(!reg.test(url)){
+ 				layer.msg('请输入正确的网站',{icon:2,time:1500});
+            	return;
+ 			}
 		}
-		if (typeof(thumbnail) == "undefined") {
-            layer.msg('请选择话题图片!',{icon:2,time:1500});
+		if (typeof(imgUrl) == "undefined") {
+            layer.msg('请选择轮播图片!',{icon:2,time:1500});
             return;
         }
-		if(document.getElementById("thumbnailUrl").files.length>=2){
-			layer.msg('只能选择一张话题图片!',{icon:2,time:1500});
+		if(document.getElementById("imgUrl").files.length>=2){
+			layer.msg('只能选择一张轮播图片!',{icon:2,time:1500});
             return;	
 		}
 		
 		var formFile = new FormData();
-		formFile.append('tname',tname);
+		formFile.append('url',url);
        formFile.append('description',description);
-       formFile.append('imgUrl',thumbnail,thumbnail.name);
+       formFile.append('img',imgUrl,imgUrl.name);
 		$.ajax({
-			url: urlFactory("social/adminAddTopicType"),
+			url: urlFactory("slideshow/addSlideShow"),
             data:formFile, 
             type: "Post",
             dataType: "json",
@@ -117,16 +120,43 @@ $(function(){
 	}
 	
 	
-	function uploadImgThumbnail() {
-		var thumbnailPersonsFile = document.getElementById("thumbnailUrl");
-		var thumbnailName=thumbnailPersonsFile.value;
-		var thumbnailFileName=thumbnailName.substring(thumbnailName.lastIndexOf(".") + 1).toLowerCase();
-   		if (thumbnailFileName !== "png" && thumbnailFileName !== "jpg") {
-           alert("上传图片格式不正确，请重新上传");
-           return;
-    	} 
+function uploadImg(obj) {
+				var file = obj.files[0];
+                
+                console.log(obj);console.log(file);
+                console.log("file.size = " + file.size);  //file.size 单位为byte
+
+                var reader = new FileReader();
+
+                //读取文件过程方法
+                reader.onloadstart = function (e) {
+                    console.log("开始读取....");
+                }
+                reader.onprogress = function (e) {
+                    console.log("正在读取中....");
+                }
+                reader.onabort = function (e) {
+                    console.log("中断读取....");
+                }
+                reader.onerror = function (e) {
+                    console.log("读取异常....");
+                }
+                reader.onload = function (e) {
+                    console.log("成功读取....");
+
+                var img = document.getElementById("img");
+                img.src = e.target.result;
+                    
+                   
+                $("#img").attr("style","display:block;");
+                $("#img").attr("style","height: 80px;");
+                $("#img").attr("style","width: 80px;");
+                }
+
+                reader.readAsDataURL(file)
 		
-}
+		
+    	} 
 	function uploadImgCertificate(){
 	}
 	//表单验证
@@ -180,43 +210,6 @@ $(function(){
 			parent.layer.close(index);
 		}
 	});	
-	function uploadImg(obj) {
-				var file = obj.files[0];
-                
-                console.log(obj);console.log(file);
-                console.log("file.size = " + file.size);  //file.size 单位为byte
-
-                var reader = new FileReader();
-
-                //读取文件过程方法
-                reader.onloadstart = function (e) {
-                    console.log("开始读取....");
-                }
-                reader.onprogress = function (e) {
-                    console.log("正在读取中....");
-                }
-                reader.onabort = function (e) {
-                    console.log("中断读取....");
-                }
-                reader.onerror = function (e) {
-                    console.log("读取异常....");
-                }
-                reader.onload = function (e) {
-                    console.log("成功读取....");
-
-                var img = document.getElementById("img");
-                img.src = e.target.result;
-                    
-                   
-                $("#img").attr("style","display:block;");
-                $("#img").attr("style","height: 80px;");
-                $("#img").attr("style","width: 80px;");
-                }
-
-                reader.readAsDataURL(file)
-		
-		
-    	} 
 </script>
 <!--/请在上方写此页面业务相关的脚本-->
 </body>
