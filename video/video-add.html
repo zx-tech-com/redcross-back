@@ -38,16 +38,6 @@
 		</div>
 		
 		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-2">视频照片：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-				<div class="uploader-thum-container">
-				<input class="upload-file-img" type="file" name="thumbnailUrl" id="thumbnailUrl" multiple="multiple" accept="image/*"  />
-
-				</div>
-			</div>
-		</div>
-		
-		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-2">上传视频：</label>
 			<div class="formControls col-xs-8 col-sm-9">
 				<div id="uploader" class="wu-example">
@@ -99,20 +89,11 @@
 		var vname = $("#vname").val();
 		var price = $("#price").val();
 		var description = $("#description").val();
-		var thumbnail= document.getElementById("thumbnailUrl").files[0];
-		if (typeof(thumbnail) == "undefined") {
-            layer.msg('请选择付费视频图片!',{icon:2,time:1500});
-            return;
-        }
-		if(document.getElementById("thumbnailUrl").files.length>=2){
-			layer.msg('只能选择一张付费视频图片!',{icon:2,time:1500});
-            return;	
-		}
+		
 		return {
 			vname : vname,
 			price : price,
 			description : description,
-			imgUrl:thumbnail
 		}		
 	}
 	
