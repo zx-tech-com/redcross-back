@@ -35,8 +35,13 @@
 			<div class="text-c">
 				<button onclick="removeIframe()" class="btn btn-primary radius">关闭选项卡</button>
 				<span class="select-box inline">
+					<select name="" class="select" id="courseSubject">
+						<option value="0">考试科目</option>
+					</select>
+				</span>
+				<span class="select-box inline">
 					<select name="" class="select" id="payStatus">
-						<option value="0">全部</option>
+						<option value="0">支付状态</option>
 						<option value="1">待支付</option>
 						<option value="2">已完成</option>
 						<option value="3">已取消</option>
@@ -94,6 +99,29 @@
 		
 		
 		<script type="text/javascript">
+			
+			$(function(){
+				$.ajax({
+					url : urlFactory('course/listCourseSubject'),
+					xhrFields: {
+						withCredentials: true,
+					},
+					success: function(data){
+						if(data.status === SUCCESS){
+							var courseSubject = data.data;
+							for(var ctype of courseSubject){
+								$("#courseSubject").append("<option value='" + ctype.id +"'>" + ctype.sname + "</option>");  //动态追加一个Option
+							}
+						}
+						else
+							layer.msg('初始化课程培训分类失败!',{icon:2,time:1000});
+					},
+					error:function(data) {
+						layer.msg('初始化课程培训分类失败!',{icon:2,time:1000});
+					}
+				})
+			})
+			
 			$(function() {
 				var gTable = $('.table-sort').dataTable({
 					
@@ -154,6 +182,12 @@
 								submitTime: $("#logmax").val(),
 								realName: $("#nameSearch").val()
 							};
+							var courseSubjectId = $("#courseSubject").val();
+							
+							if(!!courseSubjectId && courseSubjectId != '0')//有值,传递；否则，不传;
+								params.courseSubject = { 
+									id : courseSubjectId,
+								};
 							return JSON.stringify(params);
 						}
 					},
