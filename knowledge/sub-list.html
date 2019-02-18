@@ -12,6 +12,11 @@
 		<link href="../static/h-ui/css/H-ui.min.css" rel="stylesheet" type="text/css" />
 		<link href="../static/h-ui.admin/css/H-ui.admin.css" rel="stylesheet" type="text/css" />
 		<link href="../lib/Hui-iconfont/1.0.8/iconfont.css" rel="stylesheet" type="text/css" />
+		
+		<!-- begin -->
+		<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.5.2/css/buttons.dataTables.min.css" />
+		<!-- end -->
+		
 		<style>
 
 			.table-sort>tbody>tr>td{
@@ -94,6 +99,17 @@
 		<script type="text/javascript" src="../lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
 		<script type="text/javascript" src="../lib/laypage/1.2/laypage.js"></script>
 
+		<!-- begin -->
+		<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
+		<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.flash.min.js"></script>
+		<script type="text/javascript" language="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+		<script type="text/javascript" language="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+		<script type="text/javascript" language="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+		<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
+		<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js"></script>
+		<!-- end -->
+
+
 		<!--自定义全局变量-->
 		<script type="text/javascript" src="../js/global.js"></script>
 
@@ -124,6 +140,36 @@
 			
 			$(function(){
 				var gTable = $('.table-sort').dataTable({
+					
+					// begin 
+					dom: 'Bfrtip',
+					buttons: [
+						{
+							extend : 'excel',
+							text: '导出到Excel', 
+							title: '急救常识列表', //导出的excel标题
+							className: 'btn btn-primary', //按钮的class样式
+							exportOptions: { 
+								columns:[0,1,4],//指定导出哪几个列
+								format: { //用于导出将使用的单元格格式化函数的容器对象 format有三个子标签，header，body和foot
+									body: function(data, row, column, node) { //body区域的function，可以操作需要导出excel的数据格式
+										if (column == 0) {
+											return row + 1;
+										}else {
+											return data;
+										}
+									},
+									
+								}
+							},
+							customize: function ( xlsx ) {
+								var sheet = xlsx.xl.worksheets['sheet1.xml'];
+								$('row:eq(1) c', sheet).attr( 's', '51' );//居中
+							}
+						}
+					],
+					//end 
+					
 					"ordering" : true,//options,它是强于列的控制，所以这里开放，列上进制
 					"searching" : false,
 					"aaSorting": [

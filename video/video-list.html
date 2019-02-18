@@ -12,6 +12,9 @@
 		<link href="../static/h-ui/css/H-ui.min.css" rel="stylesheet" type="text/css" />
 		<link href="../static/h-ui.admin/css/H-ui.admin.css" rel="stylesheet" type="text/css" />
 		<link href="../lib/Hui-iconfont/1.0.8/iconfont.css" rel="stylesheet" type="text/css" />
+		<!-- begin -->
+		<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.5.2/css/buttons.dataTables.min.css" />
+		<!-- end -->
 		<style>
 
 			.table-sort>tbody>tr>td{
@@ -43,7 +46,7 @@
 			<div class="page-container">
 				<div class="text-c">
 					<button onclick="removeIframe()" class="btn btn-primary radius">关闭选项卡</button>
-					 <!-- <span class="select-box inline">
+					<!-- <span class="select-box inline">
 						<select name="" class="select">
 							<option value="0">全部分类</option>
 							<option value="1">分类一</option>
@@ -84,15 +87,16 @@
 								<th >视频</th>
 								<th >价格</th>
 								<th >操作</th>
+
 							</tr>
 						</thead>
 					</table>
 				</div>
 			</div>
 			<div id="pages">
-            	<button id="getUpPage" class="btn btn-primary radius"></button>
-            	<button id="getNextPage" class="btn btn-primary radius"></button>
-  			 </div>
+				<button id="getUpPage" class="btn btn-primary radius"></button>
+				<button id="getNextPage" class="btn btn-primary radius"></button>
+			</div>
 		</div>
 		<script type="text/javascript" src="../lib/jquery/1.9.1/jquery.min.js"></script>
 		<script type="text/javascript" src="../lib/layer/2.4/layer.js"></script>
@@ -107,34 +111,76 @@
 		<script type="text/javascript" src="../lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
 		<script type="text/javascript" src="../lib/laypage/1.2/laypage.js"></script>
 
+
+		<!-- begin -->
+		<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
+		<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.flash.min.js"></script>
+		<script type="text/javascript" language="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+		<script type="text/javascript" language="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+		<script type="text/javascript" language="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+		<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
+		<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js"></script>
+		<!-- end -->
+
 		<!--自定义全局变量-->
 		<script type="text/javascript" src="../js/global.js"></script>
 
 
 		<script type="text/javascript">
-						
-			var currentPage=1;
-			var totalCount=0;
+			var currentPage = 1;
+			var totalCount = 0;
 			$('.table-sort').dataTable({
+				
+				// begin 
+				dom: 'Bfrtip',
+				buttons: [
+					{
+						extend : 'excel',
+						text: '导出到Excel', 
+						title: '付费视频列表', //导出的excel标题
+						className: 'btn btn-primary', //按钮的class样式
+						exportOptions: { 
+							columns:[1,2,4,6],//指定导出哪几个列
+							format: { //用于导出将使用的单元格格式化函数的容器对象 format有三个子标签，header，body和foot
+								body: function(data, row, column, node) { //body区域的function，可以操作需要导出excel的数据格式
+									if (column == 0) {
+										return row + 1;
+									} else {
+										return data;
+									}
+								},
+								
+							}
+						},
+						customize: function ( xlsx ) {
+							var sheet = xlsx.xl.worksheets['sheet1.xml'];
+							$('row:eq(1) c', sheet).attr( 's', '51' );//居中
+						}
+					}
+				],
+				//end 
+				
 				"aaSorting": [
 					[1, "desc"]
 				], //默认第几个排序
 				"bStateSave": true, //状态保存
 				// "paging": false,
-				"pading":false,
+				"pading": false,
 				"paging": false, // 禁止分页
-				"aoColumnDefs": [
-					{"orderable":false,"aTargets":[0,2,3,4]}// 不参与排序的列
+				"aoColumnDefs": [{
+						"orderable": false,
+						"aTargets": [0, 2, 3, 4]
+					} // 不参与排序的列
 				],
 				//关闭服务器模式
 				serverSide: false,
-					
-				"fnDrawCallback": function(){
-				　　var api = this.api();
-				　　var startIndex= api.context[0]._iDisplayStart;//获取到本页开始的条数
-				　　api.column(1).nodes().each(function(cell, i) {
-				　　　　cell.innerHTML = startIndex + i + 1;
-				　　}); 
+
+				"fnDrawCallback": function() {
+					var api = this.api();
+					var startIndex = api.context[0]._iDisplayStart; //获取到本页开始的条数
+					api.column(1).nodes().each(function(cell, i) {
+						cell.innerHTML = startIndex + i + 1;
+					});
 				},
 				"ajax": {
 					url: urlFactory("video/adminListVideo"),
@@ -143,40 +189,40 @@
 					},
 					type: "POST",
 					data: function() {
-						 if(currentPage==1){
+						if (currentPage == 1) {
 							$("#getUpPage").text('首页');
 						}
-						if(currentPage!=1){
-						$("#getUpPage").text('上一页');
+						if (currentPage != 1) {
+							$("#getUpPage").text('上一页');
 						}
-						if(currentPage==totalCount){
-						$("#getNextPage").text('最后一页');
+						if (currentPage == totalCount) {
+							$("#getNextPage").text('最后一页');
 						}
-						if(currentPage!=totalCount){
-						$("#getNextPage").text('下一页');
+						if (currentPage != totalCount) {
+							$("#getNextPage").text('下一页');
 						}
 						var params = {
-						pageNo:currentPage,
-						query: $("#vnameSearch").val()
+							pageNo: currentPage,
+							query: $("#vnameSearch").val()
 						};
 						return params;
 					}
 				},
 				"initComplete": function(settings, json) {
-              totalCount=json.totalCount;
-              if(currentPage==1){
-					$("#getUpPage").text('首页');
-				}
-				if(currentPage!=1){
-					$("#getUpPage").text('上一页');
-				}
-				if(currentPage==totalCount){
-					$("#getNextPage").text('最后一页');
-				}
-				if(currentPage!=totalCount){
-					$("#getNextPage").text('下一页');
-				}
-		        },
+					totalCount = json.totalCount;
+					if (currentPage == 1) {
+						$("#getUpPage").text('首页');
+					}
+					if (currentPage != 1) {
+						$("#getUpPage").text('上一页');
+					}
+					if (currentPage == totalCount) {
+						$("#getNextPage").text('最后一页');
+					}
+					if (currentPage != totalCount) {
+						$("#getNextPage").text('下一页');
+					}
+				},
 				"columns": [{
 						"data": "id", //设置checkbox单选框,默认为false
 						"render": function(data) {
@@ -197,7 +243,8 @@
 						"render": function(data) {
 							data = getBaseAccessUrl() + data;
 							return '<video width="200px" height="160px" controls="controls"><source src="' + data + '"/><object data="' +
-								data + '" width="200px" height="160px"><embed src="' + data + '" width="200px" height="160px" /></object></video>';
+								data + '" width="200px" height="160px"><embed src="' + data +
+								'" width="200px" height="160px" /></object></video>';
 						}
 					},
 					{
@@ -217,7 +264,7 @@
 				]
 			});
 
-			function edit(row,title,url){				
+			function edit(row, title, url) {
 				var videoObject = JSON.parse(decodeURIComponent(row));
 
 				var index = layer.open({
@@ -268,8 +315,8 @@
 					});
 				});
 			}
-			
-			function datadel(){
+
+			function datadel() {
 				if ($("input[name='vdchek']:checked")[0] == null) {
 					layer.msg('请勾选需要删除的视频!', {
 						icon: 1,
@@ -289,16 +336,16 @@
 					});
 					console.log(ids);
 					$.ajax({
-						url : urlFactory("video/adminDeleteBatchVideo"),
+						url: urlFactory("video/adminDeleteBatchVideo"),
 						xhrFields: {
 							withCredentials: true,
 						},
-						data : {
-							ids : ids
+						data: {
+							ids: ids
 						},
-						traditional : true,
-						type : 'POST',
-						success : function(data){
+						traditional: true,
+						type: 'POST',
+						success: function(data) {
 							console.log(data);
 							//重新加载table
 						}
@@ -307,32 +354,32 @@
 				});
 			}
 
-			$(function(){
-				$("#searchVideoBtn").on("click",function(){
-					var table = $('.table-sort').DataTable();  
-					table.ajax.reload();  
+			$(function() {
+				$("#searchVideoBtn").on("click", function() {
+					var table = $('.table-sort').DataTable();
+					table.ajax.reload();
 				})
 			})
-			$(function(){
-		$("#getUpPage").on("click",function(){
-		if(currentPage==1){
-			return;
-		}
-		var table = $('.table-sort').DataTable(); 
-		currentPage=currentPage-1;
-		table.ajax.reload();  
-		})
-})
-		$(function(){
-			$("#getNextPage").on("click",function(){
-			if(currentPage==totalCount){
-				return;
-		}	
-		var table = $('.table-sort').DataTable();
-		currentPage=currentPage+1;
-			table.ajax.reload();  
-		})
-		})
+			$(function() {
+				$("#getUpPage").on("click", function() {
+					if (currentPage == 1) {
+						return;
+					}
+					var table = $('.table-sort').DataTable();
+					currentPage = currentPage - 1;
+					table.ajax.reload();
+				})
+			})
+			$(function() {
+				$("#getNextPage").on("click", function() {
+					if (currentPage == totalCount) {
+						return;
+					}
+					var table = $('.table-sort').DataTable();
+					currentPage = currentPage + 1;
+					table.ajax.reload();
+				})
+			})
 		</script>
 	</body>
 </html>

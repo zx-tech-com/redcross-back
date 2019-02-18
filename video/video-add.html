@@ -38,6 +38,7 @@
 		</div>
 		
 		<div class="row cl">
+
 			<label class="form-label col-xs-4 col-sm-2">上传视频：</label>
 			<div class="formControls col-xs-8 col-sm-9">
 				<div id="uploader" class="wu-example">
@@ -175,9 +176,11 @@
 		
 		
 		$btn.on( 'click', function(event) {
+			
+			var thumbnail= document.getElementById("thumbnailUrl").files[0];
 
-			var flag = $('#form-video-add').valid() && uploader.getFiles().length > 0;
-			console.log(uploader.getFiles());
+			var flag = $('#form-video-add').valid() && uploader.getFiles().length > 0 && typeof(thumbnail) != "undefined";
+
 			if ( state === 'uploading' ) {
 				uploader.stop();
 			} else if(flag){//验证通过
@@ -185,7 +188,7 @@
 				uploader.options.formData = prepareFormParams();
 				uploader.upload();
 			}else{//验证失败
-				console.log('验证失败')
+				layer.msg('图片和视频必传!',{icon:2,time:1500});
 			}
 			return false;
 		});

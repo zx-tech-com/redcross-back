@@ -90,6 +90,7 @@
 
 <script type="text/javascript">
 $(function(){
+	
 	$('.skin-minimal input').iCheck({
 		checkboxClass: 'icheckbox-blue',
 		radioClass: 'iradio-blue',
@@ -110,7 +111,6 @@ $(function(){
 		focusCleanup:true
 	} );
 	
-	
 	var ue = UE.getEditor('editor',{
 		serverUrl : urlFactory("ueditor/config")
 	});
@@ -119,6 +119,9 @@ $(function(){
 		$.ajax({
 			url : urlFactory("knowledge/saveKnowledge"),
 			contentType : "application/json",
+			xhrFields: {
+				withCredentials: true,
+			},
 			type : "POST",
 			data : JSON.stringify(prepareFormParams()),
 			success : function(data){
@@ -137,9 +140,8 @@ $(function(){
 		
 	})
 	
-	/**
-	 * 返回的是js对象，有可能需要序列化
-	 */
+
+
 	function prepareFormParams(){
 		var params = {};
 		params.title = $("#articletitle").val();
@@ -150,8 +152,6 @@ $(function(){
 		params.content = ue.getContent();
 		return params;
 	}
-	
-	
 	
 
 });

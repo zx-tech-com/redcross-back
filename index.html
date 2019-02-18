@@ -13,6 +13,16 @@
 <link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.css" />
 <link rel="stylesheet" type="text/css" href="static/h-ui.admin/skin/default/skin.css" id="skin" />
 <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/style.css" />
+
+<style type="text/css">
+	
+	.icon{
+		width: 14px;
+		height: 14px;
+	}
+	
+</style>
+
 <title>红十字应急救护培训 v1.0</title>
 </head>
 <body>
@@ -44,13 +54,14 @@
 <aside class="Hui-aside">
 	<div class="menu_dropdown bk_2">
 		<dl id="menu-article">
-			<dt><i class="Hui-iconfont">&#xe616;</i>课程培训管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+			<dt><i><img class="icon" src="imgs/course.png"/></i> 课程培训管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
 			<dd>
 				<ul>
 					<li><a data-href="courseSubject/courseSubject-list.html" data-title="科目管理" href="javascript:void(0)">科目管理</a></li>
 			</ul>
 		</dd>
 	</dl>
+<<<<<<< HEAD
 		<!-- <dl id="menu-picture">
 			<dt><i class="Hui-iconfont">&#xe613;</i> 图片管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
 			<dd>
@@ -110,9 +121,10 @@
 			</ul>
 		</dd>
 	</dl> -->
+
 	
 	<dl id="menu-customer" style="display: none;">
-			<dt><i class="Hui-iconfont">&#xe613;</i> 用户管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+			<dt><i><img class="icon" src="imgs/user.png"/></i> 用户管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
 			<dd>
 				<ul>
 
@@ -124,7 +136,7 @@
 	</dl>
 	
 	<dl id="menu-exam-order">
-			<dt><i class="Hui-iconfont">&#xe613;</i> 考试报名管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+			<dt><i><img class="icon" src="imgs/examorder.png"/></i> 考试报名管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
 			<dd>
 				<ul>
 					<li><a data-href="examOrder/exam-order-list.html" data-title="考试报名管理" href="javascript:void(0)">考试报名管理</a></li>
@@ -133,7 +145,7 @@
 	</dl>
 	
 	<dl id="menu-video">
-			<dt><i class="Hui-iconfont">&#xe613;</i> 付费视频管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+			<dt><i><img class="icon" src="imgs/video.png"/></i> 付费视频管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
 			<dd>
 				<ul>
 					<li><a data-href="video/video-list.html" data-title="付费视频管理" href="javascript:void(0)">付费视频管理</a></li>
@@ -144,7 +156,7 @@
 	
 	
 	<dl id="menu-knowledge">
-			<dt><i class="Hui-iconfont">&#xe613;</i> 急救常识管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+			<dt><i><img class="icon" src="imgs/knowledge.png"/></i> 急救常识管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
 			<dd>
 				<ul>
 					<li><a data-href="knowledge/knowledge-list.html" data-title="急救常识分类管理" href="javascript:void(0)">急救常识分类管理</a></li>
@@ -154,7 +166,7 @@
 	</dl>
 	
 	<dl id="menu-social">
-			<dt><i class="Hui-iconfont">&#xe613;</i> 社交管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+			<dt><i><img class="icon" src="imgs/topic.png"/></i> 社交管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
 			<dd>
 				<ul>
 					<li><a data-href="topic/topicType-list.html" data-title="发帖类型管理" href="javascript:void(0)">发帖类型管理</a></li>
@@ -218,16 +230,6 @@
 		window.location.href = "login.html";
 	};
 	
-	$(function(){
-		$.ajaxSetup({
-			url:"wrongfile.txt",
-			error:function(xhr){
-				alert("错误信息: " + xhr.status + " " + xhr.statusText);
-			},
-		});
-	})
-	
-
 
 </script> 
 </body>

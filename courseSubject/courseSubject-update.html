@@ -102,6 +102,9 @@
 				$.ajax({
 					url: urlFactory("course/getCourseSubject?subjectId=" + subjectId),
 					dataType: 'json',
+					xhrFields: {
+						withCredentials: true,
+					},
 					type: 'get',
 					success: function(data) {
 						var courseSubject = eval(data.data);
