@@ -38,7 +38,6 @@
 		</div>
 		
 		<div class="row cl">
-
 			<label class="form-label col-xs-4 col-sm-2">上传视频：</label>
 			<div class="formControls col-xs-8 col-sm-9">
 				<div id="uploader" class="wu-example">
@@ -90,11 +89,10 @@
 		var vname = $("#vname").val();
 		var price = $("#price").val();
 		var description = $("#description").val();
-		
 		return {
 			vname : vname,
 			price : price,
-			description : description,
+			description : description
 		}		
 	}
 	
@@ -177,9 +175,8 @@
 		
 		$btn.on( 'click', function(event) {
 			
-			var thumbnail= document.getElementById("thumbnailUrl").files[0];
 
-			var flag = $('#form-video-add').valid() && uploader.getFiles().length > 0 && typeof(thumbnail) != "undefined";
+			var flag = $('#form-video-add').valid() && uploader.getFiles().length > 0 ;
 
 			if ( state === 'uploading' ) {
 				uploader.stop();
@@ -188,7 +185,7 @@
 				uploader.options.formData = prepareFormParams();
 				uploader.upload();
 			}else{//验证失败
-				layer.msg('图片和视频必传!',{icon:2,time:1500});
+				layer.msg('视频必传!',{icon:2,time:1500});
 			}
 			return false;
 		});
