@@ -51,9 +51,9 @@
 					<div class="formControls col-xs-8 col-sm-9">
 						<div class="uploader-thum-container">
 							<input class="upload-file-img" type="file" name="thumbnailUrl" id="thumbnailUrl" multiple="multiple" accept="image/*"
-							 onchange="uploadImgThumbnail()" />
-
+							 onchange="uploadImgThumbnail(this)" />
 						</div>
+						<img id="thumbnailImg" style="height: 80px;width: 80px;"/>
 					</div>
 				</div>
 
@@ -62,8 +62,9 @@
 					<div class="formControls col-xs-8 col-sm-9">
 						<div class="uploader-thum-container">
 							<input class="upload-file-img" type="file" name="certificateUrl" id="certificateUrl" multiple="multiple" accept="image/*"
-							 onchange="uploadImgCertificate()" />
+							 onchange="uploadImgCertificate(this)" />
 						</div>
+						<img id="certificateImg" style="height: 80px;width: 80px;"/>
 					</div>
 				</div>
 
@@ -111,10 +112,18 @@
 						var sname = courseSubject.sname;
 						var price = courseSubject.price;
 						var description = courseSubject.description;
+						
+						
 						$("#sname").val(sname);
 						$("#period").val(period);
 						$("#price").val(price);
 						$("#description").val(description);
+						var thumbnailUrl = courseSubject.thumbnailUrl;
+						var certificateUrl = courseSubject.certificateUrl;
+						thumbnailUrl = getBaseAccessUrl() + thumbnailUrl;
+						certificateUrl = getBaseAccessUrl() + certificateUrl;
+						$("#thumbnailImg").attr("src",thumbnailUrl);
+						$("#certificateImg").attr("src",certificateUrl);
 					}
 				});
 
@@ -127,6 +136,8 @@
 			});
 
 			function courseSubject_update_submit() {
+				var thumbnailUrl = $("#thumbnailUrl").val();
+				console.log(thumbnailUrl);
 				var description = $("*[name='description']").val();
 				var sname = $("#sname").val();
 				if (sname.trim().length == 0) {
@@ -152,16 +163,16 @@
 					});
 					return;
 				}
-
-				var thumbnail = document.getElementById("thumbnailUrl").files[0];
 				var formFile = new FormData();
-				if (typeof(thumbnail) == "undefined") {
+				var thumbnail = document.getElementById("thumbnailUrl").files[0];
+				
+				/*if (typeof(thumbnail) == "undefined") {
 					layer.msg('请选择科目图片!', {
 						icon: 2,
 						time: 1500
 					});
 					return;
-				}
+				}*/
 				if (document.getElementById("thumbnailUrl").files.length >= 2) {
 					layer.msg('只能选择一张科目图片!', {
 						icon: 2,
@@ -173,13 +184,13 @@
 				var certificate = document.getElementById("certificateUrl").files[0];
 
 
-				if (typeof(certificate) == "undefined") {
+				/*if (typeof(certificate) == "undefined") {
 					layer.msg('请选择证书图片!', {
 						icon: 2,
 						time: 1500
 					});
 					return;
-				}
+				}*/
 				if (document.getElementById("certificateUrl").files.length >= 2) {
 					layer.msg('只能选择一张证书图片!', {
 						icon: 2,
@@ -193,8 +204,8 @@
 				formFile.append('period', period);
 				formFile.append('price', price);
 				formFile.append('description', description);
-				formFile.append('imgUrl', thumbnail, thumbnail.name);
-				formFile.append('ccieUrl', certificate, certificate.name);
+				formFile.append('imgUrl', thumbnail);
+				formFile.append('ccieUrl', certificate);
 				$.ajax({
 					url: urlFactory("course/adminUpdateCourseSubject"),
 					xhrFields: {
@@ -230,25 +241,77 @@
 				})
 			}
 
-			function uploadImgThumbnail() {
-				var thumbnailPersonsFile = document.getElementById("thumbnailUrl");
-				var thumbnailName = thumbnailPersonsFile.value;
-				var thumbnailFileName = thumbnailName.substring(thumbnailName.lastIndexOf(".") + 1).toLowerCase();
-				if (thumbnailFileName !== "png" && thumbnailFileName !== "jpg") {
-					// alert("上传图片格式不正确，请重新上传");
-					return;
-				}
+			function uploadImgThumbnail(obj) {
+				var file = obj.files[0];
+                
+                console.log(obj);console.log(file);
+                console.log("file.size = " + file.size);  //file.size 单位为byte
+
+                var reader = new FileReader();
+
+                //读取文件过程方法
+                reader.onloadstart = function (e) {
+                    console.log("开始读取....");
+                }
+                reader.onprogress = function (e) {
+                    console.log("正在读取中....");
+                }
+                reader.onabort = function (e) {
+                    console.log("中断读取....");
+                }
+                reader.onerror = function (e) {
+                    console.log("读取异常....");
+                }
+                reader.onload = function (e) {
+                    console.log("成功读取....");
+
+                var img = document.getElementById("thumbnailImg");
+                img.src = e.target.result;
+                    
+                   
+                $("#thumbnailImg").attr("style","display:block;");
+                $("#thumbnailImg").attr("style","height: 80px;");
+                $("#thumbnailImg").attr("style","width: 80px;");
+                }
+
+                reader.readAsDataURL(file)
 
 			}
 
-			function uploadImgCertificate() {
-				var certificatePersonsFile = document.getElementById("certificateUrl");
-				var certificateName = certificatePersonsFile.value;
-				var certificateFileName = certificateName.substring(certificateName.lastIndexOf(".") + 1).toLowerCase();
-				if (certificateFileName !== "png" && certificateFileName !== "jpg") {
-					//alert("上传图片格式不正确，请重新上传");
-					return;
-				}
+			function uploadImgCertificate(obj) {
+				var file = obj.files[0];
+                
+                console.log(obj);console.log(file);
+                console.log("file.size = " + file.size);  //file.size 单位为byte
+
+                var reader = new FileReader();
+
+                //读取文件过程方法
+                reader.onloadstart = function (e) {
+                    console.log("开始读取....");
+                }
+                reader.onprogress = function (e) {
+                    console.log("正在读取中....");
+                }
+                reader.onabort = function (e) {
+                    console.log("中断读取....");
+                }
+                reader.onerror = function (e) {
+                    console.log("读取异常....");
+                }
+                reader.onload = function (e) {
+                    console.log("成功读取....");
+
+                var img = document.getElementById("certificateImg");
+                img.src = e.target.result;
+                    
+                   
+                $("#certificateImg").attr("style","display:block;");
+                $("#certificateImg").attr("style","height: 80px;");
+                $("#certificateImg").attr("style","width: 80px;");
+                }
+
+                reader.readAsDataURL(file) 
 			}
 		</script>
 		<!--/请在上方写此页面业务相关的脚本-->

@@ -34,6 +34,8 @@
 		<div class="page-container">
 			<div class="text-c">
 				<button onclick="removeIframe()" class="btn btn-primary radius">关闭选项卡</button>
+				<a class="btn btn-primary radius" data-title="添加线下报考人员" data-href="examOrder/exam-order-add.html" onclick="Hui_admin_tab(this)"
+					 href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> 添加线下报考人员</a>
 				<span class="select-box inline">
 					<select name="" class="select" id="courseSubject">
 						<option value="0">考试科目</option>
@@ -67,6 +69,7 @@
 							<th width="80">订单时间</th>
 							<th width="80">报名方法</th>
 							<th width="80">报名状态</th>
+							<th width="80">联系方式</th>
 							<th width="120">备注</th>
 						</tr>
 
@@ -250,6 +253,9 @@
 								}
 
 							}
+						},
+						{
+							"data": "tel"
 						},
 						{
 							"data": "coment"

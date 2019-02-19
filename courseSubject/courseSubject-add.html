@@ -50,9 +50,10 @@
 			<label class="form-label col-xs-4 col-sm-2">科目照片：</label>
 			<div class="formControls col-xs-8 col-sm-9">
 				<div class="uploader-thum-container">
-				<input class="upload-file-img" type="file" name="thumbnailUrl" id="thumbnailUrl" multiple="multiple" accept="image/*" onchange="uploadImgThumbnail()" />
-
+				<input class="upload-file-img" type="file" name="thumbnailUrl" id="thumbnailUrl" multiple="multiple" accept="image/*" onchange="uploadImgThumbnail(this)" />
+	
 				</div>
+				<img id="thumbnailImg" style="display: none;"/>
 			</div>
 		</div>
 		
@@ -60,8 +61,9 @@
 			<label class="form-label col-xs-4 col-sm-2">证书照片：</label>
 			<div class="formControls col-xs-8 col-sm-9">
 				<div class="uploader-thum-container">
-					<input class="upload-file-img" type="file" name="certificateUrl" id="certificateUrl" multiple="multiple" accept="image/*" onchange="uploadImgCertificate()" />
+					<input class="upload-file-img" type="file" name="certificateUrl" id="certificateUrl" multiple="multiple" accept="image/*" onchange="uploadImgCertificate(this)" />
 				</div>
+				<img id="certificateImg" style="display: none;"/>
 			</div>
 		</div>
 		
@@ -100,24 +102,79 @@ $(function(){
 	
 		
 	
-	function uploadImgThumbnail() {
-		var thumbnailPersonsFile = document.getElementById("thumbnailUrl");
-		var thumbnailName=thumbnailPersonsFile.value;
-		var thumbnailFileName=thumbnailName.substring(thumbnailName.lastIndexOf(".") + 1).toLowerCase();
-   		if (thumbnailFileName !== "png" && thumbnailFileName !== "jpg") {
-           //alert("上传图片格式不正确，请重新上传");
-           return;
+	function uploadImgThumbnail(obj) {
+				var file = obj.files[0];
+                
+                console.log(obj);console.log(file);
+                console.log("file.size = " + file.size);  //file.size 单位为byte
+
+                var reader = new FileReader();
+
+                //读取文件过程方法
+                reader.onloadstart = function (e) {
+                    console.log("开始读取....");
+                }
+                reader.onprogress = function (e) {
+                    console.log("正在读取中....");
+                }
+                reader.onabort = function (e) {
+                    console.log("中断读取....");
+                }
+                reader.onerror = function (e) {
+                    console.log("读取异常....");
+                }
+                reader.onload = function (e) {
+                    console.log("成功读取....");
+
+                var img = document.getElementById("thumbnailImg");
+                img.src = e.target.result;
+                    
+                   
+                $("#thumbnailImg").attr("style","display:block;");
+                $("#thumbnailImg").attr("style","height: 80px;");
+                $("#thumbnailImg").attr("style","width: 80px;");
+                }
+
+                reader.readAsDataURL(file)
+		
+		
     	} 
 		
-}
-	function uploadImgCertificate(){
-		var certificatePersonsFile = document.getElementById("certificateUrl");
-		var certificateName=certificatePersonsFile.value;
-		var certificateFileName=certificateName.substring(certificateName.lastIndexOf(".") + 1).toLowerCase();
-   		if (certificateFileName !== "png" && certificateFileName !== "jpg") {
-           //alert("上传图片格式不正确，请重新上传");
-           return;
-    	} 
+
+	function uploadImgCertificate(obj){
+				var file = obj.files[0];
+                
+                console.log(obj);console.log(file);
+                console.log("file.size = " + file.size);  //file.size 单位为byte
+
+                var reader = new FileReader();
+
+                //读取文件过程方法
+                reader.onloadstart = function (e) {
+                    console.log("开始读取....");
+                }
+                reader.onprogress = function (e) {
+                    console.log("正在读取中....");
+                }
+                reader.onabort = function (e) {
+                    console.log("中断读取....");
+                }
+                reader.onerror = function (e) {
+                    console.log("读取异常....");
+                }
+                reader.onload = function (e) {
+                    console.log("成功读取....");
+
+                var img = document.getElementById("certificateImg");
+                img.src = e.target.result;
+                    
+                   
+                $("#certificateImg").attr("style","display:block;");
+                $("#certificateImg").attr("style","height: 80px;");
+                $("#certificateImg").attr("style","width: 80px;");
+                }
+
+                reader.readAsDataURL(file) 
 	}
 	
 	

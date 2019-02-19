@@ -83,7 +83,6 @@
 								<th><input type="checkbox" name="" value=""></th>
 								<th width="50px">序号</th>
 								<th>视频名称</th>
-								<th>视频图片</th>
 								<th>视频描述</th>
 								<th>视频</th>
 								<th>价格</th>
@@ -234,13 +233,6 @@
 					},
 					{
 						"data": "vname"
-					},
-					{
-						"data": "thumbnailUrl",
-						"render": function(data) {
-							data = getBaseAccessUrl() + data;
-							return '<img src="' + data + '" width="150px" height="120px" />';
-						}
 					},
 					{
 						"data": "description"
