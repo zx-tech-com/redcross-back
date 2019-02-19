@@ -147,9 +147,25 @@
 									},
 								}
 							},
+							
 							customize: function ( xlsx ) {
+								//styles.xml中新增自定义样式
+								var sSh = xlsx.xl['styles.xml'];
+								var lastXfIndex = $('cellXfs xf', sSh).length - 1;
+								//居中并加粗
+								var centralAndBold = '<xf numFmtId="0" fontId="2" fillId="0" borderId="0" applyFont="1" applyFill="1" applyBorder="1">'+
+														'<alignment horizontal="center"/>'+
+													 '</xf>';
+								//添加内置样式
+								sSh.childNodes[0].childNodes[5].innerHTML += centralAndBold;
+								
+								//记录添加新样式所在下标
+								var centralAndBoldIndex = lastXfIndex + 1;
+								
+								//运用新增样式
 								var sheet = xlsx.xl.worksheets['sheet1.xml'];
-								$('row:eq(1) c', sheet).attr( 's', '51' );//居中
+								$('row:eq(1) c', sheet).attr( 's', centralAndBoldIndex);//居中并加粗
+								
 							}
 						}
 					],
