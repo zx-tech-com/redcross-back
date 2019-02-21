@@ -197,6 +197,15 @@ $(function(){
             return;
 		}
 		
+		
+		
+		var regPrice = /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/;
+        if (!regPrice.test(price)){
+           layer.msg('请输入正确的科目费用',{icon:2,time:1500});
+            return ;
+        }
+		
+		
 		var thumbnail= document.getElementById("thumbnailUrl").files[0];
 		var formFile = new FormData();
 		if (typeof(thumbnail) == "undefined") {

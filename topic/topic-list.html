@@ -253,15 +253,19 @@
 
 			$(function() {
 				$("#getUpPage").on("click", function() {
+					if (currentPage == 1) {
+						return;
+					}
 					var table = $('.table-sort').DataTable();
 					currentPage = currentPage - 1;
 					table.ajax.reload();
 				})
-			});
-
-
+			})
 			$(function() {
 				$("#getNextPage").on("click", function() {
+					if (currentPage == totalCount) {
+						return;
+					}
 					var table = $('.table-sort').DataTable();
 					currentPage = currentPage + 1;
 					table.ajax.reload();

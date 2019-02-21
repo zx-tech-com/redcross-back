@@ -24,12 +24,9 @@
 <article class="page-container">
 	<form class="form form-horizontal" id="form-video-add">
 		
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>ID：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" readonly unselectable="on" class="input-text" value="" placeholder="" id="id" name="id">
-			</div>
-		</div>
+		
+				<input type="text" readonly unselectable="on" class="input-text" value="" placeholder="" id="id" name="id" style="display: none;">
+		
 		
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>课程名称：</label>
@@ -41,7 +38,7 @@
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>第几集：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="" placeholder="例如:01" id="cindex" name="cindex">
+				<input type="text" class="input-text" value="" placeholder="例如:1" id="cindex" name="cindex">
 			</div>
 		</div>
 		
@@ -98,6 +95,25 @@
 	
 	//Ajax请求发送更新操作
 	function udpateWithAjax() {  
+        var cname = $("#cname").val();
+		var cindex = $("#cindex").val();
+		var description = $("#description").val();
+		var id = $("#id").val();
+		if(cname.trim().length==0){
+			layer.msg('课程名称不能为空',{icon:2,time:1500});
+            return;
+		}
+		
+		if(cindex.trim().length==0){
+			layer.msg('课程是第几集',{icon:2,time:1500});
+            return;
+		}
+		
+		var re = /^[1-9]{1,}[\d]*$/;
+　　		if (!re.test(cindex)) { 
+　　　　		layer.msg('请输入正确的集数',{icon:2,time:1500});
+            return; 
+　　		}
         var formData = prepareFormParams();//populateObjectPropertyIntoFormData(prepareFormParams());
 
 		$.ajax({
