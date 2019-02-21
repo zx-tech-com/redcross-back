@@ -1,11 +1,10 @@
 const protocol="http://"
+
 //const domain="localhost";
 //const domain="192.168.1.177";
 //const port = "9090";
-
 const domain="39.98.204.123";
 const port = "80";
-
 const project = "/RedCross/";
 
 //默认查找前1000条数据

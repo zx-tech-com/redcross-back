@@ -14,8 +14,8 @@
 		<link href="../lib/Hui-iconfont/1.0.8/iconfont.css" rel="stylesheet" type="text/css" />
 		
 		<!-- begin -->
-		<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.5.2/css/buttons.dataTables.min.css" />
-		<!-- end -->
+		<!-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.5.2/css/buttons.dataTables.min.css" />
+		 --><!-- end -->
 		
 		<style>
 
@@ -60,9 +60,9 @@
 
 				<div class="cl pd-5 bg-1 bk-gray mt-20">
 					<span class="l">
-						<a href="javascript:;" onclick="datadel()" class="btn btn-danger radius">
+						<!-- <a href="javascript:;" onclick="datadel()" class="btn btn-danger radius">
 							<i class="Hui-iconfont">&#xe6e2;</i> 批量删除
-						</a>
+						</a> -->
 						<a class="btn btn-primary radius" data-title="添加急救常识" data-href="knowledge/sub-add.html" onclick="Hui_admin_tab(this)"
 						 href="javascript:;">
 							<i class="Hui-iconfont">&#xe600;</i>  添加急救常识
@@ -100,14 +100,14 @@
 		<script type="text/javascript" src="../lib/laypage/1.2/laypage.js"></script>
 
 		<!-- begin -->
-		<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
+		<!-- <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
 		<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.flash.min.js"></script>
 		<script type="text/javascript" language="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
 		<script type="text/javascript" language="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
 		<script type="text/javascript" language="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
 		<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
 		<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js"></script>
-		<!-- end -->
+		 --><!-- end -->
 
 
 		<!--自定义全局变量-->
@@ -142,7 +142,7 @@
 				var gTable = $('.table-sort').dataTable({
 					
 					// begin 
-					dom: 'Bfrtip',
+					/* dom: 'Bfrtip',
 					buttons: [
 						{
 							extend : 'excel',
@@ -167,7 +167,7 @@
 								$('row:eq(1) c', sheet).attr( 's', '51' );//居中
 							}
 						}
-					],
+					], */
 					//end 
 					
 					"ordering" : true,//options,它是强于列的控制，所以这里开放，列上进制
