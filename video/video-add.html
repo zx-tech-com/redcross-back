@@ -149,8 +149,8 @@
 				  '</div>' +
 				'</div>').appendTo( $li ).find('.progress-bar');
 			}
-
-			$li.find('p.state').text('上传中').css("color","red");
+			var text = '上传中,请勿关闭页面.(' + Number(percentage * 100).toFixed(2) + '%)';
+			$li.find('p.state').text(text).css("color","red");
 
 			$percent.css( 'width', percentage * 100 + '%' );
 		});

@@ -147,10 +147,19 @@
 									},
 								}
 							},
-							customize: function ( xlsx ) {
-								var sheet = xlsx.xl.worksheets['sheet1.xml'];
-								$('row:eq(1) c', sheet).attr( 's', '51' );//居中
-							}
+							customize: function ( xls ) {
+								var colsList = [
+									{ index : 1, width : 6 },
+									{ index : 2, width : 16 },
+									{ index : 3, width : 20 },
+									{ index : 4, width : 20 },
+									{ index : 5, width : 10 },
+									{ index : 6, width : 10 },
+									{ index : 7, width : 18 }
+								];
+								var rowHeight =  30;
+								xlsCustomize(xls,colsList,rowHeight);
+							},
 						}
 					],
 					//end 
