@@ -41,6 +41,7 @@
 							<th width="25" style="display: none;">ID</th>
 							<th width="80">序号</th>
 							<th width="80">轮播图</th>
+							<th width="80">链接地址</th>
 							<th width="120">描述</th>
 							<th width="120">操作</th>
 						</tr>
@@ -115,6 +116,9 @@
 								data = getBaseAccessUrl() + data;
 								return '<img src="' + data + '" width="70" height="70" />';
 							}
+						},
+						{
+							"data": "url"
 						},
 						{
 							"data": "description"
