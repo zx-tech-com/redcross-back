@@ -202,6 +202,7 @@
 						//添加附加参数
 						uploader.options.formData = prepareFormParams();
 						uploader.upload();
+						heartPack();
 					} else { //验证失败
 						console.log('验证失败')
 					}

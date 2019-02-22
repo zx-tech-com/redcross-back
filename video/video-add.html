@@ -196,6 +196,7 @@
 						//添加附加参数
 						uploader.options.formData = prepareFormParams();
 						uploader.upload();
+						heartPack();
 					} else { //验证失败
 						layer.msg('视频必传!', {
 							icon: 2,
