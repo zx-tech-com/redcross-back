@@ -1,8 +1,8 @@
 const protocol="http://"
 
 //const domain="localhost";
-//const domain="192.168.1.177";
-//const port = "9090";
+// const domain="192.168.1.177";
+// const port = "9090";
 const domain="39.98.204.123";
 const port = "80";
 const project = "/RedCross/";
@@ -16,24 +16,9 @@ var BASE_URL = "";
 const BACK_END_USER_ID = 18;
 
 function urlFactory(url){
-	
 
 	return protocol + domain + ":" + port + project + url;
 
-	var token = "eyJhbGciOiJIUzI1NiJ9.eyJjdXN0b21lcklkIjo1LCJleHBpcmVzIjoxNTQ5MDE2MDM3NTIxfQ.YwbedsPqea1Ufwgc7OGxow1JpYQq7fUHFCOVys2WlmA";
-    //var  token="eyJhbGciOiJIUzI1NiJ9.eyJjdXN0b21lcklkIjoxLCJleHBpcmVzIjoxNTQ4NTk4MzkzMjc2fQ.IRuo0Tvrt6dAANwDy3mCUsQZBmZoQv8HUYUSubum5MM";
-
-	
-	if(!url){//url为空
-		return protocol + domain + ":" + port + project.substring(0,project.length-1) +
-		"?token=" + token;
-
-	}else{
-		var s = url.indexOf('?') == -1 ? '?' : '&';
-		return protocol + domain + ":" + port + project + url + s +
-		"token=" + token;
-	}
-	
 }
 $(function(){
 	if(!getBaseAccessUrl()){
@@ -85,7 +70,88 @@ function explainStatus (status){
 	
 }
 
+function heartPack(){
+	setInterval(function(){
+		$.ajax({
+			url : urlFactory("common/fileBasePath"),
+			xhrFields: {
+				withCredentials: true,
+			},
+			success : function(data){
+				console.log(data);
+			}
+		})
+	},1000*60*5);//每5分钟执行一次
+}
+
 
 function gotoLogin(){
 	document.location.href = "login.html";
+}
+
+function xlsCustomize(xlsx,colList,rowHeight){
+	//styles.xml中新增自定义样式
+	var sSh = xlsx.xl['styles.xml'];
+	
+	//添加边框样式.
+	var border = '<border>' +
+					'<left style="thin">' +
+						'<color indexed="64"/>' +
+					'</left>' +
+					'<right style="thin">' +
+						'<color indexed="64"/>' +
+					'</right>' +
+					'<top style="thin">' +
+						'<color indexed="64"/>' +
+					'</top>' +
+					'<bottom style="thin">' +
+						'<color indexed="64"/>' +
+					'</bottom>' +
+					'<diagonal/>' +
+				'</border>';
+				
+	var lastBorderIndex = $('borders border', sSh).length - 1;
+	sSh.childNodes[0].childNodes[3].innerHTML += border;
+	
+	
+	
+	
+	var lastXfIndex = $('cellXfs xf', sSh).length - 1;
+	
+	
+	
+	//居中并加粗
+	var centralBoldAndBorderAround = '<xf numFmtId="0" fontId="2" fillId="0" borderId="' + lastBorderIndex + '" applyFont="1" applyFill="1" applyBorder="1">'+
+										'<alignment horizontal="center"  vertical="center"/>'+
+									 '</xf>';
+	var centralAndBorderAround = '<xf numFmtId="0" fontId="0" fillId="0" borderId="' + lastBorderIndex + '" xfId="0">' +
+									'<alignment horizontal="center"  vertical="center"/>'+
+								'</xf>';
+	
+	//添加内置样式
+	sSh.childNodes[0].childNodes[5].innerHTML += (centralBoldAndBorderAround + centralAndBorderAround);
+	//记录添加新样式所在下标
+	var centralBoldAndBorderAroundIndex = lastXfIndex + 1;
+	var centralAndBorderAroundIndex = lastXfIndex + 2;
+	
+	//运用新增样式
+	var sheet = xlsx.xl.worksheets['sheet1.xml'];
+	$('row c', sheet).attr('s',centralAndBorderAroundIndex);
+	$('row:eq(1) c', sheet).attr( 's', centralBoldAndBorderAroundIndex);//居中并加粗
+	$('row:eq(0) c', sheet).attr( 's', centralBoldAndBorderAroundIndex);//居中并加粗
+	
+
+	//添加宽度.
+	for(var col of colList){
+		
+		var width = col.width;
+		var i = col.index;
+		var selector = 'col[min="' + i + '"]';
+		
+		$(selector, sheet).attr( 'width', width);//添加宽度
+	}
+
+	//添加高度
+	$('row', sheet).attr( 'ht', rowHeight).attr('customHeight',"1");//添加高度
+	
 }
