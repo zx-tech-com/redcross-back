@@ -1,19 +1,19 @@
-const protocol="http://"
 
-//const domain="localhost";
-// const domain="192.168.1.177";
-// const port = "9090";
-const domain="39.98.204.123";
-const port = "80";
-const project = "/RedCross/";
+var protocol="http://";
+//var domain="localhost";
+// var domain="192.168.1.177";
+// var port = "9090";
+var domain="39.98.204.123";
+var port = "80";
+var project = "/RedCross/";
 
 //默认查找前1000条数据
-const defaultPageSize = 1000;
+var defaultPageSize = 1000;
 
-const SUCCESS = "success";
+var SUCCESS = "success";
 var BASE_URL = "";
 
-const BACK_END_USER_ID = 18;
+var BACK_END_USER_ID = 18;
 
 function urlFactory(url){
 
@@ -142,8 +142,9 @@ function xlsCustomize(xlsx,colList,rowHeight){
 	
 
 	//添加宽度.
-	for(var col of colList){
-		
+//	for(var col of colList){
+	for(var i = 0; i < colList.length; i++){
+		var col = colList[0];
 		var width = col.width;
 		var i = col.index;
 		var selector = 'col[min="' + i + '"]';
