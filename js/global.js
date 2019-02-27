@@ -70,20 +70,6 @@ function explainStatus (status){
 	
 }
 
-function heartPack(){
-	setInterval(function(){
-		$.ajax({
-			url : urlFactory("common/fileBasePath"),
-			xhrFields: {
-				withCredentials: true,
-			},
-			success : function(data){
-				console.log(data);
-			}
-		})
-	},1000*60*5);//每5分钟执行一次
-}
-
 
 function gotoLogin(){
 	document.location.href = "login.html";
