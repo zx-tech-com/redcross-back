@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>redcross-back</name>
+	<name>red-cross-back</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -16,7 +16,16 @@
 	</natures>
 	<filteredResources>
 		<filter>
-			<id>1548040033724</id>
+			<id>0</id>
+			<name></name>
+			<type>26</type>
+			<matcher>
+				<id>org.eclipse.ui.ide.multiFilter</id>
+				<arguments>1.0-name-matches-false-false-node_modules</arguments>
+			</matcher>
+		</filter>
+		<filter>
+			<id>1551234715949</id>
 			<name></name>
 			<type>26</type>
 			<matcher>
