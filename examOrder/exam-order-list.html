@@ -70,6 +70,7 @@
 							<th width="80">报名方法</th>
 							<th width="80">报名状态</th>
 							<th width="80">联系方式</th>
+							<th width="80">是否需要发票</th>
 							<th width="120">备注</th>
 						</tr>
 
@@ -251,8 +252,21 @@
 
 							}
 						},
+						
 						{
 							"data": "tel"
+						},
+						
+						{
+							"data": "invoice",
+							"render": function(data, type, row, meta) {
+								if (data == 0) {
+									return '<p>NO</p>';
+								}
+								if (data == 1) {
+									return '<p>YES</p>';
+								}
+							}
 						},
 						{
 							"data": "coment"

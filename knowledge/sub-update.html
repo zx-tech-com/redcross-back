@@ -44,6 +44,13 @@
 						</span>
 					</div>
 				</div>
+				
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>文章关键字：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" class="input-text" value="" placeholder="" id="keyWord" name="keyWord">
+					</div>
+				</div>
 
 				<div class="row cl">
 					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>文章摘要：</label>
@@ -102,6 +109,7 @@
 				var params = {};
 				params.id = $('#hiddenarea').val();
 				params.title = $("#articletitle").val();
+				params.keyWord = $("#keyWord").val();
 				params.knowledgeType = {
 					id : $("#typeSelect").val()
 				};
@@ -140,6 +148,9 @@
 							required: true,
 						},
 						summary : {
+							required:true,
+						},
+						keyWord : {
 							required:true
 						}
 					},
@@ -227,6 +238,7 @@
 							$("#typeSelect").val(data.data.typeId)
 							$("#articletitle").val(data.data.title);
 							$("#summary").val(data.data.summary);
+							$("#keyWord").val(data.data.keyWord);
 							ue.setContent(data.data.content);
 						} else {
 							layer.msg('页面数据初始化异常', {

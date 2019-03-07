@@ -287,13 +287,11 @@
 				});
 				layer.full(index);
 			}
-
 			function del(id, obj) {
 				layer.confirm('确认要删除吗？', function(index) {
 					$.ajax({
 						type: 'POST',
-						url: urlFactory("course/adminDeleteCourse?courseId=" + id),
-						dataType: 'json',
+						url: urlFactory("course/adminDeleteCourse?courseId="+id),
 						xhrFields: {
 							withCredentials: true,
 						},
