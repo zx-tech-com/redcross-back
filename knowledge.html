@@ -17,10 +17,10 @@
 	
 	body{text-align:center} 
 	
-	img{
+	/*.pd-20 #conten>img{
 		max-width: 100% !important;
 		height: auto !important;
-	}
+	}*/
 	
 </style>
 
@@ -72,6 +72,10 @@
 						$("#content").html(data.data.content)
 						$("#time").html(str);
 						$("#title").html(data.data.title);
+						
+						$("#content img").css("height","auto");
+						$("#content img").css("max-width","100%");
+						
 					} else {
 						layer.msg('页面数据初始化异常', {
 							icon: 2,
