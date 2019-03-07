@@ -17,8 +17,9 @@
 	
 	body{text-align:center} 
 	
-	#content{
-
+	img{
+		max-width: 100% !important;
+		height: auto !important;
 	}
 	
 </style>
@@ -102,6 +103,26 @@
 		else
 			layer.msg('未检测到id,请重试',{icon:2,time:1000});
 	}
+
+/* 	$(function(){
+		var imgs = $('img');
+		
+	})
+
+	$(window).load(function(){
+		var imgs = document.getElementsByTagName('img');
+		var abc = $('img');
+		console.log(abc[1]);
+		for(var img of imgs){
+			img.onload=function(){
+				$(img).css('max-width','100%');
+				$(img).css('height','auto');
+			}
+		}
+	}) */
+
+
+		
 </script>
 </body>
 </html>
