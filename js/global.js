@@ -1,11 +1,10 @@
 
 var protocol="http://";
 //var domain="localhost";
-//var domain="192.168.1.100";
-//var port = "9090";
-var domain="39.98.204.123";
-var port = "80";
->>>>>>> a85cba963b33daaf525bf317858d25e95c61254e
+var domain="192.168.1.100";
+var port = "9090";
+//var domain="39.98.204.123";
+//var port = "80";
 var project = "/RedCross/";
 
 //默认查找前1000条数据
