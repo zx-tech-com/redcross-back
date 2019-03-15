@@ -1,189 +1,293 @@
-
 <!DOCTYPE HTML>
 <html>
-<head>
-<meta charset="utf-8">
-<meta name="renderer" content="webkit|ie-comp|ie-stand">
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
-<link rel="Bookmark" href="/favicon.png" >
-<link rel="Shortcut Icon" href="/favicon.png" />
-<link rel="stylesheet" type="text/css" href="../static/h-ui/css/H-ui.min.css" />
-<link rel="stylesheet" type="text/css" href="../static/h-ui.admin/css/H-ui.admin.css" />
-<link rel="stylesheet" type="text/css" href="../lib/Hui-iconfont/1.0.8/iconfont.css" />
-<link rel="stylesheet" type="text/css" href="../static/h-ui.admin/skin/default/skin.css" id="skin" />
-<link rel="stylesheet" type="text/css" href="../static/h-ui.admin/css/style.css" />
-<script type="text/javascript" src="../js/global.js"></script>
-<title>新增预约模式</title>
-</head>
-<body>
-<article class="page-container">
-	<form class="form form-horizontal" id="form-pattern-add">
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>模式描述：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="" placeholder="例如:普及培训" id="description" name="description">
-			</div>
-		</div>
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-2">模式选择：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-				<select id="pattern" name="pattern">
-					<option value="week">每周</option>
-					<option value="month">每月</option>
-					<option value="diy">自定义</option>
-				</select>
-			</div>
-		</div>
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-2">预约时间：</label>
-			<div class="formControls col-xs-8 col-sm-9" id="specific-date">
-				<select id="specific-date" name="specific-date">
-					<option value="0">请先选择模式</option>
-				</select>
-			</div>
-		</div>
+	<head>
+		<meta charset="utf-8">
+		<meta name="renderer" content="webkit|ie-comp|ie-stand">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+		<meta http-equiv="Cache-Control" content="no-siteapp" />
+		<link rel="Bookmark" href="/favicon.png">
+		<link rel="Shortcut Icon" href="/favicon.png" />
+		<link rel="stylesheet" type="text/css" href="../static/h-ui/css/H-ui.min.css" />
+		<link rel="stylesheet" type="text/css" href="../static/h-ui.admin/css/H-ui.admin.css" />
+		<link rel="stylesheet" type="text/css" href="../lib/Hui-iconfont/1.0.8/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="../static/h-ui.admin/skin/default/skin.css" id="skin" />
+		<link rel="stylesheet" type="text/css" href="../static/h-ui.admin/css/style.css" />
 		
-		
-		
-		<div class="row cl">
-			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
-				<button onClick="courseSubject_save_submit();" class="btn btn-primary radius" type="button"><i class="Hui-iconfont">&#xe632;</i> 提交</button>
-				<button onClick="removeIframe();" class="btn btn-default radius" type="button">&nbsp;&nbsp;取消&nbsp;&nbsp;</button>
-			</div>
-		</div>
-	</form>
-</article>
+		<title>新增预约模式</title>
+	</head>
+	<body>
+		<article class="page-container">
+			<form class="form form-horizontal" id="form-pattern-add">
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>模式描述：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" class="input-text" value="" placeholder="例如:每周的周二/周四可预约" id="description" name="description">
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>模式选择：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<select id="pattern" name="pattern">
+							<!-- <option value="week">每周</option>
+							<option value="month">每月</option> -->
+							<option value="diy">自定义</option>
+						</select>
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>预约日期：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<span id="specific-date">
+							<input type="date" id="appointment-date" name="appointment-date"/>
+							<select name="appointment-time" id="appointment-time">
+								<option value="全天">全天</option>
+								<option value="上午">上午</option>
+								<option value="下午">下午</option>
+							</select>
+						</span>
+						<a id="btnAddDate" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加</a>
+					</div>
+				</div>
 
-<!--_footer 作为公共模版分离出去-->
-<script type="text/javascript" src="../lib/jquery/1.9.1/jquery.min.js"></script> 
-<script type="text/javascript" src="../lib/layer/2.4/layer.js"></script>
-<script type="text/javascript" src="../static/h-ui/js/H-ui.min.js"></script> 
-<script type="text/javascript" src="../static/h-ui.admin/js/H-ui.admin.js"></script> <!--/_footer /作为公共模版分离出去-->
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>已选日期：</label>
+					<div class="formControls col-xs-8 col-sm-9" id="selectedDate">
 
-<!--请在下方写此页面业务相关的脚本-->
-<script type="text/javascript" src="../lib/My97DatePicker/4.8/WdatePicker.js"></script>
-<script type="text/javascript" src="../lib/jquery.validation/1.14.0/jquery.validate.js"></script> 
-<script type="text/javascript" src="../lib/jquery.validation/1.14.0/validate-methods.js"></script> 
-<script type="text/javascript" src="../lib/jquery.validation/1.14.0/messages_zh.js"></script>
-<script type="text/javascript" src="../lib/webuploader/0.1.5/webuploader.min.js"></script> 
-<script type="text/javascript" src="../lib/ueditor/1.4.3/ueditor.config.js"></script> 
-<script type="text/javascript" src="../lib/ueditor/1.4.3/ueditor.all.min.js"> </script> 
-<script type="text/javascript" src="../lib/ueditor/1.4.3/lang/zh-cn/zh-cn.js"></script>
-<script type="text/javascript">
-$(function(){
-	$('.skin-minimal input').iCheck({
-		checkboxClass: 'icheckbox-blue',
-		radioClass: 'iradio-blue',
-		increaseArea: '20%'
-	})
-});
-	
+					</div>
+				</div>
 
-$(function(){
-	$('#pattern').on('change',function(event){
-		var value = $('#pattern').val();
-		$('#specific-date').empty();
-		var option = '<select id="appointment-date" name="appointment-date">';
-		if(value == 'week'){
-			var week = ['周一','周二','周三','周四','周五','周六','周日'];
-			for(var day of week){
-				option = option +  "<option value='" + day + "'>" + day + "</option>"
-			}
-			option += '</select>';
-		}else if(value == 'month'){
-			for(var day= 1 ; day <= 28;day++){
-				option = option +  "<option value='" + day + "日'>" + day + "日</option>"
-			}
-			option += '</select>';
-		}else if(value == 'diy'){
-			option = '<input type="date" id="appointment-date" name="appointment-date"/>';
-		}
-		$('#specific-date').append(option);
-	})
-	
-})
-	
-	
-	
-	function courseSubject_save_submit(){
-		var description=$("*[name='description']").val();
-		var sname=$("#sname").val();
-		if(sname.trim().length==0){
-			layer.msg('科目姓名不能为空',{icon:2,time:1500});
-            return;
-		}
-		var period=$("#period").val();
-		var price=$("#price").val();
-		if(period.trim().length==0){
-			layer.msg('课程时长不能为空',{icon:2,time:1500});
-            return;
-		}
-		if(price.trim().length==0){
-			layer.msg('科目费用不能为空',{icon:2,time:1500});
-            return;
-		}
-		
-		
-		
-		var regPrice = /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/;
-        if (!regPrice.test(price)){
-           layer.msg('请输入正确的科目费用',{icon:2,time:1500});
-            return ;
-        }
-		
-		
-		var thumbnail= document.getElementById("thumbnailUrl").files[0];
-		var formFile = new FormData();
-		if (typeof(thumbnail) == "undefined") {
-            layer.msg('请选择科目图片!',{icon:2,time:1500});
-            return;
-        }
-		if(document.getElementById("thumbnailUrl").files.length>=2){
-			layer.msg('只能选择一张科目图片!',{icon:2,time:1500});
-            return;	
-		}
-		
-		var certificate = document.getElementById("certificateUrl").files[0];
-		
 
-		if (typeof (certificate) == "undefined") {
-            layer.msg('请选择证书图片!',{icon:2,time:1500});
-            return;
-        }
-		if(document.getElementById("certificateUrl").files.length>=2){
-			layer.msg('只能选择一张证书图片!',{icon:2,time:1500});
-            return;	
-		}
+				<!-- <div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>预约时间：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<span id="specific-date">
+							<select name="appointment-time" id="appointment-time">
+								<option value="全天">全天</option>
+								<option value="上午">上午</option>
+								<option value="下午">下午</option>
+								<option value="8">8点</option>
+								<option value="9">9点</option>
+								<option value="10">10点</option>
+								<option value="11">11点</option>
+								<option value="12">12点</option>
+								<option value="14">14点</option>
+								<option value="15">15点</option>
+								<option value="16">16点</option>
+							</select>
+						</span>
+						<a id="btnAddTime" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加</a>
+					</div>
+				</div>
+
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>已选时间：</label>
+					<div class="formControls col-xs-8 col-sm-9" id="selectedTime">
+
+					</div>
+				</div> -->
+
+
+				<div class="row cl">
+					<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
+						<button onClick="appointment_submit();" class="btn btn-primary radius" type="button"><i class="Hui-iconfont">&#xe632;</i>
+							提交</button>
+						<button onClick="removeIframe();" class="btn btn-default radius" type="button">&nbsp;&nbsp;取消&nbsp;&nbsp;</button>
+					</div>
+				</div>
+			</form>
+		</article>
+
+		<!--_footer 作为公共模版分离出去-->
+		<script type="text/javascript" src="../lib/jquery/1.9.1/jquery.min.js"></script>
+		<script type="text/javascript" src="../lib/layer/2.4/layer.js"></script>
+		<script type="text/javascript" src="../static/h-ui/js/H-ui.min.js"></script>
+		<script type="text/javascript" src="../static/h-ui.admin/js/H-ui.admin.js"></script>
+		<!--/_footer /作为公共模版分离出去-->
+
+		<!--请在下方写此页面业务相关的脚本-->
+		<script type="text/javascript" src="../lib/My97DatePicker/4.8/WdatePicker.js"></script>
+		<script type="text/javascript" src="../lib/jquery.validation/1.14.0/jquery.validate.js"></script>
+		<script type="text/javascript" src="../lib/jquery.validation/1.14.0/validate-methods.js"></script>
+		<script type="text/javascript" src="../lib/jquery.validation/1.14.0/messages_zh.js"></script>
+		<script type="text/javascript" src="../lib/webuploader/0.1.5/webuploader.min.js"></script>
+		<script type="text/javascript" src="../lib/ueditor/1.4.3/ueditor.config.js"></script>
+		<script type="text/javascript" src="../lib/ueditor/1.4.3/ueditor.all.min.js"> </script>
+		<script type="text/javascript" src="../lib/ueditor/1.4.3/lang/zh-cn/zh-cn.js"></script>
 		
-       formFile.append('sname',sname);
-       formFile.append('period',period);
-       formFile.append('price',price);
-       formFile.append('description',description);
-       formFile.append('imgUrl',thumbnail,thumbnail.name);
-       formFile.append('ccieUrl',certificate,certificate.name);
-		$.ajax({
-			url: urlFactory("course/adminAddCourseSubject"),
-            data:formFile, /*{"sname":sname,"period":period,"price":price,"description":description,"imgUrl":thumbnailFile,"ccieUrl":certificate},*/
-            xhrFields: {withCredentials: true},
-            type: "Post",
-            dataType: "json",
-            //cache: false,//上传文件无需缓存
-            contentType: false, //必须
-            processData: false,
-            success: function(data){
-            	if(data.status=="success"){
-            		layer.msg('添加成功!',{icon:1,time:1000});
-            	}
-            	if(data.status=="failure"){
-            		layer.msg('添加失败!',{icon:2,time:1000});
-            	}
-            }
+		<script type="text/javascript" src="../js/global.js"></script>
+		
+		<script type="text/javascript">
+			$(function() {
+				$('.skin-minimal input').iCheck({
+					checkboxClass: 'icheckbox-blue',
+					radioClass: 'iradio-blue',
+					increaseArea: '20%'
+				})
+			});
+				
+			/**
+			 * 设置日期控件,最小值
+			 */	
+			$(function(){
+				var date_now = new Date();
+				var year = date_now.getFullYear();
+				var month = date_now.getMonth()+1 < 10 ? "0"+(date_now.getMonth()+1) : (date_now.getMonth()+1);
+				var date = date_now.getDate() < 10 ? "0"+date_now.getDate() : date_now.getDate();
+				$("#appointment-date").attr("min",year+"-"+month+"-"+date);
+			})
+
 			
-		})
-	}
-</script>
-<!--/请在上方写此页面业务相关的脚本-->
-</body>
+
+			$(function() {
+				/**
+				 * 设置模式切换事件 不需要了，被拿掉
+				 */
+				/* $('#pattern').on('change', function(event) {
+					
+					//重置 selectedDate
+					$('#selectedDate').empty();
+					
+					var value = $('#pattern').val();
+					$('#specific-date').empty();
+					var option = '<select id="appointment-date" name="appointment-date">';
+					if (value == 'week') {
+						var week = ['周一', '周二', '周三', '周四', '周五', '周六', '周日'];
+						for (var day of week) {
+							option = option + "<option value='" + day + "'>" + day + "</option>"
+						}
+						option += '</select>';
+					} else if (value == 'month') {
+						for (var day = 1; day <= 28; day++) {
+							option = option + "<option value='" + day + "日'>" + day + "日</option>"
+						}
+						option += '</select>';
+					} else if (value == 'diy') {
+						option = '<input type="date" id="appointment-date" name="appointment-date"/>';
+					}
+					$('#specific-date').append(option);
+				} );*/
+
+				$('#btnAddDate').on('click', function(event) {
+					//先获取 specific-date 的值
+					var date = $('#appointment-date').val();
+					if (!date) {
+						layer.msg('请先选择可预约日期', {
+							icon: 2,
+							time: 1500
+						});
+						return;
+					}
+					
+					var time = $('#appointment-time').val();
+					
+					var datetime = date + ' ' + time;
+					
+					//检查值是否重复添加
+					var list = $('#selectedDate > span > span');
+					for (var i = 0; i < list.length; i++) {
+
+						if (list[i].innerHTML == datetime) {
+							layer.msg('不可重复添加', {
+								icon: 2,
+								time: 1500
+							});
+							return;
+						}
+
+					}
+
+					var option = "<span><span class='btn btn-primary radius'>" + datetime + "</span>&nbsp;&nbsp;&nbsp;";
+					option = option +
+						'<a onclick="removeDate($(this).parent());"><i class="Hui-iconfont">&#xe6e2;</i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>';
+					$('#selectedDate').append(option);
+				});
+
+				/*$('#btnAddTime').on('click',function(event){
+					
+					var time = $('#appointment-time').val();
+					//检查值是否重复添加
+					var list = $('#selectedTime > span > span');
+					for (var i = 0; i < list.length; i++) {
+					
+						if (list[i].innerHTML == time) {
+							layer.msg('不可重复添加', {
+								icon: 2,
+								time: 1500
+							});
+							return;
+						}
+					
+					}
+					var option = "<span><span class='btn btn-primary radius'>" + time + "</span>&nbsp;&nbsp;&nbsp;";
+					option = option +
+						'<a onclick="removeTime($(this).parent());"><i class="Hui-iconfont">&#xe6e2;</i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>';
+					$('#selectedTime').append(option);
+					
+				}) */
+			});
+			
+			function removeTime(span){
+				span.remove();
+			}
+
+			function removeDate(span){
+				span.remove();
+			}
+			
+			function prepareFormParams(){
+				
+				var data = {};
+				data.pattern = $('#pattern').val();
+				data.description = $('#description').val();
+			
+				var dateSpan = $('#selectedDate > span > span');
+				var dvalues = [];
+				for(var i=0; i<dateSpan.length; i++){
+					dvalues.push({
+						dvalue : dateSpan[i].innerHTML
+					});
+				}
+				data.dvalue = dvalues;
+				
+				
+				/* var timeSpan = $('#selectedTime > span > span');
+				var tvalues = [];
+				for(var i=0; i<timeSpan.length; i++){
+					tvalues.push({
+						period : timeSpan[i].innerHTML
+					});
+				}
+				data.tvalue = tvalues; */
+				
+				return JSON.stringify(data);
+			}
+
+			function appointment_submit() {
+				// console.log(prepareFormParams());
+				$.ajax({
+					url : urlFactory("appointment/back/addfullpattern"),
+					type : "POST",
+					contentType : 'application/json',
+					xhrFields: {
+						withCredentials: true,
+					},
+					data : prepareFormParams(),
+					success : function(data){
+						if(data.status == SUCCESS){
+							layer.msg('保存成功！',{icon:1,time:1500});
+						}else{
+							layer.msg('保存失败',{icon:2,time:1500});
+						}
+						
+					},
+					error :function(data){
+						layer.msg('保存失败',{icon:2,time:1500});
+					}
+					
+				});
+			}
+		</script>
+		<!--/请在上方写此页面业务相关的脚本-->
+	</body>
 </html>

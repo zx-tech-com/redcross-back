@@ -1,9 +1,299 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title></title>
+		<meta name="renderer" content="webkit|ie-comp|ie-stand">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+		<meta http-equiv="Cache-Control" content="no-siteapp" />
+		<!--[if lt IE 9]>
+<script type="text/javascript" src="lib/html5shiv.js"></script>
+<script type="text/javascript" src="lib/respond.min.js"></script>
+<![endif]-->
+		<link rel="stylesheet" type="text/css" href="../static/h-ui/css/H-ui.min.css" />
+		<link rel="stylesheet" type="text/css" href="../static/h-ui.admin/css/H-ui.admin.css" />
+		<link rel="stylesheet" type="text/css" href="../lib/Hui-iconfont/1.0.8/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="../static/h-ui.admin/skin/default/skin.css" id="skin" />
+		<link rel="stylesheet" type="text/css" href="../static/h-ui.admin/css/style.css" />
+
+		<!-- begin -->
+		<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.5.2/css/buttons.dataTables.min.css" />
+		<!-- end -->
+
+		<style>
+			.table-sort>tbody>tr>td{
+				text-align:center;
+			}
+			#pages{
+				float:right;
+				padding-top: 15px;
+				padding-right: 20px;
+			}
+		</style>
+		<title>VR预约管理</title>
 	</head>
 	<body>
+		<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> VR预约管理 <span
+			 class="c-gray en"></span><a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);"
+			 title="刷新"><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+		<div class="page-container">
+			<div class="text-c">
+				<button onclick="removeIframe()" class="btn btn-primary radius">关闭选项卡</button>
+				日期范围：
+				<input type="text" onfocus="WdatePicker({})" id="logmin" class="input-text Wdate"
+				 style="width:120px;">
+				-
+				<input type="text" onfocus="WdatePicker({ minDate:'#F{$dp.$D(\'logmin\')}'})" id="logmax" class="input-text Wdate"
+				 style="width:120px;">
+				<input type="text" name="nameSearch" id="nameSearch" placeholder=" 请输入预约人姓名" style="width:250px" class="input-text">
+				<button name="" id="searchRecord" class="btn btn-success"><i class="Hui-iconfont">&#xe665;</i> 搜记录</button>
+			</div>
+			<div class="mt-20">
+				<table width="100%" class="table table-border table-bordered table-bg table-hover table-sort table-responsive">
+					<thead>
+						<tr class="text-c">
+							<th width="25">序号</th>
+							<th width="80">姓名</th>
+							<th width="80">手机号</th>
+							<th width="120">预约时间</th>
+							<th width="120">备注</th>
+						</tr>
+
+					</thead>
+				</table>
+			</div>
+			
+			<div id="pages">
+				<button id="getUpPage" class="btn btn-primary radius"></button>
+				<button id="getNextPage" class="btn btn-primary radius"></button>
+			</div>
+			
+		</div>
+		
+	
+		<!--_footer 作为公共模版分离出去-->
+		<script type="text/javascript" src="../lib/jquery/1.9.1/jquery.min.js"></script>
+		<script type="text/javascript" src="../lib/layer/2.4/layer.js"></script>
+		<script type="text/javascript" src="../static/h-ui/js/H-ui.min.js"></script>
+		<script type="text/javascript" src="../static/h-ui.admin/js/H-ui.admin.js"></script>
+		<!--/_footer 作为公共模版分离出去-->
+
+		<!--请在下方写此页面业务相关的脚本-->
+		<script type="text/javascript" src="../lib/My97DatePicker/4.8/WdatePicker.js"></script>
+		<script type="text/javascript" src="../lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
+		<script type="text/javascript" src="../lib/laypage/1.2/laypage.js"></script>
+		<script type="text/javascript" src="../js/global.js"></script>
+
+		<!-- begin -->
+		<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
+		<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.flash.min.js"></script>
+		<script type="text/javascript" language="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+		<script type="text/javascript" language="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+		<script type="text/javascript" language="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+		<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
+		<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js"></script>
+		<!-- end -->
+
+
+		<script type="text/javascript">
+			var currentPage = 1;
+			var totalCount = 0;
+			var dateId = null;
+
+			$(function() {
+				var gTable = $('.table-sort').dataTable({
+
+					// begin 
+					dom: 'Bfrtip',
+					buttons: [{
+						extend: 'excel',
+						text: '导出到Excel',
+						title: '考试报名列表', //导出的excel标题
+						className: 'btn btn-primary', //按钮的class样式
+						exportOptions: {
+							//columns:[0,1,2,3],//指定导出哪几个列
+							format: { //用于导出将使用的单元格格式化函数的容器对象 format有三个子标签，header，body和foot
+								body: function(data, row, column, node) { //body区域的function，可以操作需要导出excel的数据格式
+									if (column == 0) {
+										return row + 1;
+									} else if ([6, 7].indexOf(column) > -1) { //报名方法（6）,报名状态（7）需要特殊处理
+										return $(data).text();
+									} else {
+										return data;
+									}
+								},
+							}
+						},
+
+						customize: function(xls) {
+							var colsList = [{
+									index: 1,
+									width: 6
+								},
+								{
+									index: 2,
+									width: 10
+								},
+								{
+									index: 3,
+									width: 12
+								},
+								{
+									index: 4,
+									width: 40
+								},
+								{
+									index: 5,
+									width: 16
+								},
+								{
+									index: 6,
+									width: 18
+								},
+								{
+									index: 7,
+									width: 10
+								},
+								{
+									index: 8,
+									width: 10
+								},
+								{
+									index: 9,
+									width: 13
+								},
+								{
+									index: 10,
+									width: 15
+								},
+							];
+							var rowHeight = 30;
+							xlsCustomize(xls, colsList, rowHeight);
+						},
+					}],
+					//end 
+
+
+					"aaSorting": [
+						[3, "asc"]
+					], //默认第几个排序
+					"bStateSave": true, //状态保存
+					"pading": false,
+					"paging": false, // 禁止分页
+					"aoColumnDefs": [
+						{"orderable":false,"aTargets":[0,1,2,4]}// 不参与排序的列
+					],
+					"fnDrawCallback": function() {
+						var api = this.api();
+						var startIndex = api.context[0]._iDisplayStart; //获取到本页开始的条数
+						api.column(0).nodes().each(function(cell, i) {
+							cell.innerHTML = startIndex + i + 1;
+						});
+					},
+					"ajax": {
+						url: urlFactory("appointment/vr/back/list"),
+						type: "POST",
+						xhrFields: {
+							withCredentials: true,
+						},
+						data:function() {
+							var params = {
+								pageNo: currentPage,
+								appointmentDate : $('#logmin').val(),
+								submitTime : $('#logmax').val(),
+								realname : $('#nameSearch').val(),
+								id : dateId
+							};
+							return params;
+						},
+						complete : function(data){
+							try{
+								console.log(data.responseText);
+								var resp = JSON.parse(data.responseText);
+								maintainPagesText(resp);
+							}catch(e){
+								console.log(e);
+							}
+						},
+						
+					},
+
+					"columns": [
+						{
+							"data": null,
+							width: '40px'
+						},
+						{
+							"data": "realname"
+						},
+						{
+							"data": "tel"
+						},
+						{
+							"data": "appointmentDate",
+							
+						},
+						{
+							"data": "coment"
+						}
+					],
+				});
+			})
+
+			$(function() {
+				$("#getUpPage").on("click", function() {
+					if (currentPage == 1) {
+						return;
+					}
+					currentPage = currentPage - 1;
+					refreshTable();
+				})
+				
+				$("#getNextPage").on("click", function() {
+					if (currentPage == totalCount) {
+						return;
+					}
+					currentPage = currentPage + 1;
+					refreshTable();
+				})
+				
+				$("#searchRecord").on("click", function() {
+					refreshTable();
+				})
+			})
+
+			
+		
+			function maintainPagesText(json){
+				totalCount = json.totalCount;
+				if (currentPage == 1) {
+					$("#getUpPage").text('首页');
+				}
+				if (currentPage != 1) {
+					$("#getUpPage").text('上一页');
+				}
+				if (currentPage == totalCount) {
+					$("#getNextPage").text('最后一页');
+				}
+				if (currentPage != totalCount) {
+					$("#getNextPage").text('下一页');
+				}
+			}
+			
+		
+			function refreshTable(){
+				var table = $('.table-sort').DataTable();
+				table.ajax.reload();
+			}
+			
+			/**
+			 * appointment-pattern.html页面需要用到该方法
+			 */
+			function refreshTableWithDateID(id){
+				dateId = id;
+				refreshTable();
+				dateId = null;
+			}
+		</script>
 	</body>
 </html>

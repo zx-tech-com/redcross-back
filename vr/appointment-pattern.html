@@ -28,17 +28,16 @@
 			<div class="cl pd-5 bg-1 bk-gray mt-20">
 				<span class="l">
 					<button onclick="removeIframe()" class="btn btn-primary radius">关闭选项卡</button>
-					<a class="btn btn-primary radius" data-title="添加类型" data-href="pattern-add.html" onclick="Hui_admin_tab(this)"
-					 href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> 添加新预约模式</a>
+					<a class="btn btn-primary radius" data-title="添加新预约时间" data-href="vr/pattern-add.html" onclick="Hui_admin_tab(this)"
+					 href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> 添加新预约时间</a>
 			</div>
 			<div class="mt-20">
 				<table class="table table-border table-bordered table-bg table-hover table-sort table-responsive">
 					<thead>
 						<tr class="text-c">
 							<th width="80">序号</th>
-							<th width="80">预约模式描述</th>
-							<th width="80">模式</th>
-							<th width="80">使用情况</th>
+							<th width="80">预约时间</th>
+							<th width="80">预约客户</th>
 							<th width="120">操作</th>
 						</tr>
 					</thead>
@@ -92,66 +91,67 @@
 						});
 					},
 					"ajax": {
-						url: urlFactory("appointment/back/listpattern"),
+						url: urlFactory("appointment/back/listdate"),
 						xhrFields: {
 							withCredentials: true,
 						},
 					},
-
+			
 					"columns": [
 						{
 								"data": null
 						},
 						{
-							"data": "description"
+							"data": "dvalue"
 						},
 						{
-							"data": "pattern",
+							"data": "id",
 							"render":function(data, type, row, meta){
-								var obj = {
-									week : '每周',
-									month:'每月',
-									diy : '自定义'
-								}
-								return obj[data];
-							}
-						},
-						{
-							"data": "onUse",
-							"render":function(data, type, row, meta){
-								return data ? '正在使用' : '未在使用';
+								var date = "'" +  row.dvalue + "'";
+								return '<a href="#" onclick="gotoAppointmentPage('+ data +','+ date + ')">点击查看</a>';
 							}
 						},
 						{
 							"data": "virtual",
 							"render": function(data, type, row, meta) {
-								var tag = '<a style="text-decoration:none" class="ml-5" onClick="update(' + row.id +
-											',this)" href="javascript:;" title="使用该模式"><i class="Hui-iconfont">&#xe6e2;</i></a>';
-								return row.onUse ? '' : tag;
+								var tag = '<a style="text-decoration:none" class="ml-5" onClick="remove(' + row.id +
+											',this)" href="javascript:;" title="删除该预约时间"><i class="Hui-iconfont">&#xe6e2;</i></a>';
+								return tag;
 							}
 						}
 					],
 				});
 			});
 
-			function edit(row, title, url) {
-				var videoObject = JSON.parse(decodeURIComponent(row));
+
+			function gotoAppointmentPage(id,date){
 				var index = layer.open({
 					type: 2,
-					title: title,
-					content: url,
-					success: function(layero, index) {
-						var body = layer.getChildFrame('body', index);
-						var iframeWin = window[layero.find('iframe')[0]['name']]; //得到iframe页的窗口对象，执行iframe页的方法：iframeWin.method();
-						body.find('#id').val(videoObject.id);
-						body.find('#tname').val(videoObject.tname);
-						body.find('#description').val(videoObject.description);
+					title : '预约管理',
+					content : 'appointment.html',
+					success : function(layero,index){
+						var body = layer.getChildFrame('body',index);
+						var iframeWin =  window[layero.find('iframe')[0]['name']]; //得到iframe页的窗口对象，执行iframe页的方法：iframeWin.method();
+						console.log(layero.find('iframe')[0]['name']);
+						//处理date
+						date = date.substr(0,10);
+						body.find('#logmin').val(date);
+						
+						date = new Date(date);
+						var day = date.getDate() + 1;
+						date.setDate(day);
+						var month = date.getMonth()+1;
+						month = month > 9 ? month:'0' + month;
+						date =date.getFullYear() + '-' + month + '-' + date.getDate();
+						body.find('#logmax').val(date);
+						iframeWin.refreshTableWithDateID(id);
 					}
 				});
 				layer.full(index);
 			}
-			/*设置模式-删除*/
-			function update(id, obj) {
+			
+
+			/* function update(id, obj) {
 				layer.confirm('确定要设置使用该模式吗？', function(index) {
 					$.ajax({
 						url: urlFactory("appointment/back/updateOnUsePattern?id=" + id),
@@ -183,9 +183,41 @@
 						},
 					});
 				});
+			} */
+
+			function remove(id, obj) {
+				layer.confirm('确定要删除该预约日期吗？', function(index) {
+					$.ajax({
+						url: urlFactory("appointment/back/removedate?id=" + id),
+						xhrFields: {
+							withCredentials: true,
+						},
+						dataType: 'json',
+						success: function(data) {
+							if (data.status === SUCCESS) {
+								layer.msg('删除成功!', {
+									icon: 1,
+									time: 1000
+								},function(){
+									location.replace(location.href);
+								});
+								
+							} else {
+								layer.msg(data.message, {
+									icon: 2,
+									time: 1000
+								});
+							}
+						},
+						error: function(data) {
+							layer.msg('删除失败!', {
+								icon: 2,
+								time: 1000
+							});
+						},
+					});
+				});
 			}
-
-
 		</script>
 	</body>
 </html>

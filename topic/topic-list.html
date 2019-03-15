@@ -55,7 +55,6 @@
 			<div id="pages">
 				<button id="getUpPage" class="btn btn-primary radius"></button>
 				<button id="getNextPage" class="btn btn-primary radius"></button>
-
 			</div>
 		</div>
 		<!--_footer 作为公共模版分离出去-->
@@ -228,28 +227,6 @@
 					})
 				})
 			}
-
-			$(function() {
-				$("#getUpPage").on("click", function() {
-					if (currentPage == 1) {
-						return;
-					}
-					var table = $('.table-sort').DataTable();
-					currentPage = currentPage - 1;
-					table.ajax.reload();
-				})
-			})
-			$(function() {
-				$("#getNextPage").on("click", function() {
-					if (currentPage == totalCount) {
-						return;
-					}
-					var table = $('.table-sort').DataTable();
-					currentPage = currentPage + 1;
-					table.ajax.reload();
-				})
-			})
-
 
 			$(function() {
 				$("#getUpPage").on("click", function() {
