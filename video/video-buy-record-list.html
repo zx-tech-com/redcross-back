@@ -53,11 +53,11 @@
 							<option value="3">已取消</option>
 						</select>
 					</span> 日期范围：
-					<input type="text" onfocus="WdatePicker({ maxDate:'#F{$dp.$D(\'logmax\')||\'%y-%M-%d\'}' })" id="logmin" class="input-text Wdate"
+					<input type="text" onfocus="WdatePicker({})" id="logmin" class="input-text Wdate"
 					 style="width:120px;">
 					-
-					<input type="text" onfocus="WdatePicker({ minDate:'#F{$dp.$D(\'logmin\')}',maxDate:'%y-%M-%d' })" id="logmax"
-					 class="input-text Wdate" style="width:120px;">
+					<input type="text" onfocus="WdatePicker({ minDate:'#F{$dp.$D(\'logmin\')}'})" id="logmax" class="input-text Wdate"
+					 style="width:120px;">
 					<input type="text" name="vnameSearch" id="vnameSearch" placeholder=" 请输入视频名称" style="width:250px" class="input-text">
 					<button name="" id="searchRecord" class="btn btn-success" ><i class="Hui-iconfont">&#xe665;</i> 搜记录</button>
 				</div>
