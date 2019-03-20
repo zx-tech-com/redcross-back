@@ -1,7 +1,7 @@
 
 var protocol="http://";
-var domain="localhost";
-//var domain="192.168.1.100";
+var domain="192.168.1.100";
+// var domain="192.168.1.177";
 var port = "9090";
 // var domain="39.98.204.123";
 // var port = "80";
