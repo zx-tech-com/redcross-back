@@ -25,7 +25,7 @@
 
 		</style>
 
-		<title>急救常识列表</title>
+		<title>新闻列表</title>
 	</head>
 	<body>
 		<div class="pd-20">
@@ -33,7 +33,7 @@
 			<!-- 导航栏 -->
 			<nav class="breadcrumb">
 				<i class="Hui-iconfont">&#xe67f;</i> 首页
-				<span class="c-gray en">&gt;</span> 急救常识列表
+				<span class="c-gray en">&gt;</span> 新闻列表
 				<a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);"
 				 title="刷新">
 					<i class="Hui-iconfont">&#xe68f;</i>
@@ -63,9 +63,9 @@
 						<!-- <a href="javascript:;" onclick="datadel()" class="btn btn-danger radius">
 							<i class="Hui-iconfont">&#xe6e2;</i> 批量删除
 						</a> -->
-						<a class="btn btn-primary radius" data-title="添加急救常识" data-href="knowledge/sub-add.html" onclick="Hui_admin_tab(this)"
+						<a class="btn btn-primary radius" data-title="添加新闻" data-href="news/news-add.html" onclick="Hui_admin_tab(this)"
 						 href="javascript:;">
-							<i class="Hui-iconfont">&#xe600;</i>  添加急救常识
+							<i class="Hui-iconfont">&#xe600;</i>  添加新闻
 						</a>
 					</span>
 				</div>
@@ -79,7 +79,6 @@
 								<th>查看</th>
 								<th>操作</th>
 								<th>发布时间</th>
-								<th>评论内容</th>
 							</tr>
 						</thead>
 					</table>
@@ -119,7 +118,7 @@
 			
 			$(function(){//初始化下拉框
 				$.ajax({
-					url : urlFactory("knowledge/adminListKnowledgeType"),
+					url : urlFactory("news/listNewsType"),
 					xhrFields: {
 						withCredentials: true,
 					},
@@ -192,7 +191,7 @@
 					},
 	
 					"ajax": {
-						url: urlFactory("knowledge/adminListKnowledge"),
+						url: urlFactory("news/listNews"),
 						type: "POST",
 						xhrFields: {
 							withCredentials: true,
@@ -229,8 +228,8 @@
 						{
 							"data": "id",
 							"render": function(data, type, row, meta) { // "编辑视频","video-add.html"
-								var editTitle = "'编辑常识'";
-								var editUrl = "'sub-update.html'";
+								var editTitle = "'编辑新闻'";
+								var editUrl = "'news-update.html'";
 								var updatefunc = "knowledgeUpdate(" + editTitle + "," + editUrl + "," + data + ")";
 								
 								
@@ -251,12 +250,6 @@
 						}, */
 						{
 							"data": "publishTime"
-						},
-						{
-							"data": "coment",
-							"render": function(data, type, row, meta) {
-								return '<button onclick="getComent(' + row.id + ')" class="btn btn-primary radius">查看评论</button>';
-							}
 						}
 					]
 				});
@@ -270,15 +263,16 @@
 				})
 			})
 			
-			function getComent(id) {
-				document.location.href = "knowledgeComent-list.html?id=" + id
-			}
+			
 			
 			function del(id, obj) {
 				layer.confirm('确认要删除吗？', function(index) {
 					$.ajax({
 						type: 'POST',
-						url: urlFactory("knowledge/adminDeleteKnowledge?knowledgeId=" + id),
+						url: urlFactory("news/deleteNews"),
+						data: {
+							"newsId":id
+						},
 						xhrFields: {
 							withCredentials: true,
 						},
@@ -325,7 +319,7 @@
 			}
 			
 			function knowledgeview(data){
-				var url = "../knowledge.html?id=" + data;
+				var url = "../news.html?id=" + data;
 				window.location.href = url;
 			}
 		</script>
